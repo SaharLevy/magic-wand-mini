@@ -25,19 +25,13 @@ const answerSchema = new Schema<IAnswer>(
     dateValue: { type: Date },
     timeValue: { type: String },
     tableAnswers: { type: [tableAnswerSchema] },
-  },
-  { _id: false }
-);
+  });
 
 const instanceSchema = new Schema<IInstance>(
   {
     schemaId: {
       type: Schema.Types.ObjectId,
       ref: "FormSchema",
-      required: true,
-    },
-    schemaVersion: {
-      type: Number,
       required: true,
     },
     filledBy: {
@@ -58,13 +52,7 @@ const instanceSchema = new Schema<IInstance>(
       type: Number,
       default: 0,
     },
-    submittedAt: {
-      type: Date,
-    },
   },
-  {
-    timestamps: true,
-  }
 );
 
 export const Instance = mongoose.model<IInstance>("Instance", instanceSchema);

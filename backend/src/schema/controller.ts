@@ -7,6 +7,10 @@ class Controller {
   static getSchemas = async (req: Request, res: Response) => {
     res.status(StatusCodes.OK).json(await Manager.getSchemas());
   };
+
+  static getSchemasStatusDraft = async (req: Request, res: Response) =>{
+    res.status(StatusCodes.OK).json(await Manager.getSchemasStatusDraft)
+  }
 }
 
 export default Controller;

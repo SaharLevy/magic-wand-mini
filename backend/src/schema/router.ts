@@ -10,4 +10,9 @@ schemasRouter.get(
   validate(schemasValidation.getSchemas, Controller.getSchemas),
 );
 
+schemasRouter.get(
+  "/getDrafts",
+  validate(schemasValidation.getSchemasStatusDraft, Controller.getSchemasStatusDraft),
+);
+
 export default schemasRouter;

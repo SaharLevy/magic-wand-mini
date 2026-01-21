@@ -1,4 +1,5 @@
 import type { Types } from "mongoose";
+import { omit } from "zod/mini";
 
 export const QuestionTypes = [
   "SHORT_TEXT",
@@ -18,23 +19,14 @@ export type QuestionType = (typeof QuestionTypes)[number];
 export const SchemaStatuses = ["Draft", "Published", "Archived"] as const;
 export type SchemaStatus = (typeof SchemaStatuses)[number];
 
-export const SchemaScopes = ["Private", "Assigned", "Public"] as const;
-export type SchemaScope = (typeof SchemaScopes)[number];
-
 export interface IOption {
-  optionId: string;
+  _id: Types.ObjectId;
   text: string;
   order: number;
 }
-
-export interface IValidation {
-  minLength?: number;
-  maxLength?: number;
-  pattern?: string;
-}
-
+// Will check later on if _id is troublesome.
 export interface IQuestion {
-  questionId: string;
+  _id: Types.ObjectId;
   type: QuestionType;
   title: string;
   description?: string;
@@ -50,29 +42,30 @@ export interface IQuestion {
   // For table questions (RADIO_TABLE, CHECKBOX_TABLE)
   rows?: string[];
   columns?: string[];
-
-  validation?: IValidation;
 }
 
+export type IQuestionNoId = Omit<IQuestion, "_id">;
+
 export interface ISection {
-  sectionId: string;
+  _id: Types.ObjectId;
   title: string;
   description?: string;
   order: number;
   questions: IQuestion[];
 }
 
+export type ISectionNoId = Omit<ISection, "_id">;
+
 export interface ISchema {
   _id: Types.ObjectId;
   title: string;
   description?: string;
-  version: number;
-  baseSchemaId: Types.ObjectId | null;
   status: SchemaStatus;
-  scope: SchemaScope;
   createdBy: Types.ObjectId;
   assignedUsers: Types.ObjectId[];
   sections: ISection[];
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type ISchemaNoId = Omit<ISchema, "_id">;

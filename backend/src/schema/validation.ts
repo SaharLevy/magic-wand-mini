@@ -6,6 +6,11 @@ const schemasValidation = {
     body: z.object({}),
     query: z.object({}),
   },
+  getSchemasStatusDraft: {
+    params: z.object({}),
+    body: z.object({}),
+    query: z.object({}),
+  },
 };
 
 export default schemasValidation;
