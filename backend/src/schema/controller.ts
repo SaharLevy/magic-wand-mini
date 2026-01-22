@@ -8,9 +8,15 @@ class Controller {
     res.status(StatusCodes.OK).json(await Manager.getSchemas());
   };
 
-  static getSchemasStatusDraft = async (req: Request, res: Response) =>{
-    res.status(StatusCodes.OK).json(await Manager.getSchemasStatusDraft)
-  }
+  static getSchemasStatusDraft = async (req: Request, res: Response) => {
+    res.status(StatusCodes.OK).json(await Manager.getSchemasStatusDraft());
+  };
+
+  static getSchemaById = async (req: Request, res: Response) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.getSchemaById(new Types.ObjectId(req.params.id)));
+  };
 }
 
 export default Controller;

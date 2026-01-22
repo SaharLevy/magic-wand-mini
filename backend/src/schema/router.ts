@@ -12,7 +12,15 @@ schemasRouter.get(
 
 schemasRouter.get(
   "/getDrafts",
-  validate(schemasValidation.getSchemasStatusDraft, Controller.getSchemasStatusDraft),
+  validate(
+    schemasValidation.getSchemasStatusDraft,
+    Controller.getSchemasStatusDraft,
+  ),
+);
+
+schemasRouter.get(
+  "/:id",
+  validate(schemasValidation.getSchemaById, Controller.getSchemaById),
 );
 
 export default schemasRouter;
