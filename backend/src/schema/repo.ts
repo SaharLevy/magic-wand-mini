@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ISchema, ISchemaNoId } from "./types.js";
+import { ISchema, ISchemaInput } from "./types.js";
 import { FormSchema } from "./model.js";
 import { NotFoundError } from "../utils/customErrors.js";
 
@@ -12,7 +12,7 @@ class Repo {
   static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError("Schema not found"));
 
-  static createSchema = async (newSchema: ISchemaNoId): Promise<ISchema> =>
+  static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
     FormSchema.create(newSchema);
 
   static updateSchemaById = async (
@@ -48,8 +48,15 @@ class Repo {
     const section = await FormSchema.aggregate();
   };
 
-  static deleteSection = async (schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,): Promise<ISchema> => 
+  static deleteSection = async (
+    schemaId: Types.ObjectId,
+    sectionId: Types.ObjectId,
+  ): Promise<ISchema> =>
+    FormSchema.findByIdAndUpdate(
+      schemaId,
+      { $pull: { sections: { _id: sectionId } } },
+      { new: true },
+    ).orFail(new NotFoundError("Schema not found"));
 }
 
 export default Repo;

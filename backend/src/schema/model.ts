@@ -39,42 +39,37 @@ const sectionSchema = new Schema<ISection>({
   questions: { type: [questionSchema], default: [] },
 });
 
-const formSchemaDefinition = new Schema<ISchema>(
-  {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    status: {
-      type: String,
-      enum: SchemaStatuses,
-      default: "Draft",
-    },
-    createdBy: {
+const formSchemaDefinition = new Schema<ISchema>({
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    trim: true,
+  },
+  status: {
+    type: String,
+    enum: SchemaStatuses,
+    default: "Draft",
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  assignedUsers: [
+    {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
-    assignedUsers: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    sections: {
-      type: [sectionSchema],
-      default: [],
-    },
+  ],
+  sections: {
+    type: [sectionSchema],
+    default: [],
   },
-  {
-    timestamps: true,
-  },
-);
+});
 
 export const FormSchema = mongoose.model<ISchema>(
   "FormSchema",

@@ -23,4 +23,8 @@ schemasRouter.get(
   validate(schemasValidation.getSchemaById, Controller.getSchemaById),
 );
 
+schemasRouter.post(
+  "/",
+  validate(schemasValidation.createSchema, Controller.createSchema),
+);
 export default schemasRouter;
