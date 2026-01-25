@@ -13,6 +13,22 @@ class Manager {
 
   static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
     Repo.createSchema(newSchema);
+
+  static updateSchemaById = async (
+    schemaId: Types.ObjectId,
+    newSchema: ISchema,
+  ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
+
+  static deleteSection = async (
+    schemaId: Types.ObjectId,
+    sectionId: Types.ObjectId,
+  ): Promise<ISchema> => Repo.deleteSection(schemaId, sectionId);
+
+  static deleteQuestion = async (
+    schemaId: Types.ObjectId,
+    sectionId: Types.ObjectId,
+    questionId: Types.ObjectId,
+  ): Promise<ISchema> => Repo.deleteQuestion(schemaId, sectionId, questionId);
 }
 
 export default Manager;

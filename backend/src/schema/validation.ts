@@ -62,6 +62,36 @@ const schemasValidation = {
     }),
     query: z.object({}),
   },
+  deleteSection: {
+    params: z.object({}),
+    body: z.object({
+      schemaId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+      sectionId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+    }),
+    query: z.object({}),
+  },
+  deleteQuestion: {
+    params: z.object({}),
+    body: z.object({
+      schemaId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+      sectionId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+      questionId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+    }),
+    query: z.object({}),
+  },
+  updateSchemaById: {
+    params: z.object({
+      schemaId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+    }),
+    body: z.object({
+      title: z.string().min(1, "Schema title is required").optional(),
+      description: z.string().optional(),
+      assignedUsers: z
+        .array(z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"))
+        .optional(),
+    }),
+    query: z.object({}),
+  },
 };
 
 export default schemasValidation;

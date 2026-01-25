@@ -57,6 +57,17 @@ class Repo {
       { $pull: { sections: { _id: sectionId } } },
       { new: true },
     ).orFail(new NotFoundError("Schema not found"));
+
+  static deleteQuestion = async (
+    schemaId: Types.ObjectId,
+    sectionId: Types.ObjectId,
+    questionId: Types.ObjectId,
+  ): Promise<ISchema> =>
+    FormSchema.findByIdAndUpdate(
+      schemaId,
+      { $pull: { "sections.$[section].questions": { _id: questionId } } },
+      { new: true, arrayFilters: [{ "section._id": sectionId }] },
+    ).orFail(new NotFoundError("Schema not found"));
 }
 
 export default Repo;
