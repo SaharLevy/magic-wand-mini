@@ -61,3 +61,7 @@ export interface ISchema {
 }
 
 export type ISchemaInput = Omit<ISchema, "_id">;
+export type ISchemaUpdate = Partial<
+  Omit<ISchema, "_id" | "status" | "createdBy" | "sections">
+>;
+export type ISectionUpdate = Partial<Omit<ISection, "_id" | "questions">>;

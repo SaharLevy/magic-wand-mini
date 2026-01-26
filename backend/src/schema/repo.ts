@@ -1,5 +1,10 @@
 import { Types } from "mongoose";
-import { ISchema, ISchemaInput } from "./types.js";
+import {
+  ISchema,
+  ISchemaInput,
+  ISchemaUpdate,
+  ISectionUpdate,
+} from "./types.js";
 import { FormSchema } from "./model.js";
 import { NotFoundError } from "../utils/customErrors.js";
 
@@ -17,28 +22,22 @@ class Repo {
 
   static updateSchemaById = async (
     schemaId: Types.ObjectId,
-    newSchema: ISchema,
+    newSchema: ISchemaUpdate,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
       new NotFoundError("Schema not found"),
     );
 
-  static updateSchemaAssignedUsers = async (
-    schemaId: Types.ObjectId,
-    assignedUsers: number[],
-  ): Promise<ISchema> =>
-    FormSchema.findByIdAndUpdate(
-      schemaId,
-      { assignedUsers },
-      { new: true },
-    ).orFail(new NotFoundError("Schema not found"));
-
   static updateSection = async (
     schemaId: Types.ObjectId,
     sectionId: Types.ObjectId,
-  ) => {
-    const section = await FormSchema.aggregate();
-  };
+    newSection: ISectionUpdate,
+  ) =>
+    FormSchema.findByIdAndUpdate(
+      schemaId,
+      { $set: { "sections.$[section]": newSection } },
+      { new: true, arrayFilters: [{ "section._id": sectionId }] },
+    ).orFail(new NotFoundError("Schema not found"));
 
   static updateQuestion = async (
     schemaId: Types.ObjectId,

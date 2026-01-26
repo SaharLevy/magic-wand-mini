@@ -81,7 +81,7 @@ const schemasValidation = {
   },
   updateSchemaById: {
     params: z.object({
-      schemaId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+      id: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
     }),
     body: z.object({
       title: z.string().min(1, "Schema title is required").optional(),
@@ -89,6 +89,17 @@ const schemasValidation = {
       assignedUsers: z
         .array(z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"))
         .optional(),
+    }),
+    query: z.object({}),
+  },
+  updateSection: {
+    params: z.object({}),
+    body: z.object({
+      schemaId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+      sectionId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+      title: z.string().min(1, "Schema title is required").optional(),
+      description: z.string().optional(),
+      order: z.number().int().min(0).optional(),
     }),
     query: z.object({}),
   },

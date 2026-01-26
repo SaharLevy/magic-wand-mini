@@ -4,6 +4,10 @@ import validate from "../utils/asyncHandler.js";
 import { StatusCodes } from "http-status-codes";
 import Manager from "./manager.js";
 import { Types } from "mongoose";
+import { idTypeConverter } from "../utils/helperFunctions.js";
+import { ISchemaUpdate } from "./types.js";
+
+// need to update ids so that only schemaId is being passed in params and the rest with body.
 
 const schemasRouter = Router();
 
@@ -33,26 +37,40 @@ schemasRouter.get(
 schemasRouter.post(
   "/",
   validate(schemasValidation.createSchema, async (req, res) => {
-    const newSchema = {
-      ...req.body,
-      createdBy: new Types.ObjectId(req.body.createdBy),
-      assignedUsers: req.body.assignedUsers.map((id) => new Types.ObjectId(id)),
-    };
-    res.status(StatusCodes.CREATED).json(await Manager.createSchema(newSchema));
+    res.status(StatusCodes.CREATED).json(
+      await Manager.createSchema({
+        ...req.body,
+        createdBy: new Types.ObjectId(req.body.createdBy),
+        assignedUsers: req.body.assignedUsers.map(
+          (id) => new Types.ObjectId(id),
+        ),
+      }),
+    );
   }),
 );
 
-//will fix later
 schemasRouter.put(
   "/:id",
   validate(schemasValidation.updateSchemaById, async (req, res) => {
-    let updatedSchema = {
-      ...req.body,
-    };
-    updatedSchema.assignedUsers = req.body.assignedUsers.map(
-      (id) => new Types.ObjectId(id),
+    res.status(StatusCodes.OK).json(
+      await Manager.updateSchemaById(new Types.ObjectId(req.params.id), {
+        ...req.body,
+        assignedUsers: idTypeConverter(req.body.assignedUsers),
+      }),
     );
-    res.status(StatusCodes.OK).json(await Manager.getSchemaById(updatedSchema));
+  }),
+);
+
+//need to edit later on
+schemasRouter.put(
+  "/:id",
+  validate(schemasValidation.updateSchemaById, async (req, res) => {
+    res.status(StatusCodes.OK).json(
+      await Manager.updateSchemaById(new Types.ObjectId(req.params.id), {
+        ...req.body,
+        assignedUsers: idTypeConverter(req.body.assignedUsers),
+      }),
+    );
   }),
 );
 

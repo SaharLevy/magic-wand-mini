@@ -1,6 +1,11 @@
 import { Types } from "mongoose";
 import Repo from "./repo.js";
-import { ISchema, ISchemaInput } from "./types.js";
+import {
+  ISchema,
+  ISchemaInput,
+  ISchemaUpdate,
+  ISectionUpdate,
+} from "./types.js";
 
 class Manager {
   static getSchemas = async (): Promise<ISchema[]> => Repo.getSchemas();
@@ -16,8 +21,14 @@ class Manager {
 
   static updateSchemaById = async (
     schemaId: Types.ObjectId,
-    newSchema: ISchema,
+    newSchema: ISchemaUpdate,
   ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
+
+  static updateSection = async (
+    schemaId: Types.ObjectId,
+    sectionId: Types.ObjectId,
+    newSection: ISectionUpdate,
+  ): Promise<ISchema> => Repo.updateSection(schemaId, sectionId, newSection);
 
   static deleteSection = async (
     schemaId: Types.ObjectId,

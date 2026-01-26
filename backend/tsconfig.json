@@ -19,7 +19,6 @@
     // Stricter Typechecking
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
     "isolatedModules": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
