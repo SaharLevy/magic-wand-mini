@@ -64,14 +64,13 @@ schemasRouter.put(
 schemasRouter.put(
   "/:id/section/update",
   validate(schemasValidation.updateSection, async (req, res) => {
-    const updatedSection: ISectionUpdateReq = { ...req.body }; // use destructuring
-    delete updatedSection.sectionId;
+    const { sectionId, ...updatedSection } = req.body;
     res
       .status(StatusCodes.OK)
       .json(
         await Manager.updateSection(
           new Types.ObjectId(req.params.id),
-          new Types.ObjectId(req.body.sectionId),
+          new Types.ObjectId(sectionId),
           updatedSection,
         ),
       );

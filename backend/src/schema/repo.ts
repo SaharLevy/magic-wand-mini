@@ -33,18 +33,14 @@ class Repo {
     sectionId: Types.ObjectId,
     newSection: ISectionUpdate,
   ) => {
-    const a = Object.keys(newSection)
-    const b = {};
-    a.forEach(key => {
-      b[`sections.$[section].${key}`] = newSection[key]
-    })
-
-
+    const newSectionQuerys: Record<string, string | number> = {};
+    Object.entries(newSection).forEach(([key, value]) => {
+      newSectionQuerys[`sections.$[section].${key}`] = value;
+    });
 
     return FormSchema.findByIdAndUpdate(
       schemaId,
-      // { $set: { [`sections.$[section].title`]: newSection.title ,[`sections.$[section].order`]: newSection.order } },
-      { $set: b },
+      { $set: newSectionQuerys },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
     ).orFail(new NotFoundError("Schema not found"));
   };

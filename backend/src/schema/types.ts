@@ -51,7 +51,7 @@ export interface ISection {
 }
 
 export interface ISectionUpdateReq {
-  sectionId?: string;
+  // sectionId?: string;
   title?: string;
   description?: string | undefined;
   order?: number;
