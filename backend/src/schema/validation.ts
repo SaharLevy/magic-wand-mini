@@ -93,9 +93,10 @@ const schemasValidation = {
     query: z.object({}),
   },
   updateSection: {
-    params: z.object({}),
+    params: z.object({
+      id: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+    }),
     body: z.object({
-      schemaId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
       sectionId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
       title: z.string().min(1, "Schema title is required").optional(),
       description: z.string().optional(),

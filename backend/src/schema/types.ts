@@ -50,6 +50,12 @@ export interface ISection {
   questions: IQuestion[];
 }
 
+export interface ISectionUpdateReq {
+  sectionId?: string;
+  title?: string;
+  description?: string | undefined;
+  order?: number;
+}
 export interface ISchema {
   _id: Types.ObjectId;
   title: string;

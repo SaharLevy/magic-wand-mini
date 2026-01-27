@@ -32,12 +32,22 @@ class Repo {
     schemaId: Types.ObjectId,
     sectionId: Types.ObjectId,
     newSection: ISectionUpdate,
-  ) =>
-    FormSchema.findByIdAndUpdate(
+  ) => {
+    const a = Object.keys(newSection)
+    const b = {};
+    a.forEach(key => {
+      b[`sections.$[section].${key}`] = newSection[key]
+    })
+
+
+
+    return FormSchema.findByIdAndUpdate(
       schemaId,
-      { $set: { "sections.$[section]": newSection } },
+      // { $set: { [`sections.$[section].title`]: newSection.title ,[`sections.$[section].order`]: newSection.order } },
+      { $set: b },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
     ).orFail(new NotFoundError("Schema not found"));
+  };
 
   static updateQuestion = async (
     schemaId: Types.ObjectId,
