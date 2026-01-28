@@ -61,7 +61,6 @@ schemasRouter.put(
 schemasRouter.patch(
   "/:id/section",
   validate(schemasValidation.updateSection, async (req, res) => {
-    const { sectionId, ...updatedSection } = req.body;
     res
       .status(StatusCodes.OK)
       .json(
@@ -76,14 +75,11 @@ schemasRouter.patch(
 schemasRouter.patch(
   "/:id/question",
   validate(schemasValidation.updateQuestion, async (req, res) => {
-    const { sectionId, questionId, ...updatedQuestion } = req.body;
     res
       .status(StatusCodes.OK)
       .json(
         await Manager.updateQuestion(
           new Types.ObjectId(req.params.id),
-          new Types.ObjectId(sectionId),
-          new Types.ObjectId(questionId),
           req.body,
         ),
       );
@@ -91,7 +87,7 @@ schemasRouter.patch(
 );
 
 schemasRouter.delete(
-  "/section/delete",
+  "/section",
   validate(schemasValidation.deleteSection, async (req, res) => {
     res
       .status(StatusCodes.OK)
@@ -105,7 +101,7 @@ schemasRouter.delete(
 );
 
 schemasRouter.delete(
-  "/question/delete",
+  "/question",
   validate(schemasValidation.deleteQuestion, async (req, res) => {
     res
       .status(StatusCodes.OK)

@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
 import Repo from "./repo.js";
 import {
-  IQuestionUpdate,
+  IQuestionUpdateRequest,
   ISchema,
   ISchemaInput,
   ISchemaUpdate,
-  ISectionUpdate,
+  ISectionUpdateRequest,
 } from "./types.js";
 
 class Manager {
@@ -25,23 +25,32 @@ class Manager {
     newSchema: ISchemaUpdate,
   ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
 
-  //will fix later on.
   static updateSection = async (
     schemaId: Types.ObjectId,
-    newSection: ISectionUpdate,
+    sectionData: ISectionUpdateRequest,
   ): Promise<ISchema> => {
-    const { sectionId, ...newUpdatedSection } = newSection;
+    const { sectionId, ...updatedSection } = sectionData;
 
-    return Repo.updateSection(schemaId, sectionId, newUpdatedSection);
+    return Repo.updateSection(
+      schemaId,
+      new Types.ObjectId(sectionId),
+      updatedSection,
+    );
   };
 
   static updateQuestion = async (
     schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
-    questionId: Types.ObjectId,
-    newQuestion: IQuestionUpdate,
-  ): Promise<ISchema> =>
-    Repo.updateQuestion(schemaId, sectionId, questionId, newQuestion);
+    questionData: IQuestionUpdateRequest,
+  ): Promise<ISchema> => {
+    const { sectionId, questionId, ...updatedQuestion } = questionData;
+
+    return Repo.updateQuestion(
+      schemaId,
+      new Types.ObjectId(sectionId),
+      new Types.ObjectId(questionId),
+      updatedQuestion,
+    );
+  };
 
   static deleteSection = async (
     schemaId: Types.ObjectId,

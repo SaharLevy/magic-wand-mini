@@ -42,6 +42,11 @@ export interface IQuestion {
   columns?: string[] | undefined;
 }
 
+export interface IQuestionUpdateRequest extends IQuestionUpdate {
+  sectionId: string;
+  questionId: string;
+}
+
 export interface ISection {
   _id?: Types.ObjectId;
   title: string;
@@ -50,6 +55,9 @@ export interface ISection {
   questions: IQuestion[];
 }
 
+export interface ISectionUpdateRequest extends ISectionUpdate {
+  sectionId: string;
+}
 
 export interface ISchema {
   _id: Types.ObjectId;
@@ -66,4 +74,4 @@ export type ISchemaUpdate = Partial<
   Omit<ISchema, "_id" | "status" | "createdBy" | "sections">
 >;
 export type ISectionUpdate = Partial<Omit<ISection, "_id" | "questions">>;
-export type IQuestionUpdate = Partial<Omit<IQuestion,"_id">>
+export type IQuestionUpdate = Partial<Omit<IQuestion, "_id">>;
