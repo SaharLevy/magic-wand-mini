@@ -5,7 +5,6 @@ import appRouter from "./appRouter.js";
 import { closeConnectionToDb, connectToDb } from "./connection.js";
 import config from "./utils/config.js";
 import errorHandler from "./utils/errorHandler.js";
-import { log } from "node:console";
 
 const app = express();
 

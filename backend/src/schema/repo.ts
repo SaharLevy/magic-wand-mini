@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import {
+  IQuestionUpdate,
   ISchema,
   ISchemaInput,
   ISchemaUpdate,
@@ -33,14 +34,14 @@ class Repo {
     sectionId: Types.ObjectId,
     newSection: ISectionUpdate,
   ) => {
-    const newSectionQuerys: Record<string, string | number> = {};
+    const newSectionQueries: Record<string, string | number> = {};
     Object.entries(newSection).forEach(([key, value]) => {
-      newSectionQuerys[`sections.$[section].${key}`] = value;
+      newSectionQueries[`sections.$[section].${key}`] = value;
     });
 
     return FormSchema.findByIdAndUpdate(
       schemaId,
-      { $set: newSectionQuerys },
+      { $set: newSectionQueries },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
     ).orFail(new NotFoundError("Schema not found"));
   };
@@ -49,8 +50,25 @@ class Repo {
     schemaId: Types.ObjectId,
     sectionId: Types.ObjectId,
     questionId: Types.ObjectId,
+    newQuestion: IQuestionUpdate,
   ) => {
-    const section = await FormSchema.aggregate();
+    const newQuestionQueries: Record<string, unknown> = {};
+    Object.entries(newQuestion).forEach(([key, value]) => {
+      newQuestionQueries[`sections.$[section].questions.$[question].${key}`] =
+        value;
+    });
+
+    return FormSchema.findByIdAndUpdate(
+      schemaId,
+      { $set: newQuestionQueries },
+      {
+        new: true,
+        arrayFilters: [
+          { "section._id": sectionId },
+          { "question._id": questionId },
+        ],
+      },
+    ).orFail(new NotFoundError("Schema not found"));
   };
 
   static deleteSection = async (

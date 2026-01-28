@@ -5,9 +5,6 @@ import { StatusCodes } from "http-status-codes";
 import Manager from "./manager.js";
 import { Types } from "mongoose";
 import { idTypeConverter } from "../utils/helperFunctions.js";
-import { ISchemaUpdate, ISectionUpdateReq } from "./types.js";
-
-// need to update ids so that only schemaId is being passed in params and the rest with body.
 
 const schemasRouter = Router();
 
@@ -61,8 +58,8 @@ schemasRouter.put(
   }),
 );
 
-schemasRouter.put(
-  "/:id/section/update",
+schemasRouter.patch(
+  "/:id/section",
   validate(schemasValidation.updateSection, async (req, res) => {
     const { sectionId, ...updatedSection } = req.body;
     res
@@ -70,8 +67,24 @@ schemasRouter.put(
       .json(
         await Manager.updateSection(
           new Types.ObjectId(req.params.id),
+          req.body,
+        ),
+      );
+  }),
+);
+
+schemasRouter.patch(
+  "/:id/question",
+  validate(schemasValidation.updateQuestion, async (req, res) => {
+    const { sectionId, questionId, ...updatedQuestion } = req.body;
+    res
+      .status(StatusCodes.OK)
+      .json(
+        await Manager.updateQuestion(
+          new Types.ObjectId(req.params.id),
           new Types.ObjectId(sectionId),
-          updatedSection,
+          new Types.ObjectId(questionId),
+          req.body,
         ),
       );
   }),
