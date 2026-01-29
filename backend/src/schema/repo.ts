@@ -12,7 +12,7 @@ import { NotFoundError } from "../utils/customErrors.js";
 class Repo {
   static getSchemas = async (): Promise<ISchema[]> => FormSchema.find({});
 
-  static getSchemasStatusDraft = async (): Promise<ISchema[]> =>
+  static getAllDrafts = async (): Promise<ISchema[]> =>
     FormSchema.find({ status: "Draft" });
 
   static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>

@@ -11,8 +11,7 @@ import {
 class Manager {
   static getSchemas = async (): Promise<ISchema[]> => Repo.getSchemas();
 
-  static getSchemasStatusDraft = async (): Promise<ISchema[]> =>
-    Repo.getSchemasStatusDraft();
+  static getAllDrafts = async (): Promise<ISchema[]> => Repo.getAllDrafts();
 
   static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);

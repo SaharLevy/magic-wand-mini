@@ -17,8 +17,8 @@ schemasRouter.get(
 
 schemasRouter.get(
   "/getDrafts",
-  validate(schemasValidation.getSchemasStatusDraft, async (_, res) => {
-    res.status(StatusCodes.OK).json(await Manager.getSchemasStatusDraft());
+  validate(schemasValidation.getAllDrafts, async (_, res) => {
+    res.status(StatusCodes.OK).json(await Manager.getAllDrafts());
   }),
 );
 
