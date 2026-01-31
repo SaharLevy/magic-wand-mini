@@ -3,8 +3,11 @@ import {
   IQuestionUpdate,
   ISchema,
   ISchemaInput,
+  ISchemaInputWithObjectIds,
   ISchemaUpdate,
+  ISchemaUpdateWithObjectIds,
   ISectionUpdate,
+  SchemaStatus,
 } from "./types.js";
 import { FormSchema } from "./model.js";
 import { NotFoundError } from "../utils/customErrors.js";
@@ -13,17 +16,18 @@ class Repo {
   static getSchemas = async (): Promise<ISchema[]> => FormSchema.find({});
 
   static getAllDrafts = async (): Promise<ISchema[]> =>
-    FormSchema.find({ status: "Draft" });
+    FormSchema.find({ status: SchemaStatus.Draft });
 
   static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError("Schema not found"));
 
-  static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
-    FormSchema.create(newSchema);
+  static createSchema = async (
+    newSchema: ISchemaInputWithObjectIds,
+  ): Promise<ISchema> => FormSchema.create(newSchema);
 
   static updateSchemaById = async (
     schemaId: Types.ObjectId,
-    newSchema: ISchemaUpdate,
+    newSchema: ISchemaUpdateWithObjectIds,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
       new NotFoundError("Schema not found"),

@@ -1,10 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
+import { CustomError } from "./customErrors.js";
 
 const errorHandler = (
-  err: Error & { statusCode?: number },
+  err: CustomError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   console.log(err.message);
 
@@ -12,7 +13,7 @@ const errorHandler = (
   res.status(statusCode).json({
     success: false,
     message: err.message || "Something went wrong",
-    statusCode: statusCode,
+    statusCode,
   });
 };
 

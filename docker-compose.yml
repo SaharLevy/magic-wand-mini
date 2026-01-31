@@ -3,7 +3,6 @@ services:
     image: mongo:7
     container_name: magic-wand-mongo
     command: ["mongod", "--quiet"]
-    restart: unless-stopped
     ports:
       - 27018:27017
     volumes:
@@ -16,7 +15,6 @@ services:
       context: ./backend
       target: development
     container_name: magic-wand-backend-dev
-    restart: unless-stopped
     ports:
       - 3000:3000
     volumes:

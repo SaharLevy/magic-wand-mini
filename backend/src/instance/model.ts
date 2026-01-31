@@ -5,6 +5,7 @@ import {
   type IAnswer,
   type ITableAnswer,
 } from "./types.js";
+import { SchemaStatus } from "../schema/types.js";
 
 const tableAnswerSchema = new Schema<ITableAnswer>({
   row: { type: String, required: true },
@@ -37,7 +38,7 @@ const instanceSchema = new Schema<IInstance>({
   status: {
     type: String,
     enum: InstanceStatuses,
-    default: "Draft",
+    default: SchemaStatus.Draft,
   },
   answers: {
     type: [answerSchema],

@@ -1,35 +1,23 @@
 class CustomError extends Error {
   statusCode: number;
-}
 
-class NotFoundError extends Error {
-  statusCode: number;
-
-  constructor(message: string) {
+  constructor(message: string, statusCode: number) {
     super(message);
+    this.statusCode = statusCode;
+  }
+}
+class NotFoundError extends CustomError {
+  constructor(message: string) {
+    super(message, 404);
     this.name = "NotFoundError";
-    this.statusCode = 404;
   }
 }
 
-class BadRequestError extends Error {
-  statusCode: number;
-
+class BadRequestError extends CustomError {
   constructor(message: string) {
-    super(message);
+    super(message, 400);
     this.name = "BadRequestError";
-    this.statusCode = 400;
   }
 }
 
-class ItemOutOfStockError extends Error {
-  statusCode: number;
-
-  constructor(message: string) {
-    super(message);
-    this.name = "ItemOutOfStock";
-    this.statusCode = 400;
-  }
-}
-
-export { BadRequestError, ItemOutOfStockError, NotFoundError };
+export { CustomError,BadRequestError, NotFoundError };

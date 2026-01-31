@@ -6,6 +6,7 @@ import {
   type ISection,
   type IQuestion,
   type IOption,
+  SchemaStatus,
 } from "./types.js";
 
 const optionSchema = new Schema<IOption>({
@@ -14,11 +15,7 @@ const optionSchema = new Schema<IOption>({
 });
 
 const questionSchema = new Schema<IQuestion>({
-  type: {
-    type: String,
-    enum: QuestionTypes,
-    required: true,
-  },
+  type: { type: String, enum: QuestionTypes, required: true },
   title: { type: String, required: true },
   description: { type: String },
   required: { type: Boolean, default: false },
@@ -52,7 +49,7 @@ const formSchemaDefinition = new Schema<ISchema>({
   status: {
     type: String,
     enum: SchemaStatuses,
-    default: "Draft",
+    default: SchemaStatus.Draft,
   },
   createdBy: {
     type: Schema.Types.ObjectId,

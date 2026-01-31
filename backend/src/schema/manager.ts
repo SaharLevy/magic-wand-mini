@@ -4,7 +4,9 @@ import {
   IQuestionUpdateRequest,
   ISchema,
   ISchemaInput,
+  ISchemaInputWithObjectIds,
   ISchemaUpdate,
+  ISchemaUpdateWithObjectIds,
   ISectionUpdateRequest,
 } from "./types.js";
 
@@ -16,12 +18,12 @@ class Manager {
   static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);
 
-  static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
+  static createSchema = async (newSchema: ISchemaInputWithObjectIds): Promise<ISchema> =>
     Repo.createSchema(newSchema);
 
   static updateSchemaById = async (
     schemaId: Types.ObjectId,
-    newSchema: ISchemaUpdate,
+    newSchema: ISchemaUpdateWithObjectIds,
   ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
 
   static updateSection = async (
