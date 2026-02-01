@@ -1,11 +1,8 @@
-import { Types } from "mongoose";
 import {
   IQuestionUpdate,
   ISchema,
   ISchemaInput,
-  ISchemaInputWithObjectIds,
   ISchemaUpdate,
-  ISchemaUpdateWithObjectIds,
   ISectionUpdate,
   MongoObjectId,
   SchemaStatus,
@@ -22,13 +19,12 @@ class Repo {
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError("Schema not found"));
 
-  static createSchema = async (
-    newSchema: ISchemaInputWithObjectIds,
-  ): Promise<ISchema> => FormSchema.create(newSchema);
+  static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
+    FormSchema.create(newSchema);
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,
-    newSchema: MongoObjectId,
+    newSchema: ISchemaUpdate,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
       new NotFoundError("Schema not found"),

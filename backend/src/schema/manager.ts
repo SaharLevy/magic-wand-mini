@@ -5,7 +5,6 @@ import {
   ISchema,
   ISchemaInput,
   ISchemaUpdate,
-  ISchemaUpdateWithObjectIds,
   ISectionUpdateRequest,
   MongoObjectId,
 } from "./types.js";
@@ -23,7 +22,7 @@ class Manager {
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,
-    newSchema: ISchemaUpdateWithObjectIds,
+    newSchema: ISchemaUpdate,
   ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
 
   static updateSection = async (
@@ -34,7 +33,7 @@ class Manager {
 
     return Repo.updateSection(
       schemaId,
-      new Types.ObjectId(sectionId),
+      sectionId,
       updatedSection,
     );
   };
@@ -47,8 +46,8 @@ class Manager {
 
     return Repo.updateQuestion(
       schemaId,
-      new Types.ObjectId(sectionId),
-      new Types.ObjectId(questionId),
+      sectionId,
+      questionId,
       updatedQuestion,
     );
   };

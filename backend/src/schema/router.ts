@@ -25,9 +25,7 @@ schemasRouter.get(
 schemasRouter.get(
   "/:id",
   validate(schemasValidation.getSchemaById, async (req, res) => {
-    res
-      .status(StatusCodes.OK)
-      .json(await Manager.getSchemaById(new Types.ObjectId(req.params.id)));
+    res.status(StatusCodes.OK).json(await Manager.getSchemaById(req.params.id));
   }),
 );
 
@@ -37,10 +35,8 @@ schemasRouter.post(
     res.status(StatusCodes.CREATED).json(
       await Manager.createSchema({
         ...req.body,
-        createdBy: new Types.ObjectId(req.body.createdBy),
-        assignedUsers: req.body.assignedUsers.map(
-          (id) => new Types.ObjectId(id),
-        ),
+        createdBy: req.body.createdBy,
+        assignedUsers: req.body.assignedUsers,
       }),
     );
   }),
@@ -50,9 +46,8 @@ schemasRouter.put(
   "/:id",
   validate(schemasValidation.updateSchemaById, async (req, res) => {
     res.status(StatusCodes.OK).json(
-      await Manager.updateSchemaById(new Types.ObjectId(req.params.id), {
+      await Manager.updateSchemaById(req.params.id, {
         ...req.body,
-        assignedUsers: idTypeConverter(req.body.assignedUsers),
       }),
     );
   }),
@@ -63,12 +58,7 @@ schemasRouter.patch(
   validate(schemasValidation.updateSection, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(
-        await Manager.updateSection(
-          new Types.ObjectId(req.params.id),
-          req.body,
-        ),
-      );
+      .json(await Manager.updateSection(req.params.id, req.body));
   }),
 );
 
@@ -77,12 +67,7 @@ schemasRouter.patch(
   validate(schemasValidation.updateQuestion, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(
-        await Manager.updateQuestion(
-          new Types.ObjectId(req.params.id),
-          req.body,
-        ),
-      );
+      .json(await Manager.updateQuestion(req.params.id, req.body));
   }),
 );
 
@@ -91,12 +76,7 @@ schemasRouter.delete(
   validate(schemasValidation.deleteSection, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(
-        await Manager.deleteSection(
-          new Types.ObjectId(req.body.schemaId),
-          new Types.ObjectId(req.body.sectionId),
-        ),
-      );
+      .json(await Manager.deleteSection(req.body.schemaId, req.body.sectionId));
   }),
 );
 
@@ -107,9 +87,9 @@ schemasRouter.delete(
       .status(StatusCodes.OK)
       .json(
         await Manager.deleteQuestion(
-          new Types.ObjectId(req.body.schemaId),
-          new Types.ObjectId(req.body.sectionId),
-          new Types.ObjectId(req.body.questionId),
+          req.body.schemaId,
+          req.body.sectionId,
+          req.body.questionId,
         ),
       );
   }),

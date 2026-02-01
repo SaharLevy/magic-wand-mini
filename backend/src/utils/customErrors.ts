@@ -1,3 +1,5 @@
+import { StatusCodes } from "http-status-codes";
+
 class CustomError extends Error {
   statusCode: number;
 
@@ -8,16 +10,16 @@ class CustomError extends Error {
 }
 class NotFoundError extends CustomError {
   constructor(message: string) {
-    super(message, 404);
+    super(message, StatusCodes.NOT_FOUND);
     this.name = "NotFoundError";
   }
 }
 
 class BadRequestError extends CustomError {
   constructor(message: string) {
-    super(message, 400);
+    super(message, StatusCodes.BAD_REQUEST);
     this.name = "BadRequestError";
   }
 }
 
-export { CustomError,BadRequestError, NotFoundError };
+export { CustomError, BadRequestError, NotFoundError };

@@ -19,7 +19,10 @@ export enum SchemaStatus {
   Published = "Published",
 }
 
-export const objectIdString = z.instanceof(Types.ObjectId);
+export const objectIdString = z
+  .string()
+  .refine((val) => Types.ObjectId.isValid(val), { message: "Invalid ObjectId" })
+  .transform((val) => new Types.ObjectId(val));
 
 export const optionSchema = z.object({
   text: z.string().min(1, "Option text is required"),
@@ -48,7 +51,7 @@ export const sectionSchema = z.object({
   questions: z.array(questionSchema).default([]),
 });
 
-export const schemaInputSchema = z.object({
+export const schemaInput = z.object({
   title: z.string().min(1, "Schema title is required"),
   description: z.string().optional(),
   status: z.enum(SchemaStatus).default(SchemaStatus.Draft),
@@ -91,42 +94,9 @@ export type MongoObjectId = z.infer<typeof objectIdString>;
 export type IOption = z.infer<typeof optionSchema>;
 export type IQuestion = z.infer<typeof questionSchema>;
 export type ISection = z.infer<typeof sectionSchema>;
-export type ISchemaInput = z.infer<typeof schemaInputSchema>;
+export type ISchemaInput = z.infer<typeof schemaInput>;
 
-export type IOptionWithId = IOption & { _id?: MongoObjectId };
-export type IQuestionWithId = Omit<IQuestion, "options"> & {
-  _id?: MongoObjectId;
-  options?: IOptionWithId[];
-};
-export type ISectionWithId = Omit<ISection, "questions"> & {
-  _id?: MongoObjectId;
-  questions: IQuestionWithId[];
-};
-
-export type ISchemaInputWithObjectIds = Omit<
-  ISchemaInput,
-  "createdBy" | "assignedUsers"
-> & {
-  createdBy: MongoObjectId;
-  assignedUsers: MongoObjectId[];
-};
-
-export type ISchemaUpdateWithObjectIds = Omit<
-  ISchemaUpdate,
-  "assignedUsers"
-> & {
-  assignedUsers?: MongoObjectId[];
-};
-
-export type ISchema = Omit<
-  ISchemaInput,
-  "sections" | "createdBy" | "assignedUsers"
-> & {
-  _id: MongoObjectId;
-  createdBy: MongoObjectId;
-  assignedUsers: MongoObjectId[];
-  sections: ISectionWithId[];
-};
+export type ISchema = ISchemaInput & { _id: MongoObjectId };
 
 export type ISchemaUpdate = z.infer<typeof schemaUpdateSchema>;
 export type ISectionUpdate = z.infer<typeof sectionUpdateSchema>;
