@@ -7,6 +7,7 @@ import {
   ISchemaUpdate,
   ISchemaUpdateWithObjectIds,
   ISectionUpdate,
+  MongoObjectId,
   SchemaStatus,
 } from "./types.js";
 import { FormSchema } from "./model.js";
@@ -18,7 +19,7 @@ class Repo {
   static getAllDrafts = async (): Promise<ISchema[]> =>
     FormSchema.find({ status: SchemaStatus.Draft });
 
-  static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>
+  static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError("Schema not found"));
 
   static createSchema = async (
@@ -26,16 +27,16 @@ class Repo {
   ): Promise<ISchema> => FormSchema.create(newSchema);
 
   static updateSchemaById = async (
-    schemaId: Types.ObjectId,
-    newSchema: ISchemaUpdateWithObjectIds,
+    schemaId: MongoObjectId,
+    newSchema: MongoObjectId,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
       new NotFoundError("Schema not found"),
     );
 
   static updateSection = async (
-    schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
     newSection: ISectionUpdate,
   ) => {
     const newSectionQueries: Record<string, string | number> = {};
@@ -51,9 +52,9 @@ class Repo {
   };
 
   static updateQuestion = async (
-    schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
-    questionId: Types.ObjectId,
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
+    questionId: MongoObjectId,
     newQuestion: IQuestionUpdate,
   ) => {
     const newQuestionQueries: Record<string, unknown> = {};
@@ -76,8 +77,8 @@ class Repo {
   };
 
   static deleteSection = async (
-    schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(
       schemaId,
@@ -86,9 +87,9 @@ class Repo {
     ).orFail(new NotFoundError("Schema not found"));
 
   static deleteQuestion = async (
-    schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
-    questionId: Types.ObjectId,
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
+    questionId: MongoObjectId,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(
       schemaId,

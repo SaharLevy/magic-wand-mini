@@ -1,4 +1,4 @@
-import type { Types } from "mongoose";
+import { Types } from "mongoose";
 import { z } from "zod";
 
 export const QuestionTypes = [
@@ -19,14 +19,7 @@ export enum SchemaStatus {
   Published = "Published",
 }
 
-export const SchemaStatuses = [
-  SchemaStatus.Draft,
-  SchemaStatus.Published,
-] as const;
-
-export const objectIdString = z
-  .string()
-  .regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId");
+export const objectIdString = z.instanceof(Types.ObjectId);
 
 export const optionSchema = z.object({
   text: z.string().min(1, "Option text is required"),
@@ -58,7 +51,7 @@ export const sectionSchema = z.object({
 export const schemaInputSchema = z.object({
   title: z.string().min(1, "Schema title is required"),
   description: z.string().optional(),
-  status: z.enum(SchemaStatuses).default(SchemaStatus.Draft),
+  status: z.enum(SchemaStatus).default(SchemaStatus.Draft),
   createdBy: objectIdString,
   assignedUsers: z.array(objectIdString).default([]),
   sections: z.array(sectionSchema).default([]),
@@ -92,6 +85,7 @@ export const questionUpdateSchema = z.object({
 });
 
 export type QuestionType = (typeof QuestionTypes)[number];
+export type MongoObjectId = z.infer<typeof objectIdString>;
 
 // Infer base types
 export type IOption = z.infer<typeof optionSchema>;
@@ -99,13 +93,13 @@ export type IQuestion = z.infer<typeof questionSchema>;
 export type ISection = z.infer<typeof sectionSchema>;
 export type ISchemaInput = z.infer<typeof schemaInputSchema>;
 
-export type IOptionWithId = IOption & { _id?: Types.ObjectId };
+export type IOptionWithId = IOption & { _id?: MongoObjectId };
 export type IQuestionWithId = Omit<IQuestion, "options"> & {
-  _id?: Types.ObjectId;
+  _id?: MongoObjectId;
   options?: IOptionWithId[];
 };
 export type ISectionWithId = Omit<ISection, "questions"> & {
-  _id?: Types.ObjectId;
+  _id?: MongoObjectId;
   questions: IQuestionWithId[];
 };
 
@@ -113,24 +107,24 @@ export type ISchemaInputWithObjectIds = Omit<
   ISchemaInput,
   "createdBy" | "assignedUsers"
 > & {
-  createdBy: Types.ObjectId;
-  assignedUsers: Types.ObjectId[];
+  createdBy: MongoObjectId;
+  assignedUsers: MongoObjectId[];
 };
 
 export type ISchemaUpdateWithObjectIds = Omit<
   ISchemaUpdate,
   "assignedUsers"
 > & {
-  assignedUsers?: Types.ObjectId[];
+  assignedUsers?: MongoObjectId[];
 };
 
 export type ISchema = Omit<
   ISchemaInput,
   "sections" | "createdBy" | "assignedUsers"
 > & {
-  _id: Types.ObjectId;
-  createdBy: Types.ObjectId;
-  assignedUsers: Types.ObjectId[];
+  _id: MongoObjectId;
+  createdBy: MongoObjectId;
+  assignedUsers: MongoObjectId[];
   sections: ISectionWithId[];
 };
 
@@ -139,10 +133,10 @@ export type ISectionUpdate = z.infer<typeof sectionUpdateSchema>;
 export type IQuestionUpdate = z.infer<typeof questionUpdateSchema>;
 
 export interface IQuestionUpdateRequest extends IQuestionUpdate {
-  sectionId: string;
-  questionId: string;
+  sectionId: MongoObjectId;
+  questionId: MongoObjectId;
 }
 
 export interface ISectionUpdateRequest extends ISectionUpdate {
-  sectionId: string;
+  sectionId: MongoObjectId;
 }

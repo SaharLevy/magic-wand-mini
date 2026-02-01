@@ -4,10 +4,10 @@ import {
   IQuestionUpdateRequest,
   ISchema,
   ISchemaInput,
-  ISchemaInputWithObjectIds,
   ISchemaUpdate,
   ISchemaUpdateWithObjectIds,
   ISectionUpdateRequest,
+  MongoObjectId,
 } from "./types.js";
 
 class Manager {
@@ -15,19 +15,19 @@ class Manager {
 
   static getAllDrafts = async (): Promise<ISchema[]> => Repo.getAllDrafts();
 
-  static getSchemaById = async (schemaId: Types.ObjectId): Promise<ISchema> =>
+  static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);
 
-  static createSchema = async (newSchema: ISchemaInputWithObjectIds): Promise<ISchema> =>
+  static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
     Repo.createSchema(newSchema);
 
   static updateSchemaById = async (
-    schemaId: Types.ObjectId,
+    schemaId: MongoObjectId,
     newSchema: ISchemaUpdateWithObjectIds,
   ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
 
   static updateSection = async (
-    schemaId: Types.ObjectId,
+    schemaId: MongoObjectId,
     sectionData: ISectionUpdateRequest,
   ): Promise<ISchema> => {
     const { sectionId, ...updatedSection } = sectionData;
@@ -40,7 +40,7 @@ class Manager {
   };
 
   static updateQuestion = async (
-    schemaId: Types.ObjectId,
+    schemaId: MongoObjectId,
     questionData: IQuestionUpdateRequest,
   ): Promise<ISchema> => {
     const { sectionId, questionId, ...updatedQuestion } = questionData;
@@ -54,14 +54,14 @@ class Manager {
   };
 
   static deleteSection = async (
-    schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
   ): Promise<ISchema> => Repo.deleteSection(schemaId, sectionId);
 
   static deleteQuestion = async (
-    schemaId: Types.ObjectId,
-    sectionId: Types.ObjectId,
-    questionId: Types.ObjectId,
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
+    questionId: MongoObjectId,
   ): Promise<ISchema> => Repo.deleteQuestion(schemaId, sectionId, questionId);
 }
 

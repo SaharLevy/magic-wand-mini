@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import {
   QuestionTypes,
-  SchemaStatuses,
   type ISchema,
   type ISection,
   type IQuestion,
@@ -48,7 +47,7 @@ const formSchemaDefinition = new Schema<ISchema>({
   },
   status: {
     type: String,
-    enum: SchemaStatuses,
+    enum: SchemaStatus,
     default: SchemaStatus.Draft,
   },
   createdBy: {

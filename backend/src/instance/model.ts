@@ -38,7 +38,7 @@ const instanceSchema = new Schema<IInstance>({
   status: {
     type: String,
     enum: InstanceStatuses,
-    default: SchemaStatus.Draft,
+    default: "Draft",
   },
   answers: {
     type: [answerSchema],
