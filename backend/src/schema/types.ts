@@ -1,18 +1,18 @@
 import { Types } from "mongoose";
 import { z } from "zod";
 
-export const QuestionTypes = [
-  "SHORT_TEXT",
-  "PARAGRAPH",
-  "RADIO",
-  "CHECKBOX",
-  "DROPDOWN",
-  "LINEAR_SCALE",
-  "RADIO_TABLE",
-  "CHECKBOX_TABLE",
-  "DATE",
-  "TIME",
-] as const;
+export enum QuestionTypes {
+  SHORT_TEXT = "SHORT_TEXT",
+  PARAGRAPH = "PARAGRAPH",
+  RADIO = "RADIO",
+  CHECKBOX = "CHECKBOX",
+  DROPDOWN = "DROPDOWN",
+  LINEAR_SCALE = "LINEAR_SCALE",
+  RADIO_TABLE = "RADIO_TABLE",
+  CHECKBOX_TABLE = "CHECKBOX_TABLE",
+  DATE = "DATE",
+  TIME = "TIME",
+}
 
 export enum SchemaStatus {
   Draft = "Draft",
@@ -35,14 +35,61 @@ export const questionSchema = z.object({
   description: z.string().optional(),
   required: z.boolean().default(false),
   order: z.number().int().min(0),
-  options: z.array(optionSchema).optional(),
-  scaleMin: z.number().int().optional(),
-  scaleMax: z.number().int().optional(),
-  scaleMinLabel: z.string().optional(),
-  scaleMaxLabel: z.string().optional(),
-  rows: z.array(z.string()).optional(),
-  columns: z.array(z.string()).optional(),
 });
+
+//Questions schemas:
+
+const textQuestionSchema = z.object({});
+const scaleQuestionSchema = z.object({
+  scaleMin: z.number().int(),
+  scaleMax: z.number().int(),
+  scaleMinLabel: z.string(),
+  scaleMaxLabel: z.string(),
+});
+const tableQuestionSchema = z.object({
+  rows: z.array(z.string()),
+  columns: z.array(z.string()),
+});
+const optionsQuestionSchema = z.object({
+  options: z.array(optionSchema),
+});
+const dateQuestionSchema = z.object({
+  date: z.iso.date(),
+});
+const timeQuestionSchema = z.object({
+  time: z.iso.time(),
+});
+
+export const questionsSchema = z.discriminatedUnion("questionType", [
+  z.object({ questionType: z.literal(QuestionTypes.SHORT_TEXT) }),
+  z.object({ questionType: z.literal(QuestionTypes.PARAGRAPH) }),
+  z.object({
+    questionType: z.literal(QuestionTypes.LINEAR_SCALE),
+    scaleQuestionSchema,
+  }),
+  z.object({
+    questionType: z.literal(QuestionTypes.CHECKBOX_TABLE),
+    tableQuestionSchema,
+  }),
+  z.object({
+    questionType: z.literal(QuestionTypes.RADIO_TABLE),
+    tableQuestionSchema,
+  }),
+  z.object({
+    questionType: z.literal(QuestionTypes.CHECKBOX),
+    optionsQuestionSchema,
+  }),
+  z.object({
+    questionType: z.literal(QuestionTypes.RADIO),
+    optionsQuestionSchema,
+  }),
+  z.object({
+    questionType: z.literal(QuestionTypes.DROPDOWN),
+    optionsQuestionSchema,
+  }),
+  z.object({ questionType: z.literal(QuestionTypes.TIME), timeQuestionSchema }),
+  z.object({ questionType: z.literal(QuestionTypes.DATE), dateQuestionSchema }),
+]);
 
 export const sectionSchema = z.object({
   title: z.string().min(1, "Section title is required"),
