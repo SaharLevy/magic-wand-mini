@@ -13,26 +13,40 @@ const optionSchema = new Schema<IOption>({
   order: { type: Number, required: true },
 });
 
-const questionSchema = new Schema<IQuestion>({
-  type: { type: String, enum: QuestionTypes, required: true },
-  title: { type: String, required: true },
-  description: { type: String },
-  required: { type: Boolean, default: false },
-  order: { type: Number, required: true },
-  options: { type: [IOptionSchema] },
-  scaleMin: { type: Number },
-  scaleMax: { type: Number },
-  scaleMinLabel: { type: String },
-  scaleMaxLabel: { type: String },
-  rows: { type: [String] },
-  columns: { type: [String] },
-});
+const baseQuestionSchema = new Schema<IQuestion>(
+  {
+    type: { type: String, required: true },
+    title: { type: String, required: true },
+    description: { type: String },
+    required: { type: Boolean, default: false },
+    order: { type: Number, required: true },
+  },
+  {
+    discriminatorKey: "type",
+    _id: false,
+  },
+);
+
+// const questionSchema = new Schema<IQuestion>({
+//   type: { type: String, enum: QuestionTypes, required: true },
+//   title: { type: String, required: true },
+//   description: { type: String },
+//   required: { type: Boolean, default: false },
+//   order: { type: Number, required: true },
+//   options: { type: [IOptionSchema] },
+//   scaleMin: { type: Number },
+//   scaleMax: { type: Number },
+//   scaleMinLabel: { type: String },
+//   scaleMaxLabel: { type: String },
+//   rows: { type: [String] },
+//   columns: { type: [String] },
+// });
 
 const sectionSchema = new Schema<ISection>({
   title: { type: String, required: true },
   description: { type: String },
   order: { type: Number, required: true },
-  questions: { type: [questionSchema], default: [] },
+  questions: { type: [baseQuestionSchema], default: [] },
 });
 
 const formSchemaDefinition = new Schema<ISchema>({

@@ -29,72 +29,99 @@ export const optionSchema = z.object({
   order: z.number().int().min(0),
 });
 
-export const baseQuestionSchema = z.object({
-  type: z.enum(QuestionTypes),
+export const baseQuestionFields = z.object({
   title: z.string().min(1, "Question title is required"),
   description: z.string().optional(),
   required: z.boolean().default(false),
   order: z.number().int().min(0),
 });
 
-//Questions schemas:
+//Specific Questions Schemas
 
-const scaleQuestionSchema = z.object({
+const optionsShape = {
+  options: z.array(optionSchema),
+};
+
+const scaleShape = {
   scaleMin: z.number().int(),
   scaleMax: z.number().int(),
-  scaleMinLabel: z.string(),
-  scaleMaxLabel: z.string(),
-});
-const tableQuestionSchema = z.object({
+  scaleMinLabel: z.string().optional(),
+  scaleMaxLabel: z.string().optional(),
+};
+
+const tableShape = {
   rows: z.array(z.string()),
   columns: z.array(z.string()),
-});
-const optionsQuestionSchema = z.object({
-  options: z.array(optionSchema),
-});
-const dateQuestionSchema = z.object({
-  date: z.iso.date(),
-});
-const timeQuestionSchema = z.object({
-  time: z.iso.time(),
+};
+
+//Specific Question Schemas
+
+const shortTextSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.SHORT_TEXT),
 });
 
-export const questionsSchema = z.discriminatedUnion("questionType", [
-  z.object({ questionType: z.literal(QuestionTypes.SHORT_TEXT) }),
-  z.object({ questionType: z.literal(QuestionTypes.PARAGRAPH) }),
-  z.object({
-    questionType: z.literal(QuestionTypes.LINEAR_SCALE),
-    scaleQuestionSchema,
-  }),
-  z.object({
-    questionType: z.literal(QuestionTypes.CHECKBOX_TABLE),
-    tableQuestionSchema,
-  }),
-  z.object({
-    questionType: z.literal(QuestionTypes.RADIO_TABLE),
-    tableQuestionSchema,
-  }),
-  z.object({
-    questionType: z.literal(QuestionTypes.CHECKBOX),
-    optionsQuestionSchema,
-  }),
-  z.object({
-    questionType: z.literal(QuestionTypes.RADIO),
-    optionsQuestionSchema,
-  }),
-  z.object({
-    questionType: z.literal(QuestionTypes.DROPDOWN),
-    optionsQuestionSchema,
-  }),
-  z.object({ questionType: z.literal(QuestionTypes.TIME), timeQuestionSchema }),
-  z.object({ questionType: z.literal(QuestionTypes.DATE), dateQuestionSchema }),
+const paragraphSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.PARAGRAPH),
+});
+
+const radioSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.RADIO),
+  ...optionsShape,
+});
+
+const checkboxSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.CHECKBOX),
+  ...optionsShape,
+});
+
+const dropdownSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.DROPDOWN),
+  ...optionsShape,
+});
+
+const linearScaleSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.LINEAR_SCALE),
+  ...scaleShape,
+});
+
+const radioTableSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.RADIO_TABLE),
+  ...tableShape,
+});
+
+const checkboxTableSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.CHECKBOX_TABLE),
+  ...tableShape,
+});
+
+const dateSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.DATE),
+  date: z.iso.date().optional(),
+});
+
+const timeSchema = baseQuestionFields.extend({
+  type: z.literal(QuestionTypes.TIME),
+  time: z.iso.time().optional(),
+});
+
+export const questionsSchema = z.discriminatedUnion("type", [
+  shortTextSchema,
+  paragraphSchema,
+  radioSchema,
+  checkboxSchema,
+  dropdownSchema,
+  linearScaleSchema,
+  radioTableSchema,
+  checkboxTableSchema,
+  dateSchema,
+  timeSchema,
 ]);
 
 export const sectionSchema = z.object({
   title: z.string().min(1, "Section title is required"),
   description: z.string().optional(),
   order: z.number().int().min(0),
-  questions: z.array(baseQuestionSchema).default([]),
+  questions: z.array(questionsSchema).default([]),
 });
 
 export const schemaInput = z.object({
@@ -105,6 +132,8 @@ export const schemaInput = z.object({
   assignedUsers: z.array(objectIdString).default([]),
   sections: z.array(sectionSchema).default([]),
 });
+
+// Updates
 
 export const schemaUpdateSchema = z.object({
   title: z.string().min(1, "Schema title is required").optional(),
@@ -118,56 +147,32 @@ export const sectionUpdateSchema = z.object({
   order: z.number().int().min(0).optional(),
 });
 
-export const questionUpdateSchema = z.object({
-  type: z.enum(QuestionTypes).optional(),
-  title: z.string().min(1).optional(),
-  description: z.string().optional(),
-  required: z.boolean().optional(),
-  order: z.number().int().min(0).optional(),
-  options: z.array(optionSchema).optional(),
-  scaleMin: z.number().int().optional(),
-  scaleMax: z.number().int().optional(),
-  scaleMinLabel: z.string().optional(),
-  scaleMaxLabel: z.string().optional(),
-  rows: z.array(z.string()).optional(),
-  columns: z.array(z.string()).optional(),
-});
-
-export type QuestionType = typeof QuestionTypes;
-export type MongoObjectId = z.infer<typeof objectIdString>;
+export const questionUpdateSchema = baseQuestionFields
+  .extend({
+    type: z.enum(QuestionTypes),
+    ...optionsShape,
+    ...scaleShape,
+    ...tableShape,
+  })
+  .partial();
 
 // Infer base types
+export type MongoObjectId = z.infer<typeof objectIdString>;
 export type IOption = z.infer<typeof optionSchema>;
-export type IQuestion = z.infer<typeof baseQuestionSchema>;
+export type IQuestion = z.infer<typeof questionsSchema>;
 export type ISection = z.infer<typeof sectionSchema>;
 export type ISchemaInput = z.infer<typeof schemaInput>;
-export type IOptionSchema = z.infer<typeof optionSchema>
-
-
 export type ISchema = ISchemaInput & { _id: MongoObjectId };
 
 export type ISchemaUpdate = z.infer<typeof schemaUpdateSchema>;
 export type ISectionUpdate = z.infer<typeof sectionUpdateSchema>;
-export type IQuestionUpdate = z.infer<typeof questionUpdateSchema>;
+export type IQuestionUpdate = Partial<IQuestion>;
 
-//Infer Questions types
-export type IScaleQuestionSchema = z.infer<typeof scaleQuestionSchema>;
-export type ITableQuestionSchema = z.infer<typeof tableQuestionSchema>;
-export type IOptionsQuestionSchema = z.infer<typeof optionsQuestionSchema>;
-export type IDateQuestionSchema = z.infer<typeof dateQuestionSchema>;
-export type ITimeQuestionSchema = z.infer<typeof timeQuestionSchema>;
-
-//Questions types with base question schema
-export type IScaleQuestion = IQuestion & Partial<IScaleQuestionSchema>
-export type ITableQuestion = IQuestion & Partial<ITableQuestionSchema>
-export type IOptionsQuestion = IQuestion & Partial<IOptionsQuestionSchema>
-export type IDateQuestion = IQuestion & Partial<IDateQuestionSchema>
-export type ITimeQuestion = IQuestion & Partial<ITimeQuestionSchema>
-export interface IQuestionUpdateRequest extends IQuestionUpdate {
+export type IQuestionUpdateRequest = IQuestionUpdate & {
   sectionId: MongoObjectId;
   questionId: MongoObjectId;
-}
+};
 
-export interface ISectionUpdateRequest extends ISectionUpdate {
+export type ISectionUpdateRequest = ISectionUpdate & {
   sectionId: MongoObjectId;
-}
+};
