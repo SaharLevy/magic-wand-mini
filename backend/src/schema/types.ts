@@ -29,7 +29,7 @@ export const optionSchema = z.object({
   order: z.number().int().min(0),
 });
 
-export const questionSchema = z.object({
+export const baseQuestionSchema = z.object({
   type: z.enum(QuestionTypes),
   title: z.string().min(1, "Question title is required"),
   description: z.string().optional(),
@@ -39,7 +39,6 @@ export const questionSchema = z.object({
 
 //Questions schemas:
 
-const textQuestionSchema = z.object({});
 const scaleQuestionSchema = z.object({
   scaleMin: z.number().int(),
   scaleMax: z.number().int(),
@@ -95,7 +94,7 @@ export const sectionSchema = z.object({
   title: z.string().min(1, "Section title is required"),
   description: z.string().optional(),
   order: z.number().int().min(0),
-  questions: z.array(questionSchema).default([]),
+  questions: z.array(baseQuestionSchema).default([]),
 });
 
 export const schemaInput = z.object({
@@ -134,14 +133,16 @@ export const questionUpdateSchema = z.object({
   columns: z.array(z.string()).optional(),
 });
 
-export type QuestionType = (typeof QuestionTypes)[number];
+export type QuestionType = typeof QuestionTypes;
 export type MongoObjectId = z.infer<typeof objectIdString>;
 
 // Infer base types
 export type IOption = z.infer<typeof optionSchema>;
-export type IQuestion = z.infer<typeof questionSchema>;
+export type IQuestion = z.infer<typeof baseQuestionSchema>;
 export type ISection = z.infer<typeof sectionSchema>;
 export type ISchemaInput = z.infer<typeof schemaInput>;
+export type IOptionSchema = z.infer<typeof optionSchema>
+
 
 export type ISchema = ISchemaInput & { _id: MongoObjectId };
 
@@ -149,6 +150,19 @@ export type ISchemaUpdate = z.infer<typeof schemaUpdateSchema>;
 export type ISectionUpdate = z.infer<typeof sectionUpdateSchema>;
 export type IQuestionUpdate = z.infer<typeof questionUpdateSchema>;
 
+//Infer Questions types
+export type IScaleQuestionSchema = z.infer<typeof scaleQuestionSchema>;
+export type ITableQuestionSchema = z.infer<typeof tableQuestionSchema>;
+export type IOptionsQuestionSchema = z.infer<typeof optionsQuestionSchema>;
+export type IDateQuestionSchema = z.infer<typeof dateQuestionSchema>;
+export type ITimeQuestionSchema = z.infer<typeof timeQuestionSchema>;
+
+//Questions types with base question schema
+export type IScaleQuestion = IQuestion & Partial<IScaleQuestionSchema>
+export type ITableQuestion = IQuestion & Partial<ITableQuestionSchema>
+export type IOptionsQuestion = IQuestion & Partial<IOptionsQuestionSchema>
+export type IDateQuestion = IQuestion & Partial<IDateQuestionSchema>
+export type ITimeQuestion = IQuestion & Partial<ITimeQuestionSchema>
 export interface IQuestionUpdateRequest extends IQuestionUpdate {
   sectionId: MongoObjectId;
   questionId: MongoObjectId;

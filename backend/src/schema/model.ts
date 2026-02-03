@@ -19,7 +19,7 @@ const questionSchema = new Schema<IQuestion>({
   description: { type: String },
   required: { type: Boolean, default: false },
   order: { type: Number, required: true },
-  options: { type: [optionSchema] },
+  options: { type: [IOptionSchema] },
   scaleMin: { type: Number },
   scaleMax: { type: Number },
   scaleMinLabel: { type: String },
