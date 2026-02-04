@@ -1,12 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 import {
-  QuestionTypes,
   type ISchema,
   type ISection,
   type IQuestion,
   type IOption,
   SchemaStatus,
 } from "./types.js";
+import config from "../utils/config.js";
 
 const optionSchema = new Schema<IOption>({
   text: { type: String, required: true },
@@ -22,8 +22,7 @@ const baseQuestionSchema = new Schema<IQuestion>(
     order: { type: Number, required: true },
   },
   {
-    discriminatorKey: "type",
-    _id: false,
+    discriminatorKey: config.SCHEMA_DISCRIMINATOR_KEY,
   },
 );
 

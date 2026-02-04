@@ -147,14 +147,37 @@ export const sectionUpdateSchema = z.object({
   order: z.number().int().min(0).optional(),
 });
 
-export const questionUpdateSchema = baseQuestionFields
-  .extend({
-    type: z.enum(QuestionTypes),
-    ...optionsShape,
-    ...scaleShape,
-    ...tableShape,
-  })
-  .partial();
+export const updateQuestionsSchemaWithoutIds = z.discriminatedUnion("type", [
+  shortTextSchema.partial(),
+  paragraphSchema.partial(),
+  radioSchema.partial(),
+  checkboxSchema.partial(),
+  dropdownSchema.partial(),
+  linearScaleSchema.partial(),
+  radioTableSchema.partial(),
+  checkboxTableSchema.partial(),
+  dateSchema.partial(),
+  timeSchema.partial(),
+]);
+
+const questionIdsSchema = z.object({
+  sectionId: objectIdString,
+  questionId: objectIdString,
+});
+
+const sectionIdSchema = z.object({
+  sectionId: objectIdString,
+});
+
+export const updateSectionSchema = z.intersection(
+  sectionIdSchema,
+  sectionUpdateSchema,
+);
+
+export const updateQuestionSchema = z.intersection(
+  questionIdsSchema,
+  updateQuestionsSchemaWithoutIds,
+);
 
 // Infer base types
 export type MongoObjectId = z.infer<typeof objectIdString>;
@@ -166,13 +189,6 @@ export type ISchema = ISchemaInput & { _id: MongoObjectId };
 
 export type ISchemaUpdate = z.infer<typeof schemaUpdateSchema>;
 export type ISectionUpdate = z.infer<typeof sectionUpdateSchema>;
+export type ISectionUpdateRequest = z.infer<typeof updateSectionSchema>;
 export type IQuestionUpdate = Partial<IQuestion>;
-
-export type IQuestionUpdateRequest = IQuestionUpdate & {
-  sectionId: MongoObjectId;
-  questionId: MongoObjectId;
-};
-
-export type ISectionUpdateRequest = ISectionUpdate & {
-  sectionId: MongoObjectId;
-};
+export type IQuestionUpdateRequest = z.infer<typeof updateQuestionSchema>;

@@ -1,10 +1,11 @@
 import { z } from "zod";
 import {
   objectIdString,
-  questionUpdateSchema,
   schemaInput,
   schemaUpdateSchema,
   sectionUpdateSchema,
+  updateQuestionSchema,
+  updateSectionSchema,
 } from "./types.js";
 
 const schemasValidation = {
@@ -60,19 +61,14 @@ const schemasValidation = {
     params: z.object({
       id: objectIdString,
     }),
-    body: sectionUpdateSchema.extend({
-      sectionId: objectIdString,
-    }),
+    body: updateSectionSchema,
     query: z.object({}),
   },
   updateQuestion: {
     params: z.object({
       id: objectIdString,
     }),
-    body: questionUpdateSchema.extend({
-      sectionId: objectIdString,
-      questionId: objectIdString,
-    }),
+    body: updateQuestionSchema,
     query: z.object({}),
   },
 };
