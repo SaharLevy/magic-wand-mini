@@ -5,6 +5,7 @@ import {
   type IQuestion,
   type IOption,
   SchemaStatus,
+  QuestionTypes,
 } from "./types.js";
 import config from "../utils/config.js";
 
@@ -15,7 +16,7 @@ const optionSchema = new Schema<IOption>({
 
 const baseQuestionSchema = new Schema<IQuestion>(
   {
-    type: { type: String, required: true },
+    type: { type: String, enum: Object.values(QuestionTypes), required: true },
     title: { type: String, required: true },
     description: { type: String },
     required: { type: Boolean, default: false },
@@ -26,27 +27,74 @@ const baseQuestionSchema = new Schema<IQuestion>(
   },
 );
 
-// const questionSchema = new Schema<IQuestion>({
-//   type: { type: String, enum: QuestionTypes, required: true },
-//   title: { type: String, required: true },
-//   description: { type: String },
-//   required: { type: Boolean, default: false },
-//   order: { type: Number, required: true },
-//   options: { type: [IOptionSchema] },
-//   scaleMin: { type: Number },
-//   scaleMax: { type: Number },
-//   scaleMinLabel: { type: String },
-//   scaleMaxLabel: { type: String },
-//   rows: { type: [String] },
-//   columns: { type: [String] },
-// });
-
 const sectionSchema = new Schema<ISection>({
   title: { type: String, required: true },
   description: { type: String },
   order: { type: Number, required: true },
-  questions: { type: [baseQuestionSchema], default: [] },
+  questions: [baseQuestionSchema],
 });
+
+const questionsPath = sectionSchema.path(
+  "questions",
+) as mongoose.Schema.Types.DocumentArray;
+
+questionsPath.discriminator(QuestionTypes.SHORT_TEXT, new Schema({}));
+questionsPath.discriminator(QuestionTypes.PARAGRAPH, new Schema({}));
+
+const selectionSchemaShape = {
+  options: { type: [optionSchema], default: [] },
+};
+
+questionsPath.discriminator(
+  QuestionTypes.RADIO,
+  new Schema(selectionSchemaShape),
+);
+questionsPath.discriminator(
+  QuestionTypes.CHECKBOX,
+  new Schema(selectionSchemaShape),
+);
+questionsPath.discriminator(
+  QuestionTypes.DROPDOWN,
+  new Schema(selectionSchemaShape),
+);
+
+questionsPath.discriminator(
+  QuestionTypes.LINEAR_SCALE,
+  new Schema({
+    scaleMin: { type: Number, required: true },
+    scaleMax: { type: Number, required: true },
+    scaleMinLabel: { type: String },
+    scaleMaxLabel: { type: String },
+  }),
+);
+
+const tableSchemaShape = {
+  rows: { type: [String], default: [] },
+  columns: { type: [String], default: [] },
+};
+
+questionsPath.discriminator(
+  QuestionTypes.RADIO_TABLE,
+  new Schema(tableSchemaShape),
+);
+questionsPath.discriminator(
+  QuestionTypes.CHECKBOX_TABLE,
+  new Schema(tableSchemaShape),
+);
+
+questionsPath.discriminator(
+  QuestionTypes.DATE,
+  new Schema({
+    date: { type: String },
+  }),
+);
+
+questionsPath.discriminator(
+  QuestionTypes.TIME,
+  new Schema({
+    time: { type: String },
+  }),
+);
 
 const formSchemaDefinition = new Schema<ISchema>({
   title: {
@@ -60,7 +108,7 @@ const formSchemaDefinition = new Schema<ISchema>({
   },
   status: {
     type: String,
-    enum: SchemaStatus,
+    enum: Object.values(SchemaStatus),
     default: SchemaStatus.Draft,
   },
   createdBy: {
