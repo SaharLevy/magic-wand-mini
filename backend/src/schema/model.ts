@@ -14,6 +14,15 @@ const optionSchema = new Schema<IOption>({
   order: { type: Number, required: true },
 });
 
+const selectionShapeSchema = new Schema({
+  options: { type: [optionSchema], default: [] },
+});
+
+const tableSchemaShape = new Schema({
+  rows: { type: [String], default: [] },
+  columns: { type: [String], default: [] },
+});
+
 const baseQuestionSchema = new Schema<IQuestion>(
   {
     type: { type: String, enum: Object.values(QuestionTypes), required: true },
@@ -27,38 +36,12 @@ const baseQuestionSchema = new Schema<IQuestion>(
   },
 );
 
-const sectionSchema = new Schema<ISection>({
-  title: { type: String, required: true },
-  description: { type: String },
-  order: { type: Number, required: true },
-  questions: [baseQuestionSchema],
-});
-
-const questionsPath = sectionSchema.path(
-  "questions",
-) as mongoose.Schema.Types.DocumentArray;
-
-questionsPath.discriminator(QuestionTypes.SHORT_TEXT, new Schema({}));
-questionsPath.discriminator(QuestionTypes.PARAGRAPH, new Schema({}));
-
-const selectionSchemaShape = {
-  options: { type: [optionSchema], default: [] },
-};
-
-questionsPath.discriminator(
-  QuestionTypes.RADIO,
-  new Schema(selectionSchemaShape),
-);
-questionsPath.discriminator(
-  QuestionTypes.CHECKBOX,
-  new Schema(selectionSchemaShape),
-);
-questionsPath.discriminator(
-  QuestionTypes.DROPDOWN,
-  new Schema(selectionSchemaShape),
-);
-
-questionsPath.discriminator(
+baseQuestionSchema.discriminator(QuestionTypes.SHORT_TEXT, new Schema({}));
+baseQuestionSchema.discriminator(QuestionTypes.PARAGRAPH, new Schema({}));
+baseQuestionSchema.discriminator(QuestionTypes.RADIO, selectionShapeSchema);
+baseQuestionSchema.discriminator(QuestionTypes.CHECKBOX, selectionShapeSchema);
+baseQuestionSchema.discriminator(QuestionTypes.DROPDOWN, selectionShapeSchema);
+baseQuestionSchema.discriminator(
   QuestionTypes.LINEAR_SCALE,
   new Schema({
     scaleMin: { type: Number, required: true },
@@ -67,34 +50,30 @@ questionsPath.discriminator(
     scaleMaxLabel: { type: String },
   }),
 );
-
-const tableSchemaShape = {
-  rows: { type: [String], default: [] },
-  columns: { type: [String], default: [] },
-};
-
-questionsPath.discriminator(
-  QuestionTypes.RADIO_TABLE,
-  new Schema(tableSchemaShape),
-);
-questionsPath.discriminator(
+baseQuestionSchema.discriminator(QuestionTypes.RADIO_TABLE, tableSchemaShape);
+baseQuestionSchema.discriminator(
   QuestionTypes.CHECKBOX_TABLE,
-  new Schema(tableSchemaShape),
+  tableSchemaShape,
 );
-
-questionsPath.discriminator(
+baseQuestionSchema.discriminator(
   QuestionTypes.DATE,
   new Schema({
     date: { type: String },
   }),
 );
-
-questionsPath.discriminator(
+baseQuestionSchema.discriminator(
   QuestionTypes.TIME,
   new Schema({
     time: { type: String },
   }),
 );
+
+const sectionSchema = new Schema<ISection>({
+  title: { type: String, required: true },
+  description: { type: String },
+  order: { type: Number, required: true },
+  questions: [baseQuestionSchema],
+});
 
 const formSchemaDefinition = new Schema<ISchema>({
   title: {

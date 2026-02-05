@@ -1,11 +1,11 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
+
 import {
-  InstanceStatuses,
   type IInstance,
   type IAnswer,
   type ITableAnswer,
+  InstanceStatus,
 } from "./types.js";
-import { SchemaStatus } from "../schema/types.js";
 
 const tableAnswerSchema = new Schema<ITableAnswer>({
   row: { type: String, required: true },
@@ -13,8 +13,8 @@ const tableAnswerSchema = new Schema<ITableAnswer>({
 });
 
 const answerSchema = new Schema<IAnswer>({
-  questionId: { type: String, required: true },
-  sectionId: { type: String, required: true },
+  questionId: { type: Types.ObjectId, required: true },
+  sectionId: { type: Types.ObjectId, required: true },
   textValue: { type: String },
   selectedOption: { type: String },
   selectedOptions: { type: [String] },
@@ -26,19 +26,19 @@ const answerSchema = new Schema<IAnswer>({
 
 const instanceSchema = new Schema<IInstance>({
   schemaId: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "FormSchema",
     required: true,
   },
   filledBy: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "User",
     required: true,
   },
   status: {
     type: String,
-    enum: InstanceStatuses,
-    default: "Draft",
+    enum: Object.values(InstanceStatus),
+    default: InstanceStatus.Draft,
   },
   answers: {
     type: [answerSchema],
