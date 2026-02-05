@@ -1,12 +1,11 @@
 import { z } from "zod";
 import {
-  objectIdString,
   schemaInput,
   schemaUpdateSchema,
-  sectionUpdateSchema,
   updateQuestionSchema,
   updateSectionSchema,
 } from "./types.js";
+import { objectIdString } from "../shared/types.js";
 
 const schemasValidation = {
   getSchemas: {

@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
 import { z } from "zod";
+import { MongoObjectId, objectIdString } from "../shared/types.js";
 
 export enum QuestionTypes {
   SHORT_TEXT = "SHORT_TEXT",
@@ -19,10 +19,6 @@ export enum SchemaStatus {
   Published = "Published",
 }
 
-export const objectIdString = z
-  .string()
-  .refine((val) => Types.ObjectId.isValid(val), { message: "Invalid ObjectId" })
-  .transform((val) => new Types.ObjectId(val));
 
 export const optionSchema = z.object({
   text: z.string().min(1, "Option text is required"),
@@ -180,7 +176,6 @@ export const updateQuestionSchema = z.intersection(
 );
 
 // Infer base types
-export type MongoObjectId = z.infer<typeof objectIdString>;
 export type IOption = z.infer<typeof optionSchema>;
 export type IQuestion = z.infer<typeof questionsSchema>;
 export type ISection = z.infer<typeof sectionSchema>;

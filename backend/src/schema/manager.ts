@@ -6,8 +6,8 @@ import {
   ISchemaInput,
   ISchemaUpdate,
   ISectionUpdateRequest,
-  MongoObjectId,
 } from "./types.js";
+import { MongoObjectId } from "../shared/types.js";
 
 class Manager {
   static getSchemas = async (): Promise<ISchema[]> => Repo.getSchemas();
