@@ -19,7 +19,6 @@ export enum SchemaStatus {
   Published = "Published",
 }
 
-
 export const optionSchema = z.object({
   text: z.string().min(1, "Option text is required"),
   order: z.number().int().min(0),
@@ -34,90 +33,92 @@ export const baseQuestionFields = z.object({
 
 //Specific Questions Schemas
 
-const optionsShape = {
+const optionsShape = z.object({
   options: z.array(optionSchema),
-};
+});
 
-const scaleShape = {
+const scaleShape = z.object({
   scaleMin: z.number().int(),
   scaleMax: z.number().int(),
   scaleMinLabel: z.string().optional(),
   scaleMaxLabel: z.string().optional(),
-};
+});
 
-const tableShape = {
+const tableShape = z.object({
   rows: z.array(z.string()),
   columns: z.array(z.string()),
-};
+});
 
 //Specific Question Schemas
 
-const shortTextSchema = baseQuestionFields.extend({
+const shortTextSchema = z.object({
   type: z.literal(QuestionTypes.SHORT_TEXT),
 });
 
-const paragraphSchema = baseQuestionFields.extend({
+const paragraphSchema = z.object({
   type: z.literal(QuestionTypes.PARAGRAPH),
 });
 
-const radioSchema = baseQuestionFields.extend({
+const radioSchema = z.object({
   type: z.literal(QuestionTypes.RADIO),
-  ...optionsShape,
+  ...optionsShape.shape,
 });
 
-const checkboxSchema = baseQuestionFields.extend({
+const checkboxSchema = z.object({
   type: z.literal(QuestionTypes.CHECKBOX),
-  ...optionsShape,
+  ...optionsShape.shape,
 });
 
-const dropdownSchema = baseQuestionFields.extend({
+const dropdownSchema = z.object({
   type: z.literal(QuestionTypes.DROPDOWN),
-  ...optionsShape,
+  ...optionsShape.shape,
 });
 
-const linearScaleSchema = baseQuestionFields.extend({
+const linearScaleSchema = z.object({
   type: z.literal(QuestionTypes.LINEAR_SCALE),
-  ...scaleShape,
+  ...scaleShape.shape,
 });
 
-const radioTableSchema = baseQuestionFields.extend({
+const radioTableSchema = z.object({
   type: z.literal(QuestionTypes.RADIO_TABLE),
-  ...tableShape,
+  ...tableShape.shape,
 });
 
-const checkboxTableSchema = baseQuestionFields.extend({
+const checkboxTableSchema = z.object({
   type: z.literal(QuestionTypes.CHECKBOX_TABLE),
-  ...tableShape,
+  ...tableShape.shape,
 });
 
-const dateSchema = baseQuestionFields.extend({
+const dateSchema = z.object({
   type: z.literal(QuestionTypes.DATE),
   date: z.iso.date().optional(),
 });
 
-const timeSchema = baseQuestionFields.extend({
+const timeSchema = z.object({
   type: z.literal(QuestionTypes.TIME),
   time: z.iso.time().optional(),
 });
 
-export const questionsSchema = z.discriminatedUnion("type", [
-  shortTextSchema,
-  paragraphSchema,
-  radioSchema,
-  checkboxSchema,
-  dropdownSchema,
-  linearScaleSchema,
-  radioTableSchema,
-  checkboxTableSchema,
-  dateSchema,
-  timeSchema,
-]);
+export const questionSchema = z
+  .discriminatedUnion("type", [
+    shortTextSchema,
+    paragraphSchema,
+    radioSchema,
+    checkboxSchema,
+    dropdownSchema,
+    linearScaleSchema,
+    radioTableSchema,
+    checkboxTableSchema,
+    dateSchema,
+    timeSchema,
+  ])
+  .and(baseQuestionFields);
 
 export const sectionSchema = z.object({
   title: z.string().min(1, "Section title is required"),
   description: z.string().optional(),
   order: z.number().int().min(0),
-  questions: z.array(questionsSchema).default([]),
+  questions: z.array(questionSchema).default([]),
 });
 
 export const schemaInput = z.object({
@@ -131,13 +132,14 @@ export const schemaInput = z.object({
 
 // Updates
 
-export const schemaUpdateSchema = z.object({
+export const updateSchema = z.object({
   title: z.string().min(1, "Schema title is required").optional(),
   description: z.string().optional(),
   assignedUsers: z.array(objectIdString).optional(),
+  status: z.enum(SchemaStatus).optional(),
 });
 
-export const sectionUpdateSchema = z.object({
+export const updateSectionSchemaWithoutId = z.object({
   title: z.string().min(1, "Section title is required").optional(),
   description: z.string().optional(),
   order: z.number().int().min(0).optional(),
@@ -167,7 +169,7 @@ const sectionIdSchema = z.object({
 
 export const updateSectionSchema = z.intersection(
   sectionIdSchema,
-  sectionUpdateSchema,
+  updateSectionSchemaWithoutId,
 );
 
 export const updateQuestionSchema = z.intersection(
@@ -177,13 +179,13 @@ export const updateQuestionSchema = z.intersection(
 
 // Infer base types
 export type IOption = z.infer<typeof optionSchema>;
-export type IQuestion = z.infer<typeof questionsSchema>;
+export type IQuestion = z.infer<typeof questionSchema>;
 export type ISection = z.infer<typeof sectionSchema>;
 export type ISchemaInput = z.infer<typeof schemaInput>;
 export type ISchema = ISchemaInput & { _id: MongoObjectId };
 
-export type ISchemaUpdate = z.infer<typeof schemaUpdateSchema>;
-export type ISectionUpdate = z.infer<typeof sectionUpdateSchema>;
+export type ISchemaUpdate = z.infer<typeof updateSchema>;
+export type ISectionUpdate = z.infer<typeof updateSectionSchemaWithoutId>;
 export type ISectionUpdateRequest = z.infer<typeof updateSectionSchema>;
 export type IQuestionUpdate = Partial<IQuestion>;
 export type IQuestionUpdateRequest = z.infer<typeof updateQuestionSchema>;

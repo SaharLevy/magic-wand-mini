@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
   schemaInput,
-  schemaUpdateSchema,
+  updateSchema,
   updateQuestionSchema,
   updateSectionSchema,
 } from "./types.js";
@@ -53,7 +53,7 @@ const schemasValidation = {
     params: z.object({
       id: objectIdString,
     }),
-    body: schemaUpdateSchema,
+    body: updateSchema,
     query: z.object({}),
   },
   updateSection: {
