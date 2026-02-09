@@ -1,25 +1,62 @@
 import type { Types } from "mongoose";
-import { MongoObjectId } from "../shared/types.js";
+import {
+  MongoObjectId,
+  objectIdString,
+  paragraphSchema,
+  QuestionTypes,
+  shortTextSchema,
+  radioSchema,
+  checkboxSchema,
+  dropdownSchema,
+  linearScaleSchema,
+  radioTableSchema,
+  checkboxTableSchema,
+  dateSchema,
+  timeSchema,
+} from "../shared/types.js";
+import z from "zod";
 
 export const InstanceStatuses = ["Draft", "Submitted"] as const;
-
-export enum QuestionTypes {
-  SHORT_TEXT = "SHORT_TEXT",
-  PARAGRAPH = "PARAGRAPH",
-  RADIO = "RADIO",
-  CHECKBOX = "CHECKBOX",
-  DROPDOWN = "DROPDOWN",
-  LINEAR_SCALE = "LINEAR_SCALE",
-  RADIO_TABLE = "RADIO_TABLE",
-  CHECKBOX_TABLE = "CHECKBOX_TABLE",
-  DATE = "DATE",
-  TIME = "TIME",
-}
 
 export enum InstanceStatus {
   Draft = "Draft",
   Published = "Published",
 }
+
+export const baseAnswerFields = z.object({
+  sectionId: objectIdString,
+  questionId: objectIdString,
+  textValue: z.string().min(1, "answer is required"),
+  selectedOption: z.string(),
+  selectedOptions: z.array(z.string()),
+  scaleValue: z.number(),
+  // tableAnswers: z.array(z.object({row: z.string(), value: z.string() | z.array(z.string())})) will fix later
+  dateValue: z.iso.date(),
+  timeValue: z.iso.time(),
+});
+
+export const inputInstance = z.object({
+  filledBy: objectIdString,
+  type: z.enum(QuestionTypes),
+  status: z.enum(InstanceStatus).default(InstanceStatus.Draft),
+  answers: [baseAnswerFields],
+  submittedAt: z.iso.date().optional(),
+});
+
+export const answerSchema = z
+  .discriminatedUnion("type", [
+    shortTextSchema,
+    paragraphSchema,
+    radioSchema,
+    checkboxSchema,
+    dropdownSchema,
+    linearScaleSchema,
+    radioTableSchema,
+    checkboxTableSchema,
+    dateSchema,
+    timeSchema,
+  ])
+  .and(baseAnswerFields);
 
 export interface ITableAnswer {
   row: string;
@@ -29,6 +66,7 @@ export interface ITableAnswer {
 export interface IAnswer {
   questionId: MongoObjectId;
   sectionId: MongoObjectId;
+
   // Single value answers
   textValue?: string; // SHORT_TEXT, PARAGRAPH
   selectedOption?: string; // RADIO, DROPDOWN
@@ -46,6 +84,5 @@ export interface IInstance {
   filledBy: MongoObjectId;
   status: InstanceStatus;
   answers: IAnswer[];
-  currentSectionIndex: number;
   submittedAt?: Date;
 }

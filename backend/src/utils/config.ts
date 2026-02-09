@@ -8,9 +8,6 @@ const config = {
     .asString(),
   DB_NAME: env.get("DB_NAME").default("MAGIC_WAND_MINI").asString(),
   SCHEMA_DISCRIMINATOR_KEY: "type",
-  ERRORS_TEXT: {
-    SCHEMA_NOT_FOUND: "Schema not found",
-  },
 };
 
 export default config;

@@ -5,9 +5,26 @@ import {
   type IQuestion,
   type IOption,
   SchemaStatus,
-  QuestionTypes,
 } from "./types.js";
 import config from "../utils/config.js";
+import { QuestionTypes } from "../shared/types.js";
+
+const textSchema = new Schema({});
+
+const scaleSchema = new Schema({
+  scaleMin: { type: Number, required: true },
+  scaleMax: { type: Number, required: true },
+  scaleMinLabel: { type: String },
+  scaleMaxLabel: { type: String },
+});
+
+const dateSchema = new Schema({
+  date: { type: String },
+});
+
+const timeSchema = new Schema({
+  time: { type: String },
+});
 
 const optionSchema = new Schema<IOption>({
   text: { type: String, required: true },
@@ -36,37 +53,19 @@ const baseQuestionSchema = new Schema<IQuestion>(
   },
 );
 
-baseQuestionSchema.discriminator(QuestionTypes.SHORT_TEXT, new Schema({}));
-baseQuestionSchema.discriminator(QuestionTypes.PARAGRAPH, new Schema({}));
+baseQuestionSchema.discriminator(QuestionTypes.SHORT_TEXT, textSchema);
+baseQuestionSchema.discriminator(QuestionTypes.PARAGRAPH, textSchema);
 baseQuestionSchema.discriminator(QuestionTypes.RADIO, selectionShapeSchema);
 baseQuestionSchema.discriminator(QuestionTypes.CHECKBOX, selectionShapeSchema);
 baseQuestionSchema.discriminator(QuestionTypes.DROPDOWN, selectionShapeSchema);
-baseQuestionSchema.discriminator(
-  QuestionTypes.LINEAR_SCALE,
-  new Schema({
-    scaleMin: { type: Number, required: true },
-    scaleMax: { type: Number, required: true },
-    scaleMinLabel: { type: String },
-    scaleMaxLabel: { type: String },
-  }),
-);
+baseQuestionSchema.discriminator(QuestionTypes.LINEAR_SCALE, scaleSchema);
 baseQuestionSchema.discriminator(QuestionTypes.RADIO_TABLE, tableSchemaShape);
 baseQuestionSchema.discriminator(
   QuestionTypes.CHECKBOX_TABLE,
   tableSchemaShape,
 );
-baseQuestionSchema.discriminator(
-  QuestionTypes.DATE,
-  new Schema({
-    date: { type: String },
-  }),
-);
-baseQuestionSchema.discriminator(
-  QuestionTypes.TIME,
-  new Schema({
-    time: { type: String },
-  }),
-);
+baseQuestionSchema.discriminator(QuestionTypes.DATE, dateSchema);
+baseQuestionSchema.discriminator(QuestionTypes.TIME, timeSchema);
 
 const sectionSchema = new Schema<ISection>({
   title: { type: String, required: true },
