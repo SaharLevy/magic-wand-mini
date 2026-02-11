@@ -1,22 +1,9 @@
-import type { Types } from "mongoose";
 import {
   MongoObjectId,
   objectIdString,
-  paragraphSchema,
   QuestionTypes,
-  shortTextSchema,
-  radioSchema,
-  checkboxSchema,
-  dropdownSchema,
-  linearScaleSchema,
-  radioTableSchema,
-  checkboxTableSchema,
-  dateSchema,
-  timeSchema,
 } from "../shared/types.js";
 import z from "zod";
-
-export const InstanceStatuses = ["Draft", "Submitted"] as const;
 
 export enum InstanceStatus {
   Draft = "Draft",
@@ -26,59 +13,111 @@ export enum InstanceStatus {
 export const baseAnswerFields = z.object({
   sectionId: objectIdString,
   questionId: objectIdString,
-  textValue: z.string().min(1, "answer is required"),
-  selectedOption: z.string(),
-  selectedOptions: z.array(z.string()),
-  scaleValue: z.number(),
-  // tableAnswers: z.array(z.object({row: z.string(), value: z.string() | z.array(z.string())})) will fix later
-  dateValue: z.iso.date(),
-  timeValue: z.iso.time(),
 });
 
-export const inputInstance = z.object({
-  filledBy: objectIdString,
-  type: z.enum(QuestionTypes),
-  status: z.enum(InstanceStatus).default(InstanceStatus.Draft),
-  answers: [baseAnswerFields],
-  submittedAt: z.iso.date().optional(),
+export const optionShape = z.object({
+  option: z.string(),
+});
+
+export const optionsShape = z.object({
+  options: z.array(z.string()),
+});
+
+export const scaleShape = z.object({
+  scaleNumber: z.number().int(),
+});
+
+export const tableShape = z.object({
+  tableAnswers: z.array(
+    z.object({
+      row: z.string(),
+      value: z.union([z.string(), z.array(z.string())]),
+    }),
+  ),
+});
+
+export const textShape = z.object({
+  text: z.string().min(1, "answer text is required"),
+});
+
+//Specific Question Schemas
+
+export const shortTextAnswer = z.object({
+  type: z.literal(QuestionTypes.SHORT_TEXT),
+  ...textShape.shape,
+});
+
+export const paragraphAnswer = z.object({
+  type: z.literal(QuestionTypes.PARAGRAPH),
+  ...textShape.shape,
+});
+
+export const radioAnswer = z.object({
+  type: z.literal(QuestionTypes.RADIO),
+  ...optionShape.shape,
+});
+
+export const checkboxAnswer = z.object({
+  type: z.literal(QuestionTypes.CHECKBOX),
+  ...optionsShape.shape,
+});
+
+export const dropdownAnswer = z.object({
+  type: z.literal(QuestionTypes.DROPDOWN),
+  ...optionShape.shape,
+});
+
+export const linearScaleAnswer = z.object({
+  type: z.literal(QuestionTypes.LINEAR_SCALE),
+  ...scaleShape.shape,
+});
+
+export const radioTableAnswer = z.object({
+  type: z.literal(QuestionTypes.RADIO_TABLE),
+  ...tableShape.shape,
+});
+
+export const checkboxTableAnswer = z.object({
+  type: z.literal(QuestionTypes.CHECKBOX_TABLE),
+  ...tableShape.shape,
+});
+
+export const dateAnswer = z.object({
+  type: z.literal(QuestionTypes.DATE),
+  date: z.iso.date().optional(),
+});
+
+export const timeAnswer = z.object({
+  type: z.literal(QuestionTypes.TIME),
+  time: z.iso.time().optional(),
 });
 
 export const answerSchema = z
   .discriminatedUnion("type", [
-    shortTextSchema,
-    paragraphSchema,
-    radioSchema,
-    checkboxSchema,
-    dropdownSchema,
-    linearScaleSchema,
-    radioTableSchema,
-    checkboxTableSchema,
-    dateSchema,
-    timeSchema,
+    shortTextAnswer,
+    paragraphAnswer,
+    radioAnswer,
+    checkboxAnswer,
+    dropdownAnswer,
+    linearScaleAnswer,
+    radioTableAnswer,
+    checkboxTableAnswer,
+    dateAnswer,
+    timeAnswer,
   ])
   .and(baseAnswerFields);
 
-export interface ITableAnswer {
-  row: string;
-  value: string | string[]; // string for RADIO_TABLE, string[] for CHECKBOX_TABLE
-}
+export const instanceSchema = z.object({
+  filledBy: objectIdString,
+  status: z.enum(InstanceStatus).default(InstanceStatus.Draft),
+  answers: answerSchema.array(),
+  submittedAt: z.iso.date().optional(),
+});
 
-export interface IAnswer {
-  questionId: MongoObjectId;
-  sectionId: MongoObjectId;
+export type IInstance = z.infer<typeof instanceSchema>;
+export type IAnswer = z.infer<typeof answerSchema>;
 
-  // Single value answers
-  textValue?: string; // SHORT_TEXT, PARAGRAPH
-  selectedOption?: string; // RADIO, DROPDOWN
-  selectedOptions?: string[]; // CHECKBOX
-  scaleValue?: number; // LINEAR_SCALE
-  dateValue?: Date; // DATE
-  timeValue?: string; // TIME
-  // Table answers
-  tableAnswers?: ITableAnswer[];
-}
-
-export interface IInstance {
+export interface IInstance2 {
   _id: MongoObjectId;
   schemaId: MongoObjectId;
   filledBy: MongoObjectId;

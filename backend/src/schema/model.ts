@@ -19,7 +19,7 @@ const scaleSchema = new Schema({
 });
 
 const dateSchema = new Schema({
-  date: { type: String },
+  date: { type: Date },
 });
 
 const timeSchema = new Schema({
