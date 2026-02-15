@@ -114,14 +114,8 @@ export const instanceSchema = z.object({
   submittedAt: z.iso.date().optional(),
 });
 
-export type IInstance = z.infer<typeof instanceSchema>;
+export type IInstanceInput = z.infer<typeof instanceSchema>;
+export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
 
-export interface IInstance2 {
-  _id: MongoObjectId;
-  schemaId: MongoObjectId;
-  filledBy: MongoObjectId;
-  status: InstanceStatus;
-  answers: IAnswer[];
-  submittedAt?: Date;
-}
+export type IInstanceUpdate = Partial<IInstance>
