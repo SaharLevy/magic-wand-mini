@@ -1,6 +1,12 @@
 import { MongoObjectId } from "../shared/types.js";
 import Repo from "./repo.js";
-import { IInstance, IInstanceInput } from "./types.js";
+import {
+  IAnswer,
+  IAnswerUpdate,
+  IInstance,
+  IInstanceInput,
+  IInstanceStatusUpdate,
+} from "./types.js";
 
 class Manager {
   static instancesById = async (userId: MongoObjectId): Promise<IInstance[]> =>
@@ -16,6 +22,22 @@ class Manager {
   static getInstanceById = async (
     instanceId: MongoObjectId,
   ): Promise<IInstance> => Repo.getInstanceById(instanceId);
+
+  static updateInstanceStatus = async (
+    instanceId: MongoObjectId,
+    updatedStatus: IInstanceStatusUpdate,
+  ): Promise<IInstance> => {
+    return Repo.updateInstanceStatus(instanceId, updatedStatus);
+  };
+
+  static updateAnswer = async (
+    instanceId: MongoObjectId,
+    answerData: IAnswerUpdate,
+  ) => {
+    const { questionId, ...updatedFields } = answerData;
+
+    return Repo.updateAnswer(instanceId, questionId, updatedFields);
+  };
 }
 
 export default Manager;

@@ -15,6 +15,10 @@ export const baseAnswerFields = z.object({
   questionId: objectIdString,
 });
 
+export const updateInstanceStatusSchema = z.object({
+  status: z.enum(InstanceStatus).optional(),
+});
+
 export const optionShape = z.object({
   option: z.string(),
 });
@@ -107,6 +111,29 @@ export const answerSchema = z
   ])
   .and(baseAnswerFields);
 
+export const updateAnswersSchemaWithoutId = z.discriminatedUnion("type", [
+  shortTextAnswer
+    .partial()
+    .extend({ type: z.literal(QuestionTypes.SHORT_TEXT) }),
+  paragraphAnswer
+    .partial()
+    .extend({ type: z.literal(QuestionTypes.PARAGRAPH) }),
+  radioAnswer.partial().extend({ type: z.literal(QuestionTypes.RADIO) }),
+  checkboxAnswer.partial().extend({ type: z.literal(QuestionTypes.CHECKBOX) }),
+  dropdownAnswer.partial().extend({ type: z.literal(QuestionTypes.DROPDOWN) }),
+  linearScaleAnswer
+    .partial()
+    .extend({ type: z.literal(QuestionTypes.LINEAR_SCALE) }),
+  radioTableAnswer
+    .partial()
+    .extend({ type: z.literal(QuestionTypes.RADIO_TABLE) }),
+  checkboxTableAnswer
+    .partial()
+    .extend({ type: z.literal(QuestionTypes.CHECKBOX_TABLE) }),
+  dateAnswer.partial().extend({ type: z.literal(QuestionTypes.DATE) }),
+  timeAnswer.partial().extend({ type: z.literal(QuestionTypes.TIME) }),
+]);
+
 export const instanceSchema = z.object({
   filledBy: objectIdString,
   status: z.enum(InstanceStatus).default(InstanceStatus.Draft),
@@ -114,8 +141,19 @@ export const instanceSchema = z.object({
   submittedAt: z.iso.date().optional(),
 });
 
+const answerIdSchema = z.object({
+  questionId: objectIdString,
+});
+
+export const updateAnswerSchema = z.intersection(
+  answerIdSchema,
+  updateAnswersSchemaWithoutId,
+);
+
 export type IInstanceInput = z.infer<typeof instanceSchema>;
 export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
 
-export type IInstanceUpdate = Partial<IInstance>
+export type IInstanceStatusUpdate = z.infer<typeof updateInstanceStatusSchema>;
+export type IAnswerUpdate = z.infer<typeof updateAnswerSchema>;
+export type IAnswerUpdateFields = z.infer<typeof updateAnswersSchemaWithoutId>;

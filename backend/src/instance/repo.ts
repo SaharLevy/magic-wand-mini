@@ -2,7 +2,13 @@ import sharedConsts from "../shared/consts.js";
 import { MongoObjectId } from "../shared/types.js";
 import { NotFoundError } from "../utils/customErrors.js";
 import { Instance } from "./model.js";
-import { IInstance, IInstanceInput } from "./types.js";
+import {
+  IAnswer,
+  IAnswerUpdateFields,
+  IInstance,
+  IInstanceInput,
+  IInstanceStatusUpdate,
+} from "./types.js";
 
 class Repo {
   static instancesById = async (userId: MongoObjectId): Promise<IInstance[]> =>
@@ -22,8 +28,37 @@ class Repo {
     newInstance: IInstanceInput,
   ): Promise<IInstance> => Instance.create(newInstance);
 
-  static updateInstanceById = async ( instanceId: MongoObjectId,
-      newInstance: ,)
+  static updateInstanceStatus = async (
+    instanceId: MongoObjectId,
+    instanceStatus: IInstanceStatusUpdate,
+  ): Promise<IInstance> =>
+    Instance.findByIdAndUpdate(instanceId, instanceStatus, {
+      new: true,
+    }).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.INSTANCE_NOT_FOUND));
+
+  static updateAnswer = async (
+    instanceId: MongoObjectId,
+    questionId: MongoObjectId,
+    updatedFields: IAnswerUpdateFields,
+  ): Promise<IInstance> => {
+    const updateQuery: Record<string, unknown> = {};
+
+    Object.entries(updatedFields).forEach(([key, value]) => {
+      updateQuery[`answers.$[answer].${key}`] = value;
+    });
+
+    return Instance.findByIdAndUpdate(
+      instanceId,
+      {
+        $set: updateQuery,
+      },
+      {
+        arrayFilters: [{ "answer.questionId": questionId }],
+        new: true,
+        runValidators: true,
+      },
+    ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.INSTANCE_NOT_FOUND));
+  };
 }
 
 export default Repo;

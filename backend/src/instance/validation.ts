@@ -1,6 +1,10 @@
 import z from "zod";
 import { objectIdString } from "../shared/types.js";
-import { instanceSchema } from "./types.js";
+import {
+  instanceSchema,
+  updateAnswerSchema,
+  updateInstanceStatusSchema,
+} from "./types.js";
 
 const instanceValidation = {
   myInstances: {
@@ -33,6 +37,24 @@ const instanceValidation = {
       })
       .strict(),
     body: z.object({}),
+    query: z.object({}),
+  },
+  updateInstanceStatus: {
+    params: z
+      .object({
+        id: objectIdString,
+      })
+      .strict(),
+    body: updateInstanceStatusSchema,
+    query: z.object({}),
+  },
+  updateAnswer: {
+    params: z
+      .object({
+        id: objectIdString,
+      })
+      .strict(),
+    body: updateAnswerSchema, 
     query: z.object({}),
   },
 };

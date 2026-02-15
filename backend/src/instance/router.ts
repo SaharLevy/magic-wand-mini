@@ -7,14 +7,14 @@ import Manager from "./manager.js";
 const instanceRouter = Router();
 
 instanceRouter.get(
-  "/instances/:id",
+  "/:id/instances",
   validate(instanceValidation.myInstances, async (req, res) => {
     res.status(StatusCodes.OK).json(await Manager.instancesById(req.params.id));
   }),
 );
 
 instanceRouter.get(
-  "/drafts/:id",
+  "/:id/drafts",
   validate(instanceValidation.myDrafts, async (req, res) => {
     res.status(StatusCodes.OK).json(await Manager.myDrafts(req.params.id));
   }),
@@ -35,6 +35,24 @@ instanceRouter.post(
     res
       .status(StatusCodes.CREATED)
       .json(await Manager.createInstance(req.body));
+  }),
+);
+
+instanceRouter.patch(
+  "/:id/status",
+  validate(instanceValidation.updateInstanceStatus, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.updateInstanceStatus(req.params.id, req.body));
+  }),
+);
+
+instanceRouter.patch(
+  "/:id/answer",
+  validate(instanceValidation.updateAnswer, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.updateAnswer(req.params.id, req.body));
   }),
 );
 
