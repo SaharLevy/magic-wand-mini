@@ -138,3 +138,4 @@ export type IAnswer = z.infer<typeof answerSchema>;
 export type IInstanceStatusUpdate = z.infer<typeof updateInstanceStatusSchema>;
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
+export type definitionTypes = z.infer<typeof updateAnswerSchema>
