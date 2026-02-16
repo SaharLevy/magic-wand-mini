@@ -3,6 +3,7 @@ import Repo from "./repo.js";
 import {
   IAnswer,
   IAnswerUpdate,
+  IAnswerUpdateWithIds,
   IInstance,
   IInstanceInput,
   IInstanceStatusUpdate,
@@ -32,11 +33,11 @@ class Manager {
 
   static updateAnswer = async (
     instanceId: MongoObjectId,
-    answerData: IAnswerUpdate,
+    answerData: IAnswerUpdateWithIds,
   ) => {
-    const { questionId, ...updatedFields } = answerData;
+    const { answerId, ...updatedFields } = answerData;
 
-    return Repo.updateAnswer(instanceId, questionId, updatedFields);
+    return Repo.updateAnswer(instanceId, answerId, updatedFields);
   };
 }
 

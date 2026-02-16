@@ -3,6 +3,7 @@ import { objectIdString } from "../shared/types.js";
 import {
   instanceSchema,
   updateAnswerSchema,
+  updateAnswerSchemaWithIds,
   updateInstanceStatusSchema,
 } from "./types.js";
 
@@ -54,7 +55,7 @@ const instanceValidation = {
         id: objectIdString,
       })
       .strict(),
-    body: updateAnswerSchema, 
+    body: updateAnswerSchemaWithIds, 
     query: z.object({}),
   },
 };

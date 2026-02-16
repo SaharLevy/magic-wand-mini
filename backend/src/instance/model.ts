@@ -32,12 +32,11 @@ const timeSchema = new Schema({
 
 const baseAnswerSchema = new Schema<IAnswer>(
   {
-    questionId: { type: Types.ObjectId, required: true },
-    sectionId: { type: Types.ObjectId, required: true },
     type: { type: String, enum: Object.values(QuestionTypes), required: true },
   },
   {
     discriminatorKey: config.INSTANCE_DISCRIMINATOR_KEY,
+    _id: false,
   },
 );
 
@@ -67,9 +66,9 @@ const instanceSchema = new Schema<IInstance>({
     type: [baseAnswerSchema],
     default: [],
   },
-  submittedAt:{
-    type: Date
-  }
+  submittedAt: {
+    type: Date,
+  },
 });
 
 export const Instance = mongoose.model<IInstance>("Instance", instanceSchema);

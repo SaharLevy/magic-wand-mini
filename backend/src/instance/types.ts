@@ -10,10 +10,10 @@ export enum InstanceStatus {
   Published = "Published",
 }
 
-export const baseAnswerFields = z.object({
-  sectionId: objectIdString,
-  questionId: objectIdString,
-});
+// export const baseAnswerFields = z.object({
+//   sectionId: objectIdString,
+//   questionId: objectIdString,
+// });
 
 export const updateInstanceStatusSchema = z.object({
   status: z.enum(InstanceStatus).optional(),
@@ -109,30 +109,10 @@ export const answerSchema = z
     dateAnswer,
     timeAnswer,
   ])
-  .and(baseAnswerFields);
+  // .and(baseAnswerFields);
 
-export const updateAnswersSchemaWithoutId = z.discriminatedUnion("type", [
-  shortTextAnswer
-    .partial()
-    .extend({ type: z.literal(QuestionTypes.SHORT_TEXT) }),
-  paragraphAnswer
-    .partial()
-    .extend({ type: z.literal(QuestionTypes.PARAGRAPH) }),
-  radioAnswer.partial().extend({ type: z.literal(QuestionTypes.RADIO) }),
-  checkboxAnswer.partial().extend({ type: z.literal(QuestionTypes.CHECKBOX) }),
-  dropdownAnswer.partial().extend({ type: z.literal(QuestionTypes.DROPDOWN) }),
-  linearScaleAnswer
-    .partial()
-    .extend({ type: z.literal(QuestionTypes.LINEAR_SCALE) }),
-  radioTableAnswer
-    .partial()
-    .extend({ type: z.literal(QuestionTypes.RADIO_TABLE) }),
-  checkboxTableAnswer
-    .partial()
-    .extend({ type: z.literal(QuestionTypes.CHECKBOX_TABLE) }),
-  dateAnswer.partial().extend({ type: z.literal(QuestionTypes.DATE) }),
-  timeAnswer.partial().extend({ type: z.literal(QuestionTypes.TIME) }),
-]);
+export const updateAnswerSchema = answerSchema.optional()
+
 
 export const instanceSchema = z.object({
   filledBy: objectIdString,
@@ -142,12 +122,13 @@ export const instanceSchema = z.object({
 });
 
 const answerIdSchema = z.object({
-  questionId: objectIdString,
+  answerId: objectIdString,
 });
 
-export const updateAnswerSchema = z.intersection(
+export const updateAnswerSchemaWithIds = z.intersection(
   answerIdSchema,
-  updateAnswersSchemaWithoutId,
+  // updateAnswersSchemaWithoutId,
+  updateAnswerSchema,
 );
 
 export type IInstanceInput = z.infer<typeof instanceSchema>;
@@ -155,5 +136,5 @@ export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
 
 export type IInstanceStatusUpdate = z.infer<typeof updateInstanceStatusSchema>;
-export type IAnswerUpdate = z.infer<typeof updateAnswerSchema>;
-export type IAnswerUpdateFields = z.infer<typeof updateAnswersSchemaWithoutId>;
+export type IAnswerUpdate = Partial<IAnswer>;
+export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;

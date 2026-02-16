@@ -4,7 +4,7 @@ import { NotFoundError } from "../utils/customErrors.js";
 import { Instance } from "./model.js";
 import {
   IAnswer,
-  IAnswerUpdateFields,
+  IAnswerUpdate,
   IInstance,
   IInstanceInput,
   IInstanceStatusUpdate,
@@ -38,8 +38,8 @@ class Repo {
 
   static updateAnswer = async (
     instanceId: MongoObjectId,
-    questionId: MongoObjectId,
-    updatedFields: IAnswerUpdateFields,
+    answerId: MongoObjectId,
+    updatedFields: IAnswerUpdate,
   ): Promise<IInstance> => {
     const updateQuery: Record<string, unknown> = {};
 
@@ -53,9 +53,8 @@ class Repo {
         $set: updateQuery,
       },
       {
-        arrayFilters: [{ "answer.questionId": questionId }],
+        arrayFilters: [{ "answer._id": answerId }],
         new: true,
-        runValidators: true,
       },
     ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.INSTANCE_NOT_FOUND));
   };
