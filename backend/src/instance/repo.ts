@@ -1,4 +1,3 @@
-import sharedConsts from "../shared/consts.js";
 import { MongoObjectId } from "../shared/types.js";
 import { NotFoundError } from "../utils/customErrors.js";
 import { Instance } from "./model.js";
@@ -7,33 +6,38 @@ import {
   IInstance,
   IInstanceInput,
   IInstanceStatusUpdate,
+  InstanceStatus,
 } from "./types.js";
 
-class Repo {
-  static instancesById = async (userId: MongoObjectId): Promise<IInstance[]> =>
-    Instance.find({ filledBy: userId });
+const INSTANCE_NOT_FOUND = "Instance not found";
 
-  static myDrafts = async (userId: MongoObjectId): Promise<IInstance[]> =>
+class Repo {
+  static getInstancesByUserId = async (
+    userId: MongoObjectId,
+  ): Promise<IInstance[]> => Instance.find({ filledBy: userId });
+
+  static getMyDrafts = async (userId: MongoObjectId): Promise<IInstance[]> =>
     Instance.find({ filledBy: userId, status: "Draft" });
 
   static getInstanceById = async (
     instanceId: MongoObjectId,
   ): Promise<IInstance> =>
-    Instance.findById(instanceId).orFail(
-      new NotFoundError(sharedConsts.ERRORS_TEXT.INSTANCE_NOT_FOUND),
-    );
+    Instance.findById(instanceId).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
 
   static createInstance = async (
     newInstance: IInstanceInput,
   ): Promise<IInstance> => Instance.create(newInstance);
 
-  static updateInstanceStatus = async (
+  static publishInstance = async (
     instanceId: MongoObjectId,
-    instanceStatus: IInstanceStatusUpdate,
   ): Promise<IInstance> =>
-    Instance.findByIdAndUpdate(instanceId, instanceStatus, {
-      new: true,
-    }).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.INSTANCE_NOT_FOUND));
+    Instance.findByIdAndUpdate(
+      instanceId,
+      { status: InstanceStatus.Published },
+      {
+        new: true,
+      },
+    ).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
 
   static updateAnswer = async (
     instanceId: MongoObjectId,
@@ -55,8 +59,18 @@ class Repo {
         arrayFilters: [{ "answer._id": answerId }],
         new: true,
       },
-    ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.INSTANCE_NOT_FOUND));
+    ).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
   };
+
+  static deleteAnswer = async (
+    instanceId: MongoObjectId,
+    answerId: MongoObjectId,
+  ): Promise<IInstance> =>
+    Instance.findByIdAndUpdate(
+      instanceId,
+      { $pull: { answers: { _id: answerId } } },
+      { new: true },
+    ).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
 }
 
 export default Repo;

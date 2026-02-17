@@ -8,11 +8,12 @@ import {
 } from "./types.js";
 
 class Manager {
-  static instancesById = async (userId: MongoObjectId): Promise<IInstance[]> =>
-    Repo.instancesById(userId);
+  static getInstancesByUserId = async (
+    userId: MongoObjectId,
+  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId);
 
-  static myDrafts = async (userId: MongoObjectId): Promise<IInstance[]> =>
-    Repo.myDrafts(userId);
+  static getMyDrafts = async (userId: MongoObjectId): Promise<IInstance[]> =>
+    Repo.getMyDrafts(userId);
 
   static createInstance = async (
     newInstance: IInstanceInput,
@@ -22,11 +23,10 @@ class Manager {
     instanceId: MongoObjectId,
   ): Promise<IInstance> => Repo.getInstanceById(instanceId);
 
-  static updateInstanceStatus = async (
+  static publishInstance = async (
     instanceId: MongoObjectId,
-    updatedStatus: IInstanceStatusUpdate,
   ): Promise<IInstance> => {
-    return Repo.updateInstanceStatus(instanceId, updatedStatus);
+    return Repo.publishInstance(instanceId);
   };
 
   static updateAnswer = async (
@@ -37,6 +37,11 @@ class Manager {
 
     return Repo.updateAnswer(instanceId, answerId, updatedFields);
   };
+
+  static deleteAnswer = async (
+    instanceId: MongoObjectId,
+    answerId: MongoObjectId,
+  ): Promise<IInstance> => Repo.deleteAnswer(instanceId, answerId);
 }
 
 export default Manager;

@@ -1,9 +1,9 @@
 import z from "zod";
 import { objectIdString } from "../shared/types.js";
 import {
+  answerIdSchema,
   instanceSchema,
   updateAnswerSchemaWithIds,
-  updateInstanceStatusSchema,
 } from "./types.js";
 
 const instanceValidation = {
@@ -39,13 +39,13 @@ const instanceValidation = {
     body: z.object({}),
     query: z.object({}),
   },
-  updateInstanceStatus: {
+  publishInstance: {
     params: z
       .object({
         id: objectIdString,
       })
       .strict(),
-    body: updateInstanceStatusSchema,
+    body: z.object({}),
     query: z.object({}),
   },
   updateAnswer: {
@@ -54,7 +54,16 @@ const instanceValidation = {
         id: objectIdString,
       })
       .strict(),
-    body: updateAnswerSchemaWithIds, 
+    body: updateAnswerSchemaWithIds,
+    query: z.object({}),
+  },
+  deleteAnswer: {
+    params: z
+      .object({
+        id: objectIdString,
+      })
+      .strict(),
+    body: answerIdSchema,
     query: z.object({}),
   },
 };

@@ -9,14 +9,16 @@ const instanceRouter = Router();
 instanceRouter.get(
   "/:id/instances",
   validate(instanceValidation.myInstances, async (req, res) => {
-    res.status(StatusCodes.OK).json(await Manager.instancesById(req.params.id));
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.getInstancesByUserId(req.params.id));
   }),
 );
 
 instanceRouter.get(
   "/:id/drafts",
   validate(instanceValidation.myDrafts, async (req, res) => {
-    res.status(StatusCodes.OK).json(await Manager.myDrafts(req.params.id));
+    res.status(StatusCodes.OK).json(await Manager.getMyDrafts(req.params.id));
   }),
 );
 
@@ -40,10 +42,10 @@ instanceRouter.post(
 
 instanceRouter.patch(
   "/:id/status",
-  validate(instanceValidation.updateInstanceStatus, async (req, res) => {
+  validate(instanceValidation.publishInstance, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.updateInstanceStatus(req.params.id, req.body));
+      .json(await Manager.publishInstance(req.params.id));
   }),
 );
 
@@ -54,6 +56,17 @@ instanceRouter.patch(
       .status(StatusCodes.OK)
       .json(await Manager.updateAnswer(req.params.id, req.body));
   }),
+
+  instanceRouter.delete(
+    "/:id",
+    validate(instanceValidation.deleteAnswer, async (require, res) => {
+      res
+        .status(StatusCodes.OK)
+        .json(
+          await Manager.deleteAnswer(require.params.id, require.body.answerId),
+        );
+    }),
+  ),
 );
 
 export default instanceRouter;

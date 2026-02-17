@@ -113,7 +113,7 @@ export const instanceSchema = z.object({
   submittedAt: z.iso.date().optional(),
 });
 
-const answerIdSchema = z.object({
+export const answerIdSchema = z.object({
   answerId: objectIdString,
 });
 

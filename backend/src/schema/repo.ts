@@ -9,7 +9,8 @@ import {
 import { FormSchema } from "./model.js";
 import { NotFoundError } from "../utils/customErrors.js";
 import { MongoObjectId } from "../shared/types.js";
-import sharedConsts from "../shared/consts.js";
+
+const SCHEMA_NOT_FOUND = "Schema not found";
 
 class Repo {
   static getSchemas = async (): Promise<ISchema[]> => FormSchema.find({});
@@ -18,9 +19,7 @@ class Repo {
     FormSchema.find({ status: SchemaStatus.Draft });
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
-    FormSchema.findById(schemaId).orFail(
-      new NotFoundError(sharedConsts.ERRORS_TEXT.SCHEMA_NOT_FOUND),
-    );
+    FormSchema.findById(schemaId).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
   static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
     FormSchema.create(newSchema);
@@ -30,7 +29,7 @@ class Repo {
     newSchema: ISchemaUpdate,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
-      new NotFoundError(sharedConsts.ERRORS_TEXT.SCHEMA_NOT_FOUND),
+      new NotFoundError(SCHEMA_NOT_FOUND),
     );
 
   static updateSection = async (
@@ -47,7 +46,7 @@ class Repo {
       schemaId,
       { $set: newSectionQueries },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
-    ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
   };
 
   static updateQuestion = async (
@@ -72,7 +71,7 @@ class Repo {
           { "question._id": questionId },
         ],
       },
-    ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
   };
 
   static deleteSection = async (
@@ -83,7 +82,7 @@ class Repo {
       schemaId,
       { $pull: { sections: { _id: sectionId } } },
       { new: true },
-    ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
   static deleteQuestion = async (
     schemaId: MongoObjectId,
@@ -94,7 +93,7 @@ class Repo {
       schemaId,
       { $pull: { "sections.$[section].questions": { _id: questionId } } },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
-    ).orFail(new NotFoundError(sharedConsts.ERRORS_TEXT.SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 }
 
 export default Repo;
