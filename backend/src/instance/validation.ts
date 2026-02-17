@@ -2,7 +2,6 @@ import z from "zod";
 import { objectIdString } from "../shared/types.js";
 import {
   instanceSchema,
-  updateAnswerSchema,
   updateAnswerSchemaWithIds,
   updateInstanceStatusSchema,
 } from "./types.js";

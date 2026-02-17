@@ -10,11 +10,6 @@ export enum InstanceStatus {
   Published = "Published",
 }
 
-// export const baseAnswerFields = z.object({
-//   sectionId: objectIdString,
-//   questionId: objectIdString,
-// });
-
 export const updateInstanceStatusSchema = z.object({
   status: z.enum(InstanceStatus).optional(),
 });
@@ -96,23 +91,20 @@ export const timeAnswer = z.object({
   time: z.iso.time().optional(),
 });
 
-export const answerSchema = z
-  .discriminatedUnion("type", [
-    shortTextAnswer,
-    paragraphAnswer,
-    radioAnswer,
-    checkboxAnswer,
-    dropdownAnswer,
-    linearScaleAnswer,
-    radioTableAnswer,
-    checkboxTableAnswer,
-    dateAnswer,
-    timeAnswer,
-  ])
-  // .and(baseAnswerFields);
+export const answerSchema = z.discriminatedUnion("type", [
+  shortTextAnswer,
+  paragraphAnswer,
+  radioAnswer,
+  checkboxAnswer,
+  dropdownAnswer,
+  linearScaleAnswer,
+  radioTableAnswer,
+  checkboxTableAnswer,
+  dateAnswer,
+  timeAnswer,
+]);
 
-export const updateAnswerSchema = answerSchema.optional()
-
+export const updateAnswerSchema = answerSchema.optional();
 
 export const instanceSchema = z.object({
   filledBy: objectIdString,
@@ -127,7 +119,6 @@ const answerIdSchema = z.object({
 
 export const updateAnswerSchemaWithIds = z.intersection(
   answerIdSchema,
-  // updateAnswersSchemaWithoutId,
   updateAnswerSchema,
 );
 
@@ -138,4 +129,3 @@ export type IAnswer = z.infer<typeof answerSchema>;
 export type IInstanceStatusUpdate = z.infer<typeof updateInstanceStatusSchema>;
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
-export type definitionTypes = z.infer<typeof updateAnswerSchema>

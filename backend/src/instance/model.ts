@@ -1,38 +1,32 @@
-import mongoose, { Schema, SchemaDefinition, Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import { type IInstance, type IAnswer, InstanceStatus } from "./types.js";
 import { QuestionTypes } from "../shared/types.js";
 import config from "../utils/config.js";
 
-const createAnswerSchema = <T>(definition: SchemaDefinition<T>) => {
-  return new Schema(definition, { _id: false });
-};
+const textSchema = new Schema({ text: { type: String, required: true } });
 
-const textSchema = createAnswerSchema({
-  text: { type: String, required: true },
-});
-
-const scaleSchema = createAnswerSchema({
+const scaleSchema = new Schema({
   scaleNumber: { type: Number, required: true },
 });
 
-const optionSchema = createAnswerSchema({
+const optionSchema = new Schema({
   option: { type: String, required: true },
 });
 
-const optionsSchema = createAnswerSchema({
+const optionsSchema = new Schema({
   options: { type: [String], default: [] },
 });
 
-const tableAnswerSchema = createAnswerSchema({
-  rows: { type: [String], default: [] },
-  values: { type: Schema.Types.Mixed, of: [String, [String]], default: [] },
+const tableAnswerSchema = new Schema({
+  rows: { type: String, default: [] },
+  values: { type: Schema.Types.Union, of: [String, [String]], default: [] },
 });
 
-const dateSchema = createAnswerSchema({
+const dateSchema = new Schema({
   date: { type: Date },
 });
 
-const timeSchema = createAnswerSchema({
+const timeSchema = new Schema({
   time: { type: String },
 });
 
@@ -42,7 +36,6 @@ const baseAnswerSchema = new Schema<IAnswer>(
   },
   {
     discriminatorKey: config.INSTANCE_DISCRIMINATOR_KEY,
-    _id: false,
   },
 );
 

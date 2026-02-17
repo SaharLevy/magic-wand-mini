@@ -1,8 +1,6 @@
 import { MongoObjectId } from "../shared/types.js";
 import Repo from "./repo.js";
 import {
-  IAnswer,
-  IAnswerUpdate,
   IAnswerUpdateWithIds,
   IInstance,
   IInstanceInput,

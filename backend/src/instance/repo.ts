@@ -3,7 +3,6 @@ import { MongoObjectId } from "../shared/types.js";
 import { NotFoundError } from "../utils/customErrors.js";
 import { Instance } from "./model.js";
 import {
-  IAnswer,
   IAnswerUpdate,
   IInstance,
   IInstanceInput,
