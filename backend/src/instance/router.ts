@@ -57,12 +57,10 @@ instanceRouter.patch(
 
   instanceRouter.delete(
     "/:id",
-    validate(instanceValidation.deleteAnswer, async (require, res) => {
+    validate(instanceValidation.deleteAnswer, async (req, res) => {
       res
         .status(StatusCodes.OK)
-        .json(
-          await Manager.deleteAnswer(require.params.id, require.body.answerId),
-        );
+        .json(await Manager.deleteAnswer(req.params.id, req.body.answerId));
     }),
   ),
 );
