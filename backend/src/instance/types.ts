@@ -10,10 +10,6 @@ export enum InstanceStatus {
   Published = "Published",
 }
 
-export const updateInstanceStatusSchema = z.object({
-  status: z.enum(InstanceStatus).optional(),
-});
-
 export const optionShape = z.object({
   option: z.string(),
 });
@@ -29,14 +25,14 @@ export const scaleShape = z.object({
 export const tableShape = z.object({
   tableAnswers: z.array(
     z.object({
-      row: z.string(),
-      value: z.union([z.string(), z.array(z.string())]),
+      row: z.number(),
+      columns: z.union([z.array(z.number()).max(1), z.array(z.number())]),
     }),
   ),
 });
 
 export const textShape = z.object({
-  text: z.string().min(1, "answer text is required"),
+  text: z.string(),
 });
 
 //Specific Question Schemas
@@ -122,10 +118,13 @@ export const updateAnswerSchemaWithIds = z.intersection(
   updateAnswerSchema,
 );
 
+export const statusesSchema = z.object({
+  statuses: z.array(z.enum(InstanceStatus))
+})
+
 export type IInstanceInput = z.infer<typeof instanceSchema>;
 export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
 
-export type IInstanceStatusUpdate = z.infer<typeof updateInstanceStatusSchema>;
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;

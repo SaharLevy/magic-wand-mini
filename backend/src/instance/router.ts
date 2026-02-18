@@ -7,18 +7,16 @@ import Manager from "./manager.js";
 const instanceRouter = Router();
 
 instanceRouter.get(
-  "/:id/instances",
-  validate(instanceValidation.myInstances, async (req, res) => {
+  "/:userId/instances",
+  validate(instanceValidation.getInstancesByUserId, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.getInstancesByUserId(req.params.id));
-  }),
-);
-
-instanceRouter.get(
-  "/:id/drafts",
-  validate(instanceValidation.myDrafts, async (req, res) => {
-    res.status(StatusCodes.OK).json(await Manager.getMyDrafts(req.params.id));
+      .json(
+        await Manager.getInstancesByUserId(
+          req.params.userId,
+          req.query.statuses,
+        ),
+      );
   }),
 );
 

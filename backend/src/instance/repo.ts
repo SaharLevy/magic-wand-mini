@@ -5,19 +5,19 @@ import {
   IAnswerUpdate,
   IInstance,
   IInstanceInput,
-  IInstanceStatusUpdate,
   InstanceStatus,
 } from "./types.js";
 
 const INSTANCE_NOT_FOUND = "Instance not found";
 
 class Repo {
+
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstance[]> => Instance.find({ filledBy: userId });
-
-  static getMyDrafts = async (userId: MongoObjectId): Promise<IInstance[]> =>
-    Instance.find({ filledBy: userId, status: "Draft" });
+    statuses: InstanceStatus[],
+  ): Promise<IInstance[]> => {
+    return Instance.find({ filledBy: userId, status: { $in: statuses } });
+  };
 
   static getInstanceById = async (
     instanceId: MongoObjectId,

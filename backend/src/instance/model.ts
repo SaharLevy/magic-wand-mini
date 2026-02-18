@@ -18,8 +18,8 @@ const optionsSchema = new Schema({
 });
 
 const tableAnswerSchema = new Schema({
-  rows: { type: String, default: [] },
-  values: { type: Schema.Types.Union, of: [String, [String]], default: [] },
+  rows: { type: Number, default: [] },
+  columns: { type: [Number], default: [] },
 });
 
 const dateSchema = new Schema({

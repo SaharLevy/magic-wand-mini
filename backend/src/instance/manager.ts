@@ -4,16 +4,14 @@ import {
   IAnswerUpdateWithIds,
   IInstance,
   IInstanceInput,
-  IInstanceStatusUpdate,
+  InstanceStatus,
 } from "./types.js";
 
 class Manager {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId);
-
-  static getMyDrafts = async (userId: MongoObjectId): Promise<IInstance[]> =>
-    Repo.getMyDrafts(userId);
+    statuses: InstanceStatus[],
+  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId, statuses);
 
   static createInstance = async (
     newInstance: IInstanceInput,

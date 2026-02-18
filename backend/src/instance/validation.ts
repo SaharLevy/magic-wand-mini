@@ -3,31 +3,23 @@ import { objectIdString } from "../shared/types.js";
 import {
   answerIdSchema,
   instanceSchema,
+  statusesSchema,
   updateAnswerSchemaWithIds,
 } from "./types.js";
 
 const instanceValidation = {
-  myInstances: {
+  getInstancesByUserId: {
     params: z
       .object({
-        id: objectIdString,
+        userId: objectIdString,
       })
       .strict(),
     body: z.object({}),
-    query: z.object({}),
+    query: statusesSchema,
   },
   createInstance: {
     params: z.object({}),
     body: instanceSchema,
-    query: z.object({}),
-  },
-  myDrafts: {
-    params: z
-      .object({
-        id: objectIdString,
-      })
-      .strict(),
-    body: z.object({}),
     query: z.object({}),
   },
   getInstanceById: {
