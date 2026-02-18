@@ -8,6 +8,7 @@ const config = {
     .asString(),
   DB_NAME: env.get("DB_NAME").default("MAGIC_WAND_MINI").asString(),
   SCHEMA_DISCRIMINATOR_KEY: "type",
+  INSTANCE_DISCRIMINATOR_KEY: "type",
 };
 
 export default config;

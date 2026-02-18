@@ -1,18 +1,9 @@
 import { z } from "zod";
-import { MongoObjectId, objectIdString } from "../shared/types.js";
-
-export enum QuestionTypes {
-  SHORT_TEXT = "SHORT_TEXT",
-  PARAGRAPH = "PARAGRAPH",
-  RADIO = "RADIO",
-  CHECKBOX = "CHECKBOX",
-  DROPDOWN = "DROPDOWN",
-  LINEAR_SCALE = "LINEAR_SCALE",
-  RADIO_TABLE = "RADIO_TABLE",
-  CHECKBOX_TABLE = "CHECKBOX_TABLE",
-  DATE = "DATE",
-  TIME = "TIME",
-}
+import {
+  QuestionTypes,
+  MongoObjectId,
+  objectIdString,
+} from "../shared/types.js";
 
 export enum SchemaStatus {
   Draft = "Draft",
@@ -24,79 +15,79 @@ export const optionSchema = z.object({
   order: z.number().int().min(0),
 });
 
-export const baseQuestionFields = z.object({
-  title: z.string().min(1, "Question title is required"),
-  description: z.string().optional(),
-  required: z.boolean().default(false),
-  order: z.number().int().min(0),
-});
+//Specific Shapes Schemas
 
-//Specific Questions Schemas
-
-const optionsShape = z.object({
+export const optionsShape = z.object({
   options: z.array(optionSchema),
 });
 
-const scaleShape = z.object({
+export const scaleShape = z.object({
   scaleMin: z.number().int(),
   scaleMax: z.number().int(),
   scaleMinLabel: z.string().optional(),
   scaleMaxLabel: z.string().optional(),
 });
 
-const tableShape = z.object({
+export const tableShape = z.object({
   rows: z.array(z.string()),
   columns: z.array(z.string()),
 });
 
 //Specific Question Schemas
 
-const shortTextSchema = z.object({
+export const shortTextSchema = z.object({
   type: z.literal(QuestionTypes.SHORT_TEXT),
 });
 
-const paragraphSchema = z.object({
+export const paragraphSchema = z.object({
   type: z.literal(QuestionTypes.PARAGRAPH),
 });
 
-const radioSchema = z.object({
+export const radioSchema = z.object({
   type: z.literal(QuestionTypes.RADIO),
   ...optionsShape.shape,
 });
 
-const checkboxSchema = z.object({
+export const checkboxSchema = z.object({
   type: z.literal(QuestionTypes.CHECKBOX),
   ...optionsShape.shape,
 });
 
-const dropdownSchema = z.object({
+export const dropdownSchema = z.object({
   type: z.literal(QuestionTypes.DROPDOWN),
   ...optionsShape.shape,
 });
 
-const linearScaleSchema = z.object({
+export const linearScaleSchema = z.object({
   type: z.literal(QuestionTypes.LINEAR_SCALE),
   ...scaleShape.shape,
 });
 
-const radioTableSchema = z.object({
+export const radioTableSchema = z.object({
   type: z.literal(QuestionTypes.RADIO_TABLE),
   ...tableShape.shape,
 });
 
-const checkboxTableSchema = z.object({
+export const checkboxTableSchema = z.object({
   type: z.literal(QuestionTypes.CHECKBOX_TABLE),
   ...tableShape.shape,
 });
 
-const dateSchema = z.object({
+export const dateSchema = z.object({
   type: z.literal(QuestionTypes.DATE),
   date: z.iso.date().optional(),
 });
 
-const timeSchema = z.object({
+export const timeSchema = z.object({
   type: z.literal(QuestionTypes.TIME),
   time: z.iso.time().optional(),
+});
+
+export const baseQuestionFields = z.object({
+  title: z.string().min(1, "Question title is required"),
+  description: z.string().optional(),
+  required: z.boolean().default(false),
+  order: z.number().int().min(0),
 });
 
 export const questionSchema = z
@@ -145,18 +136,7 @@ export const updateSectionSchemaWithoutId = z.object({
   order: z.number().int().min(0).optional(),
 });
 
-export const updateQuestionsSchemaWithoutIds = z.discriminatedUnion("type", [
-  shortTextSchema.partial(),
-  paragraphSchema.partial(),
-  radioSchema.partial(),
-  checkboxSchema.partial(),
-  dropdownSchema.partial(),
-  linearScaleSchema.partial(),
-  radioTableSchema.partial(),
-  checkboxTableSchema.partial(),
-  dateSchema.partial(),
-  timeSchema.partial(),
-]);
+export const updateQuestionsSchemaWithoutIds = questionSchema.optional()
 
 const questionIdsSchema = z.object({
   sectionId: objectIdString,

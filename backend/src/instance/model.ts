@@ -1,52 +1,72 @@
-import mongoose, { Schema } from "mongoose";
-import {
-  InstanceStatuses,
-  type IInstance,
-  type IAnswer,
-  type ITableAnswer,
-} from "./types.js";
-import { SchemaStatus } from "../schema/types.js";
+import mongoose, { Schema, Types } from "mongoose";
+import { type IInstance, type IAnswer, InstanceStatus } from "./types.js";
+import { QuestionTypes } from "../shared/types.js";
+import config from "../utils/config.js";
 
-const tableAnswerSchema = new Schema<ITableAnswer>({
-  row: { type: String, required: true },
-  value: { type: Schema.Types.Mixed, required: true }, // string | string[]
+const textSchema = new Schema({ text: { type: String, required: true } });
+
+const scaleSchema = new Schema({
+  scaleNumber: { type: Number, required: true },
 });
 
-const answerSchema = new Schema<IAnswer>({
-  questionId: { type: String, required: true },
-  sectionId: { type: String, required: true },
-  textValue: { type: String },
-  selectedOption: { type: String },
-  selectedOptions: { type: [String] },
-  scaleValue: { type: Number },
-  dateValue: { type: Date },
-  timeValue: { type: String },
-  tableAnswers: { type: [tableAnswerSchema] },
+const optionSchema = new Schema({
+  option: { type: String, required: true },
 });
+
+const optionsSchema = new Schema({
+  options: { type: [String], default: [] },
+});
+
+const tableAnswerSchema = new Schema({
+  rows: { type: Number, default: [] },
+  columns: { type: [Number], default: [] },
+});
+
+const dateSchema = new Schema({
+  date: { type: Date },
+});
+
+const timeSchema = new Schema({
+  time: { type: String },
+});
+
+const baseAnswerSchema = new Schema<IAnswer>(
+  {
+    type: { type: String, enum: Object.values(QuestionTypes), required: true },
+  },
+  {
+    discriminatorKey: config.INSTANCE_DISCRIMINATOR_KEY,
+  },
+);
+
+baseAnswerSchema.discriminator(QuestionTypes.SHORT_TEXT, textSchema);
+baseAnswerSchema.discriminator(QuestionTypes.PARAGRAPH, textSchema);
+baseAnswerSchema.discriminator(QuestionTypes.LINEAR_SCALE, scaleSchema);
+baseAnswerSchema.discriminator(QuestionTypes.RADIO, optionSchema);
+baseAnswerSchema.discriminator(QuestionTypes.DROPDOWN, optionSchema);
+baseAnswerSchema.discriminator(QuestionTypes.CHECKBOX, optionsSchema);
+baseAnswerSchema.discriminator(QuestionTypes.CHECKBOX_TABLE, tableAnswerSchema);
+baseAnswerSchema.discriminator(QuestionTypes.RADIO_TABLE, tableAnswerSchema);
+baseAnswerSchema.discriminator(QuestionTypes.DATE, dateSchema);
+baseAnswerSchema.discriminator(QuestionTypes.TIME, timeSchema);
 
 const instanceSchema = new Schema<IInstance>({
-  schemaId: {
-    type: Schema.Types.ObjectId,
-    ref: "FormSchema",
-    required: true,
-  },
   filledBy: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "User",
     required: true,
   },
   status: {
     type: String,
-    enum: InstanceStatuses,
-    default: "Draft",
+    enum: Object.values(InstanceStatus),
+    default: InstanceStatus.Draft,
   },
   answers: {
-    type: [answerSchema],
+    type: [baseAnswerSchema],
     default: [],
   },
-  currentSectionIndex: {
-    type: Number,
-    default: 0,
+  submittedAt: {
+    type: Date,
   },
 });
 

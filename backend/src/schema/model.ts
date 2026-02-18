@@ -5,9 +5,9 @@ import {
   type IQuestion,
   type IOption,
   SchemaStatus,
-  QuestionTypes,
 } from "./types.js";
 import config from "../utils/config.js";
+import { QuestionTypes } from "../shared/types.js";
 
 const textSchema = new Schema({});
 
@@ -19,7 +19,7 @@ const scaleSchema = new Schema({
 });
 
 const dateSchema = new Schema({
-  date: { type: String },
+  date: { type: Date },
 });
 
 const timeSchema = new Schema({
