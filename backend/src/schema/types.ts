@@ -28,6 +28,7 @@ export const scaleShape = z.object({
   scaleMaxLabel: z.string().optional(),
 });
 
+// maybe ill need to change it later on  think!
 export const tableShape = z.object({
   rows: z.array(z.string()),
   columns: z.array(z.string()),
@@ -136,7 +137,7 @@ export const updateSectionSchemaWithoutId = z.object({
   order: z.number().int().min(0).optional(),
 });
 
-export const updateQuestionsSchemaWithoutIds = questionSchema.optional()
+export const updateQuestionsSchemaWithoutIds = questionSchema.optional();
 
 const questionIdsSchema = z.object({
   sectionId: objectIdString,
@@ -169,3 +170,15 @@ export type ISectionUpdate = z.infer<typeof updateSectionSchemaWithoutId>;
 export type ISectionUpdateRequest = z.infer<typeof updateSectionSchema>;
 export type IQuestionUpdate = Partial<IQuestion>;
 export type IQuestionUpdateRequest = z.infer<typeof updateQuestionSchema>;
+
+// Specific question types
+
+export type IText = Omit<z.infer<typeof shortTextSchema>, "type">;
+export type IRadio = Omit<z.infer<typeof radioSchema>, "type">;
+export type ICheckbox = Omit<z.infer<typeof checkboxSchema>, "type">;
+export type IDropdown = Omit<z.infer<typeof dropdownSchema>, "type">;
+export type ILinearScale = Omit<z.infer<typeof linearScaleSchema>, "type">;
+export type IRadioTable = Omit<z.infer<typeof radioTableSchema>, "type">;
+export type ICheckboxTable = Omit<z.infer<typeof checkboxTableSchema>, "type">;
+export type IDate = Omit<z.infer<typeof dateSchema>, "type">;
+export type ITime = Omit<z.infer<typeof timeSchema>, "type">;

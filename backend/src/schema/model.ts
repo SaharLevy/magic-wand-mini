@@ -5,24 +5,30 @@ import {
   type IQuestion,
   type IOption,
   SchemaStatus,
+  IText,
+  ILinearScale,
+  IDate,
+  ITime,
+  IRadio,
+  IRadioTable,
 } from "./types.js";
 import config from "../utils/config.js";
 import { QuestionTypes } from "../shared/types.js";
 
-const textSchema = new Schema({});
+const textSchema = new Schema<IText>({});
 
-const scaleSchema = new Schema({
+const scaleSchema = new Schema<ILinearScale>({
   scaleMin: { type: Number, required: true },
   scaleMax: { type: Number, required: true },
   scaleMinLabel: { type: String },
   scaleMaxLabel: { type: String },
 });
 
-const dateSchema = new Schema({
+const dateSchema = new Schema<IDate>({
   date: { type: Date },
 });
 
-const timeSchema = new Schema({
+const timeSchema = new Schema<ITime>({
   time: { type: String },
 });
 
@@ -31,11 +37,11 @@ const optionSchema = new Schema<IOption>({
   order: { type: Number, required: true },
 });
 
-const selectionShapeSchema = new Schema({
+const selectionShapeSchema = new Schema<IRadio>({
   options: { type: [optionSchema], default: [] },
 });
 
-const tableSchemaShape = new Schema({
+const tableSchemaShape = new Schema<IRadioTable>({
   rows: { type: [String], default: [] },
   columns: { type: [String], default: [] },
 });
