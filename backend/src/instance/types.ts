@@ -1,3 +1,4 @@
+import { questionIdsSchema } from "../schema/types.js";
 import {
   MongoObjectId,
   objectIdString,
@@ -114,6 +115,11 @@ export const answerIdSchema = z.object({
   answerId: objectIdString,
 });
 
+export const createInstanceSchema = z.intersection(
+  questionIdsSchema,
+  instanceSchema,
+);
+
 export const updateAnswerSchemaWithIds = z.intersection(
   answerIdSchema,
   updateAnswerSchema,
@@ -123,10 +129,9 @@ export const statusesSchema = z.object({
   statuses: z.array(z.enum(InstanceStatus)),
 });
 
-export type IInstanceInput = z.infer<typeof instanceSchema>;
+export type IInstanceInput = z.infer<typeof createInstanceSchema>;
 export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
-
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
 

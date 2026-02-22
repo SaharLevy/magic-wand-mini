@@ -122,6 +122,22 @@ export const schemaInput = z.object({
   sections: z.array(sectionSchema).default([]),
 });
 
+// Output with ids
+
+export const questionWithIdSchema = baseQuestionFields.extend({
+  _id: objectIdString,
+});
+
+export const sectionWithIdSchema = sectionSchema.extend({
+  _id: objectIdString,
+  questions: z.array(questionWithIdSchema).default([]),
+});
+
+export const schemaWithIdSchema = schemaInput.extend({
+  _id: objectIdString,
+  sections: z.array(sectionWithIdSchema).default([]),
+});
+
 // Updates
 
 export const updateSchema = z.object({
@@ -139,7 +155,7 @@ export const updateSectionSchemaWithoutId = z.object({
 
 export const updateQuestionsSchemaWithoutIds = questionSchema.optional();
 
-const questionIdsSchema = z.object({
+export const questionIdsSchema = z.object({
   sectionId: objectIdString,
   questionId: objectIdString,
 });
@@ -163,7 +179,7 @@ export type IOption = z.infer<typeof optionSchema>;
 export type IQuestion = z.infer<typeof questionSchema>;
 export type ISection = z.infer<typeof sectionSchema>;
 export type ISchemaInput = z.infer<typeof schemaInput>;
-export type ISchema = ISchemaInput & { _id: MongoObjectId };
+export type ISchema = z.infer<typeof schemaWithIdSchema>;
 
 export type ISchemaUpdate = z.infer<typeof updateSchema>;
 export type ISectionUpdate = z.infer<typeof updateSectionSchemaWithoutId>;

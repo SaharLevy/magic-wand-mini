@@ -2,7 +2,7 @@ import z from "zod";
 import { objectIdString } from "../shared/types.js";
 import {
   answerIdSchema,
-  instanceSchema,
+  createInstanceSchema,
   statusesSchema,
   updateAnswerSchemaWithIds,
 } from "./types.js";
@@ -18,8 +18,10 @@ const instanceValidation = {
     query: statusesSchema,
   },
   createInstance: {
-    params: z.object({}),
-    body: instanceSchema,
+    params: z.object({
+      schemaId: objectIdString,
+    }),
+    body: createInstanceSchema,
     query: z.object({}),
   },
   getInstanceById: {

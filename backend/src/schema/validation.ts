@@ -32,6 +32,15 @@ const schemasValidation = {
     body: schemaInput,
     query: z.object({}),
   },
+  createSection: {
+    params: z
+      .object({
+        id: objectIdString,
+      })
+      .strict(),
+    body: z.object({}),
+    query: z.object({}),
+  },
   deleteSection: {
     params: z.object({}),
     body: z.object({

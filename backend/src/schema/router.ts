@@ -4,7 +4,6 @@ import validate from "../utils/asyncHandler.js";
 import { StatusCodes } from "http-status-codes";
 import Manager from "./manager.js";
 
-
 const schemasRouter = Router();
 
 schemasRouter.get(
@@ -53,7 +52,14 @@ schemasRouter.put(
 );
 
 schemasRouter.patch(
-  "/:id/section",
+  "/:id/createSection",
+  validate(schemasValidation.createSection, async (req, res) => {
+    res.status(StatusCodes.OK).json(await Manager.createSection(req.params.id));
+  }),
+);
+
+schemasRouter.patch(
+  "/:id/updateSection",
   validate(schemasValidation.updateSection, async (req, res) => {
     res
       .status(StatusCodes.OK)
@@ -62,7 +68,7 @@ schemasRouter.patch(
 );
 
 schemasRouter.patch(
-  "/:id/question",
+  "/:id/updateQuestion",
   validate(schemasValidation.updateQuestion, async (req, res) => {
     res
       .status(StatusCodes.OK)

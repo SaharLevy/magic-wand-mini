@@ -32,6 +32,13 @@ class Repo {
       new NotFoundError(SCHEMA_NOT_FOUND),
     );
 
+  static createSection = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    FormSchema.findByIdAndUpdate(
+      schemaId,
+      { $push: { sections: {} } },
+      { new: true },
+    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+
   static updateSection = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
@@ -49,12 +56,18 @@ class Repo {
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
   };
 
+  //will continue here later on.
+  static createQuestion = async (
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
+  ): Promise<ISchema> => FormSchema.findByIdAndUpdate(schemaId);
+
   static updateQuestion = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
     questionId: MongoObjectId,
     newQuestion: IQuestionUpdate,
-  ) => {
+  ): Promise<ISchema> => {
     const newQuestionQueries: Record<string, unknown> = {};
     Object.entries(newQuestion).forEach(([key, value]) => {
       newQuestionQueries[`sections.$[section].questions.$[question].${key}`] =

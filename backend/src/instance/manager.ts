@@ -1,5 +1,6 @@
 import { MongoObjectId } from "../shared/types.js";
 import Repo from "./repo.js";
+import SchemaRepo from "../schema/repo.js";
 import {
   IAnswerUpdateWithIds,
   IInstance,
@@ -14,8 +15,18 @@ class Manager {
   ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId, statuses);
 
   static createInstance = async (
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
+    questionId: MongoObjectId,
     newInstance: IInstanceInput,
-  ): Promise<IInstance> => Repo.createInstance(newInstance);
+  ): Promise<IInstance> => {
+    const schema = await SchemaRepo.getSchemaById(schemaId);
+    const question = schema?.sections
+      .find((section) => section._id === sectionId)
+      ?.questions.find((question) => question._id === questionId);
+
+    return Repo.createInstance(newInstance);
+  };
 
   static getInstanceById = async (
     instanceId: MongoObjectId,

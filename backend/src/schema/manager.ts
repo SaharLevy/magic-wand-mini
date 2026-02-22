@@ -20,6 +20,9 @@ class Manager {
   static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
     Repo.createSchema(newSchema);
 
+  static createSection = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    Repo.createSection(schemaId);
+
   static updateSchemaById = async (
     schemaId: MongoObjectId,
     newSchema: ISchemaUpdate,
@@ -31,11 +34,7 @@ class Manager {
   ): Promise<ISchema> => {
     const { sectionId, ...updatedSection } = sectionData;
 
-    return Repo.updateSection(
-      schemaId,
-      sectionId,
-      updatedSection,
-    );
+    return Repo.updateSection(schemaId, sectionId, updatedSection);
   };
 
   static updateQuestion = async (

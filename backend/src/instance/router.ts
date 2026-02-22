@@ -30,11 +30,20 @@ instanceRouter.get(
 );
 
 instanceRouter.post(
-  "/",
+  "/:schemaId",
   validate(instanceValidation.createInstance, async (req, res) => {
+    const { sectionId, questionId, ...newInstance } = req.body;
+
     res
       .status(StatusCodes.CREATED)
-      .json(await Manager.createInstance(req.body));
+      .json(
+        await Manager.createInstance(
+          req.params.schemaId,
+          sectionId,
+          questionId,
+          newInstance,
+        ),
+      );
   }),
 );
 
