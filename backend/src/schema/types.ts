@@ -124,9 +124,9 @@ export const schemaInput = z.object({
 
 // Output with ids
 
-export const questionWithIdSchema = baseQuestionFields.extend({
-  _id: objectIdString,
-});
+export const questionWithIdSchema = questionSchema.and(
+  z.object({ _id: objectIdString }),
+);
 
 export const sectionWithIdSchema = sectionSchema.extend({
   _id: objectIdString,

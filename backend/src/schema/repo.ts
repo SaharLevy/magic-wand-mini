@@ -1,8 +1,6 @@
 import {
-  IBaseQuestion,
   IQuestionUpdate,
   ISchema,
-  ISchemaInput,
   ISchemaUpdate,
   ISectionUpdate,
   SchemaStatus,
@@ -10,9 +8,8 @@ import {
 import { FormSchema } from "./model.js";
 import { NotFoundError } from "../utils/customErrors.js";
 import { MongoObjectId, QuestionTypes } from "../shared/types.js";
-import { title } from "node:process";
 
-const SCHEMA_NOT_FOUND = "Schema not found";
+export const SCHEMA_NOT_FOUND = "Schema not found";
 
 class Repo {
   static getSchemas = async (): Promise<ISchema[]> => FormSchema.find({});
