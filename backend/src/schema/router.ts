@@ -28,15 +28,11 @@ schemasRouter.get(
 );
 
 schemasRouter.post(
-  "/",
+  "/:schemaId",
   validate(schemasValidation.createSchema, async (req, res) => {
-    res.status(StatusCodes.CREATED).json(
-      await Manager.createSchema({
-        ...req.body,
-        createdBy: req.body.createdBy,
-        assignedUsers: req.body.assignedUsers,
-      }),
-    );
+    res
+      .status(StatusCodes.CREATED)
+      .json(await Manager.createSchema(req.params.schemaId));
   }),
 );
 
@@ -55,6 +51,15 @@ schemasRouter.patch(
   "/:id/createSection",
   validate(schemasValidation.createSection, async (req, res) => {
     res.status(StatusCodes.OK).json(await Manager.createSection(req.params.id));
+  }),
+);
+
+schemasRouter.patch(
+  "/:id/createQuestion",
+  validate(schemasValidation.createQuestion, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.createQuestion(req.params.id, req.body.sectionId));
   }),
 );
 

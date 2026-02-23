@@ -85,7 +85,7 @@ export const timeSchema = z.object({
 });
 
 export const baseQuestionFields = z.object({
-  title: z.string().min(1, "Question title is required"),
+  title: z.string(),
   description: z.string().optional(),
   required: z.boolean().default(false),
   order: z.number().int().min(0),
@@ -107,14 +107,14 @@ export const questionSchema = z
   .and(baseQuestionFields);
 
 export const sectionSchema = z.object({
-  title: z.string().min(1, "Section title is required"),
+  title: z.string(),
   description: z.string().optional(),
   order: z.number().int().min(0),
   questions: z.array(questionSchema).default([]),
 });
 
 export const schemaInput = z.object({
-  title: z.string().min(1, "Schema title is required"),
+  title: z.string(),
   description: z.string().optional(),
   status: z.enum(SchemaStatus).default(SchemaStatus.Draft),
   createdBy: objectIdString,
@@ -160,7 +160,7 @@ export const questionIdsSchema = z.object({
   questionId: objectIdString,
 });
 
-const sectionIdSchema = z.object({
+export const sectionIdSchema = z.object({
   sectionId: objectIdString,
 });
 
@@ -175,6 +175,7 @@ export const updateQuestionSchema = z.intersection(
 );
 
 // Infer base types
+export type IBaseQuestion = z.infer<typeof baseQuestionFields>;
 export type IOption = z.infer<typeof optionSchema>;
 export type IQuestion = z.infer<typeof questionSchema>;
 export type ISection = z.infer<typeof sectionSchema>;

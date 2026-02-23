@@ -4,6 +4,7 @@ import {
   updateSchema,
   updateQuestionSchema,
   updateSectionSchema,
+  sectionIdSchema,
 } from "./types.js";
 import { objectIdString } from "../shared/types.js";
 
@@ -28,7 +29,9 @@ const schemasValidation = {
     query: z.object({}),
   },
   createSchema: {
-    params: z.object({}),
+    params: z.object({
+      schemaId: objectIdString,
+    }),
     body: schemaInput,
     query: z.object({}),
   },
@@ -39,6 +42,15 @@ const schemasValidation = {
       })
       .strict(),
     body: z.object({}),
+    query: z.object({}),
+  },
+  createQuestion: {
+    params: z
+      .object({
+        id: objectIdString,
+      })
+      .strict(),
+    body: sectionIdSchema,
     query: z.object({}),
   },
   deleteSection: {

@@ -14,6 +14,7 @@ class Manager {
     statuses: InstanceStatus[],
   ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId, statuses);
 
+  // need to translate the questions inside of the schema to fillable answers.
   static createInstance = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
