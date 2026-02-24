@@ -12,10 +12,11 @@ import { MongoObjectId, QuestionTypes } from "../shared/types.js";
 export const SCHEMA_NOT_FOUND = "Schema not found";
 
 class Repo {
-  static getSchemas = async (): Promise<ISchema[]> => FormSchema.find({});
-
-  static getAllDrafts = async (): Promise<ISchema[]> =>
-    FormSchema.find({ status: SchemaStatus.Draft });
+  static getSchemasByUserId = async (
+    userId: MongoObjectId,
+    statuses: SchemaStatus[],
+  ): Promise<ISchema[]> =>
+    FormSchema.find({ filledBy: userId, status: { $in: statuses } });
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError(SCHEMA_NOT_FOUND));

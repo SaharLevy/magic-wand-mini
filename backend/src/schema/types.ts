@@ -1,7 +1,6 @@
 import { z } from "zod";
 import {
   QuestionTypes,
-  MongoObjectId,
   objectIdString,
 } from "../shared/types.js";
 
@@ -114,7 +113,7 @@ export const sectionSchema = z.object({
 });
 
 export const schemaInput = z.object({
-  title: z.string(),
+  title: z.string().default(""),
   description: z.string().optional(),
   status: z.enum(SchemaStatus).default(SchemaStatus.Draft),
   createdBy: objectIdString,
@@ -148,7 +147,7 @@ export const updateSchema = z.object({
 });
 
 export const updateSectionSchemaWithoutId = z.object({
-  title: z.string().min(1, "Section title is required").optional(),
+  title: z.string().optional(),
   description: z.string().optional(),
   order: z.number().int().min(0).optional(),
 });
@@ -173,6 +172,10 @@ export const updateQuestionSchema = z.intersection(
   questionIdsSchema,
   updateQuestionsSchemaWithoutIds,
 );
+
+export const statusesSchema = z.object({
+  statuses: z.array(z.enum(SchemaStatus)),
+});
 
 // Infer base types
 export type IBaseQuestion = z.infer<typeof baseQuestionFields>;

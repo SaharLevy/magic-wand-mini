@@ -1,18 +1,18 @@
-import { Types } from "mongoose";
 import Repo from "./repo.js";
 import {
   IQuestionUpdateRequest,
   ISchema,
-  ISchemaInput,
   ISchemaUpdate,
   ISectionUpdateRequest,
+  SchemaStatus,
 } from "./types.js";
 import { MongoObjectId } from "../shared/types.js";
 
 class Manager {
-  static getSchemas = async (): Promise<ISchema[]> => Repo.getSchemas();
-
-  static getAllDrafts = async (): Promise<ISchema[]> => Repo.getAllDrafts();
+  static getSchemasByUserId = async (
+    userId: MongoObjectId,
+    statuses: SchemaStatus[],
+  ): Promise<ISchema[]> => Repo.getSchemasByUserId(userId, statuses);
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);

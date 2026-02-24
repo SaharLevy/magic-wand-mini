@@ -4,43 +4,46 @@ import validate from "../utils/asyncHandler.js";
 import { StatusCodes } from "http-status-codes";
 import Manager from "./manager.js";
 
+// TODO:
+// - make it so that its not a must to order to update the section/question
+// - refactor createQuestion so that the question order number auto inc.
+
 const schemasRouter = Router();
 
 schemasRouter.get(
-  "/",
-  validate(schemasValidation.getSchemas, async (_, res) => {
-    res.status(StatusCodes.OK).json(await Manager.getSchemas());
+  "/:userId/getSchemas",
+  validate(schemasValidation.getSchemasByUserId, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(
+        await Manager.getSchemasByUserId(req.params.userId, req.query.statuses),
+      );
   }),
 );
 
 schemasRouter.get(
-  "/getDrafts",
-  validate(schemasValidation.getAllDrafts, async (_, res) => {
-    res.status(StatusCodes.OK).json(await Manager.getAllDrafts());
-  }),
-);
-
-schemasRouter.get(
-  "/:id",
+  "/:schemaId",
   validate(schemasValidation.getSchemaById, async (req, res) => {
-    res.status(StatusCodes.OK).json(await Manager.getSchemaById(req.params.id));
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.getSchemaById(req.params.schemaId));
   }),
 );
 
 schemasRouter.post(
-  "/:schemaId",
+  "/:userId",
   validate(schemasValidation.createSchema, async (req, res) => {
     res
       .status(StatusCodes.CREATED)
-      .json(await Manager.createSchema(req.params.schemaId));
+      .json(await Manager.createSchema(req.params.userId));
   }),
 );
 
 schemasRouter.put(
-  "/:id",
+  "/:schemaId",
   validate(schemasValidation.updateSchemaById, async (req, res) => {
     res.status(StatusCodes.OK).json(
-      await Manager.updateSchemaById(req.params.id, {
+      await Manager.updateSchemaById(req.params.schemaId, {
         ...req.body,
       }),
     );
@@ -48,36 +51,40 @@ schemasRouter.put(
 );
 
 schemasRouter.patch(
-  "/:id/createSection",
+  "/:schemaId/createSection",
   validate(schemasValidation.createSection, async (req, res) => {
-    res.status(StatusCodes.OK).json(await Manager.createSection(req.params.id));
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.createSection(req.params.schemaId));
   }),
 );
 
 schemasRouter.patch(
-  "/:id/createQuestion",
+  "/:schemaId/createQuestion",
   validate(schemasValidation.createQuestion, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.createQuestion(req.params.id, req.body.sectionId));
+      .json(
+        await Manager.createQuestion(req.params.schemaId, req.body.sectionId),
+      );
   }),
 );
 
 schemasRouter.patch(
-  "/:id/updateSection",
+  "/:schemaId/updateSection",
   validate(schemasValidation.updateSection, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.updateSection(req.params.id, req.body));
+      .json(await Manager.updateSection(req.params.schemaId, req.body));
   }),
 );
 
 schemasRouter.patch(
-  "/:id/updateQuestion",
+  "/:schemaId/updateQuestion",
   validate(schemasValidation.updateQuestion, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.updateQuestion(req.params.id, req.body));
+      .json(await Manager.updateQuestion(req.params.schemaId, req.body));
   }),
 );
 

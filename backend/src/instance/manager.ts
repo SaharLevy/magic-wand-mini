@@ -1,4 +1,4 @@
-import { MongoObjectId, QuestionTypes } from "../shared/types.js";
+import { MongoObjectId } from "../shared/types.js";
 import Repo from "./repo.js";
 import SchemaRepo, { SCHEMA_NOT_FOUND } from "../schema/repo.js";
 import {

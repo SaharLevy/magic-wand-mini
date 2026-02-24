@@ -83,7 +83,7 @@ const sectionSchema = new Schema<ISection>({
 const formSchemaDefinition = new Schema<ISchema>({
   title: {
     type: String,
-    required: true,
+    default: "",
     trim: true,
   },
   description: {

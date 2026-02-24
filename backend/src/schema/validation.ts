@@ -5,24 +5,24 @@ import {
   updateQuestionSchema,
   updateSectionSchema,
   sectionIdSchema,
+  statusesSchema,
 } from "./types.js";
 import { objectIdString } from "../shared/types.js";
 
 const schemasValidation = {
-  getSchemas: {
-    params: z.object({}),
+  getSchemasByUserId: {
+    params: z
+      .object({
+        userId: objectIdString,
+      })
+      .strict(),
     body: z.object({}),
-    query: z.object({}),
-  },
-  getAllDrafts: {
-    params: z.object({}),
-    body: z.object({}),
-    query: z.object({}),
+    query: statusesSchema,
   },
   getSchemaById: {
     params: z
       .object({
-        id: objectIdString,
+        schemaId: objectIdString,
       })
       .strict(),
     body: z.object({}),
@@ -30,7 +30,7 @@ const schemasValidation = {
   },
   createSchema: {
     params: z.object({
-      schemaId: objectIdString,
+      userId: objectIdString,
     }),
     body: schemaInput,
     query: z.object({}),
@@ -38,7 +38,7 @@ const schemasValidation = {
   createSection: {
     params: z
       .object({
-        id: objectIdString,
+        schemaId: objectIdString,
       })
       .strict(),
     body: z.object({}),
@@ -47,7 +47,7 @@ const schemasValidation = {
   createQuestion: {
     params: z
       .object({
-        id: objectIdString,
+        schemaId: objectIdString,
       })
       .strict(),
     body: sectionIdSchema,
@@ -72,21 +72,21 @@ const schemasValidation = {
   },
   updateSchemaById: {
     params: z.object({
-      id: objectIdString,
+      schemaId: objectIdString,
     }),
     body: updateSchema,
     query: z.object({}),
   },
   updateSection: {
     params: z.object({
-      id: objectIdString,
+      schemaId: objectIdString,
     }),
     body: updateSectionSchema,
     query: z.object({}),
   },
   updateQuestion: {
     params: z.object({
-      id: objectIdString,
+      schemaId: objectIdString,
     }),
     body: updateQuestionSchema,
     query: z.object({}),

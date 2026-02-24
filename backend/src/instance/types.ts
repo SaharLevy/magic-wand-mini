@@ -1,4 +1,3 @@
-import { questionIdsSchema } from "../schema/types.js";
 import {
   MongoObjectId,
   objectIdString,
