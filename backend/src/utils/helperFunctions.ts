@@ -25,6 +25,6 @@ export const generateEmptyAnswer = (
     case QuestionTypes.TIME:
       return { ...base, type, time: undefined };
     default:
-      throw new Error(`Question type not supported: ${type}`);
+      throw new Error(`Question type not supported: ${type satisfies never}`);
   }
 };

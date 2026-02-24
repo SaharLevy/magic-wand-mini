@@ -23,6 +23,7 @@ class Repo {
 
   static createSchema = async (userId: MongoObjectId): Promise<ISchema> => {
     // for now im leaving the createdBy as fixed ObjectId will come back for it when ill work on the User.
+
     const emptySchema = {
       title: "",
       createdBy: "507f1f77bcf86cd799439011",
@@ -67,6 +68,10 @@ class Repo {
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
   ): Promise<ISchema> => {
+    // TODO:
+    // - make it so that its not a must to include order to update the section/question
+    // - refactor createQuestion so that the question order number auto inc.
+
     const emptyQuestion = {
       type: QuestionTypes.SHORT_TEXT,
       title: "",

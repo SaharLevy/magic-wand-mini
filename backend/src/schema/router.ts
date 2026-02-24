@@ -4,10 +4,6 @@ import validate from "../utils/asyncHandler.js";
 import { StatusCodes } from "http-status-codes";
 import Manager from "./manager.js";
 
-// TODO:
-// - make it so that its not a must to order to update the section/question
-// - refactor createQuestion so that the question order number auto inc.
-
 const schemasRouter = Router();
 
 schemasRouter.get(
