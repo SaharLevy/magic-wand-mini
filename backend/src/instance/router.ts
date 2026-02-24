@@ -30,11 +30,13 @@ instanceRouter.get(
 );
 
 instanceRouter.post(
-  "/",
+  "/:schemaId",
   validate(instanceValidation.createInstance, async (req, res) => {
     res
       .status(StatusCodes.CREATED)
-      .json(await Manager.createInstance(req.body));
+      .json(
+        await Manager.createInstance(req.params.schemaId, req.body.filledBy),
+      );
   }),
 );
 
@@ -54,15 +56,21 @@ instanceRouter.patch(
       .status(StatusCodes.OK)
       .json(await Manager.updateAnswer(req.params.id, req.body));
   }),
+);
 
-  instanceRouter.delete(
-    "/:id",
-    validate(instanceValidation.deleteAnswer, async (req, res) => {
-      res
-        .status(StatusCodes.OK)
-        .json(await Manager.deleteAnswer(req.params.id, req.body.answerId));
-    }),
-  ),
+instanceRouter.delete(
+  "/:id",
+  validate(instanceValidation.deleteAnswer, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(
+        await Manager.deleteAnswer(
+          req.params.id,
+          req.body.sectionId,
+          req.body.answerId,
+        ),
+      );
+  }),
 );
 
 export default instanceRouter;
