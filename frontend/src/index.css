@@ -12,9 +12,10 @@ body {
 }
 
 #root {
-  min-height: 100vh;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  color-scheme: light dark;
   align-items: center;
 }
