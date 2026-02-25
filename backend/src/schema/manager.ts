@@ -1,24 +1,32 @@
-import { Types } from "mongoose";
 import Repo from "./repo.js";
 import {
   IQuestionUpdateRequest,
   ISchema,
-  ISchemaInput,
   ISchemaUpdate,
   ISectionUpdateRequest,
+  SchemaStatus,
 } from "./types.js";
 import { MongoObjectId } from "../shared/types.js";
 
 class Manager {
-  static getSchemas = async (): Promise<ISchema[]> => Repo.getSchemas();
-
-  static getAllDrafts = async (): Promise<ISchema[]> => Repo.getAllDrafts();
+  static getSchemasByUserId = async (
+    userId: MongoObjectId,
+    statuses: SchemaStatus[],
+  ): Promise<ISchema[]> => Repo.getSchemasByUserId(userId, statuses);
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);
 
-  static createSchema = async (newSchema: ISchemaInput): Promise<ISchema> =>
-    Repo.createSchema(newSchema);
+  static createSchema = async (userId: MongoObjectId): Promise<ISchema> =>
+    Repo.createSchema(userId);
+
+  static createSection = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    Repo.createSection(schemaId);
+
+  static createQuestion = async (
+    schemaId: MongoObjectId,
+    sectionId: MongoObjectId,
+  ): Promise<ISchema> => Repo.createQuestion(schemaId, sectionId);
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,
@@ -31,11 +39,7 @@ class Manager {
   ): Promise<ISchema> => {
     const { sectionId, ...updatedSection } = sectionData;
 
-    return Repo.updateSection(
-      schemaId,
-      sectionId,
-      updatedSection,
-    );
+    return Repo.updateSection(schemaId, sectionId, updatedSection);
   };
 
   static updateQuestion = async (

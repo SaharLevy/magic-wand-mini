@@ -11,20 +11,21 @@ import {
   ITime,
   IRadioTable,
   ICheckboxTable,
+  ISectionAnswer,
 } from "./types.js";
 import { QuestionTypes } from "../shared/types.js";
 import config from "../utils/config.js";
 
 const textSchema = new Schema<IText>({
-  text: { type: String, required: true },
+  text: { type: String },
 });
 
 const scaleSchema = new Schema<IScale>({
-  scaleNumber: { type: Number, required: true },
+  scaleNumber: { type: Number },
 });
 
 const optionSchema = new Schema<IOption>({
-  option: { type: String, required: true },
+  option: { type: String },
 });
 
 const optionsSchema = new Schema<IOptions>({
@@ -62,6 +63,7 @@ const timeSchema = new Schema<ITime>({
 const baseAnswerSchema = new Schema<IAnswer>(
   {
     type: { type: String, enum: Object.values(QuestionTypes), required: true },
+    questionId: { type: Types.ObjectId, required: true },
   },
   {
     discriminatorKey: config.INSTANCE_DISCRIMINATOR_KEY,
@@ -82,7 +84,20 @@ baseAnswerSchema.discriminator(QuestionTypes.RADIO_TABLE, radioTableSchema);
 baseAnswerSchema.discriminator(QuestionTypes.DATE, dateSchema);
 baseAnswerSchema.discriminator(QuestionTypes.TIME, timeSchema);
 
+const sectionSchema = new Schema<ISectionAnswer>(
+  {
+    sectionId: { type: Types.ObjectId, required: true },
+    answers: { type: [baseAnswerSchema], default: [] },
+  },
+  { _id: false },
+);
+
 const instanceSchema = new Schema<IInstance>({
+  schemaId: {
+    type: Types.ObjectId,
+    ref: "Schema",
+    required: true,
+  },
   filledBy: {
     type: Types.ObjectId,
     ref: "User",
@@ -93,8 +108,8 @@ const instanceSchema = new Schema<IInstance>({
     enum: Object.values(InstanceStatus),
     default: InstanceStatus.Draft,
   },
-  answers: {
-    type: [baseAnswerSchema],
+  sections: {
+    type: [sectionSchema],
     default: [],
   },
   submittedAt: {

@@ -88,30 +88,47 @@ export const timeAnswer = z.object({
   time: z.iso.time().optional(),
 });
 
-export const answerSchema = z.discriminatedUnion("type", [
-  shortTextAnswer,
-  paragraphAnswer,
-  radioAnswer,
-  checkboxAnswer,
-  dropdownAnswer,
-  linearScaleAnswer,
-  radioTableAnswer,
-  checkboxTableAnswer,
-  dateAnswer,
-  timeAnswer,
-]);
+export const baseAnswerFields = z.object({
+  questionId: objectIdString,
+});
+
+export const answerSchema = z
+  .discriminatedUnion("type", [
+    shortTextAnswer,
+    paragraphAnswer,
+    radioAnswer,
+    checkboxAnswer,
+    dropdownAnswer,
+    linearScaleAnswer,
+    radioTableAnswer,
+    checkboxTableAnswer,
+    dateAnswer,
+    timeAnswer,
+  ])
+  .and(baseAnswerFields);
 
 export const updateAnswerSchema = answerSchema.optional();
 
+export const sectionAnswerSchema = z.object({
+  sectionId: objectIdString,
+  answers: answerSchema.array().default([]),
+});
+
 export const instanceSchema = z.object({
+  schemaId: objectIdString,
   filledBy: objectIdString,
   status: z.enum(InstanceStatus).default(InstanceStatus.Draft),
-  answers: answerSchema.array(),
+  sections: sectionAnswerSchema.array().default([]),
   submittedAt: z.iso.date().optional(),
 });
 
 export const answerIdSchema = z.object({
+  sectionId: objectIdString,
   answerId: objectIdString,
+});
+
+export const createInstanceSchema = z.object({
+  filledBy: objectIdString,
 });
 
 export const updateAnswerSchemaWithIds = z.intersection(
@@ -123,10 +140,12 @@ export const statusesSchema = z.object({
   statuses: z.array(z.enum(InstanceStatus)),
 });
 
+// new logic section
+export type ISectionAnswer = z.infer<typeof sectionAnswerSchema>;
+
 export type IInstanceInput = z.infer<typeof instanceSchema>;
 export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
-
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
 
