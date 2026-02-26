@@ -1,7 +1,7 @@
+import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
+
 const SchemaCreationPage = () => {
-  return <div>
-    <p>schema!</p>
-  </div>;
+  return <SectionWrapper></SectionWrapper>;
 };
 
 export default SchemaCreationPage;
