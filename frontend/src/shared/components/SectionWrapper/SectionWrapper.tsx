@@ -1,16 +1,30 @@
-import { FormHeaderContainer } from "../FormHeaderCard/FormHeaderCard.styles";
+import RadioQuestion from "../../../features/schema/components/RadioQuestion/RadioQuestion";
+import TextQuestion from "../../../features/schema/components/TextQuestion/TextQuestion";
+import FormHeaderCard from "../FormHeaderCard/FormHeaderCard";
 import { SectionContainer } from "./SectionWrapper.styles";
 
-const SectionWrapper = () => {
+interface SectionWrapperProps {
+  activeCardId: string | null;
+  onCardClick: (cardId: string) => void;
+}
+
+const SectionWrapper = ({ activeCardId, onCardClick }: SectionWrapperProps) => {
   return (
-    <>
-      <SectionContainer>
-        <FormHeaderContainer>
-          <br />
-          <p>sdasdas</p>
-        </FormHeaderContainer>
-      </SectionContainer>
-    </>
+    <SectionContainer>
+      <FormHeaderCard
+        isActive={activeCardId === "header"}
+        onActivate={() => onCardClick("header")}
+      />
+
+      <TextQuestion
+        isActive={activeCardId === "q1"}
+        onActivate={() => onCardClick("q1")}
+      />
+      <RadioQuestion
+        isActive={activeCardId === "q2"}
+        onActivate={() => onCardClick("q2")}
+      />
+    </SectionContainer>
   );
 };
 

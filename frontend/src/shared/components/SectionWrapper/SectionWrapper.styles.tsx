@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 
 export const SectionContainer = styled("div")({
   display: "flex",
-  justifyContent: "space-evenly",
+  justifyContent: "flex-start",
   flexDirection: "column",
   height: "100vh",
   width: "60%",
