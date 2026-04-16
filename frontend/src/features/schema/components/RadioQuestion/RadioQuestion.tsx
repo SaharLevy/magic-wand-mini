@@ -3,6 +3,12 @@ import { CardContainer } from "../../../../shared/components/CardContainer/CardC
 import QuestionHeader, {
   type QuestionType,
 } from "../../../../shared/components/QuestionHeader/QuestionHeader";
+import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
+import {
+  OptionContainer,
+  OptionsContainer,
+  RadioIcon,
+} from "./RadioQuestion.styles";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -12,6 +18,8 @@ interface QuestionCardProps {
 const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState<QuestionType>("short");
+  const [options, setOptions] = useState<[]>([]);
+
   return (
     <CardContainer isActive={isActive} onClick={onActivate}>
       {isActive ? (
@@ -21,8 +29,24 @@ const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
           questionType={questionType}
           onTypeChange={setQuestionType}
         />
+      ) : !options.length ? (
+        <div>
+          <ViewTitle>{questionText || "שאלה"}</ViewTitle>
+          <OptionContainer>
+            <RadioIcon /> {"אפשרות 1"}
+          </OptionContainer>
+        </div>
       ) : (
-        <div></div>
+        <div>
+          <ViewTitle>{questionText || "שאלה"}</ViewTitle>
+          <OptionsContainer>
+            {options.map((option) => (
+              <OptionContainer key={option}>
+                <RadioIcon /> {option}
+              </OptionContainer>
+            ))}
+          </OptionsContainer>
+        </div>
       )}
     </CardContainer>
   );

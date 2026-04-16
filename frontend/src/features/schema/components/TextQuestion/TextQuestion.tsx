@@ -2,11 +2,8 @@ import { useState } from "react";
 import type { QuestionType } from "../../../../shared/components/QuestionHeader/QuestionHeader";
 import { CardContainer } from "../../../../shared/components/CardContainer/CardContainer.styles";
 import QuestionHeader from "../../../../shared/components/QuestionHeader/QuestionHeader";
-import {
-  DottedLine,
-  DottedPlaceholder,
-  ViewTitle,
-} from "./TextQuestion.styles";
+import { DottedLine, DottedPlaceholder } from "./TextQuestion.styles";
+import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
 
 interface QuestionCardProps {
   isActive: boolean;

@@ -2,6 +2,7 @@ import InputBase from "@mui/material/InputBase";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 
 export const HeaderRow = styled("div")({
   display: "flex",
@@ -37,4 +38,10 @@ export const TypeSelect = styled(Select)({
 export const TypeMenuItem = styled(MenuItem)({
   gap: "0.5rem",
   fontFamily: "inherit",
+});
+
+export const ViewTitle = styled(Typography)({
+  fontSize: "1.2rem",
+  fontFamily: "inherit",
+  marginBottom: "1.5rem",
 });

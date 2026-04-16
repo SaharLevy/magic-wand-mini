@@ -1,5 +1,4 @@
 import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 
 export const DottedPlaceholder = styled("div")<{ isParagraph?: boolean }>(
   ({ isParagraph }) => ({
@@ -18,10 +17,4 @@ export const DottedLine = styled("div")({
   padding: "8px 0",
   width: "100%",
   marginTop: "1rem",
-});
-
-export const ViewTitle = styled(Typography)({
-  fontSize: "1rem",
-  fontFamily: "inherit",
-  marginBottom: "1.5rem",
 });
