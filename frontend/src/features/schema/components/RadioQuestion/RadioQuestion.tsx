@@ -1,9 +1,4 @@
 import { useState } from "react";
-import { CardContainer } from "../../../../shared/components/CardContainer/CardContainer.styles";
-import QuestionHeader, {
-  type QuestionType,
-} from "../../../../shared/components/QuestionHeader/QuestionHeader";
-import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
 import {
   OptionContainer,
   OptionsContainer,
@@ -13,42 +8,28 @@ import {
 interface QuestionCardProps {
   isActive: boolean;
   onActivate: () => void;
+  questionType: "";
 }
 
 const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
-  const [questionText, setQuestionText] = useState("");
-  const [questionType, setQuestionType] = useState<QuestionType>("short");
-  const [options, setOptions] = useState<[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
 
-  return (
-    <CardContainer isActive={isActive} onClick={onActivate}>
-      {isActive ? (
-        <QuestionHeader
-          questionText={questionText}
-          onQuestionChange={setQuestionText}
-          questionType={questionType}
-          onTypeChange={setQuestionType}
-        />
-      ) : !options.length ? (
-        <div>
-          <ViewTitle>{questionText || "שאלה"}</ViewTitle>
-          <OptionContainer>
-            <RadioIcon /> {"אפשרות 1"}
+  return !options.length ? (
+    <div>
+      <OptionContainer>
+        <RadioIcon /> {"אפשרות 1"}
+      </OptionContainer>
+    </div>
+  ) : (
+    <div>
+      <OptionsContainer>
+        {options.map((option) => (
+          <OptionContainer key={option}>
+            <RadioIcon /> {option}
           </OptionContainer>
-        </div>
-      ) : (
-        <div>
-          <ViewTitle>{questionText || "שאלה"}</ViewTitle>
-          <OptionsContainer>
-            {options.map((option) => (
-              <OptionContainer key={option}>
-                <RadioIcon /> {option}
-              </OptionContainer>
-            ))}
-          </OptionsContainer>
-        </div>
-      )}
-    </CardContainer>
+        ))}
+      </OptionsContainer>
+    </div>
   );
 };
 

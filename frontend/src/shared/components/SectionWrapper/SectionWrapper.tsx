@@ -1,3 +1,4 @@
+import BaseQuestion from "../../../features/schema/components/BaseQuestion/BaseQuestion";
 import RadioQuestion from "../../../features/schema/components/RadioQuestion/RadioQuestion";
 import TextQuestion from "../../../features/schema/components/TextQuestion/TextQuestion";
 import FormHeaderCard from "../FormHeaderCard/FormHeaderCard";
@@ -16,13 +17,9 @@ const SectionWrapper = ({ activeCardId, onCardClick }: SectionWrapperProps) => {
         onActivate={() => onCardClick("header")}
       />
 
-      <TextQuestion
-        isActive={activeCardId === "q1"}
-        onActivate={() => onCardClick("q1")}
-      />
-      <RadioQuestion
-        isActive={activeCardId === "q2"}
-        onActivate={() => onCardClick("q2")}
+      <BaseQuestion
+        isActive={activeCardId === "q3"}
+        onActivate={() => onCardClick("q3")}
       />
     </SectionContainer>
   );

@@ -1,10 +1,8 @@
-import CropOriginalIcon from "@mui/icons-material/CropOriginal";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import SubjectIcon from "@mui/icons-material/Subject";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
-import IconButton from "@mui/material/IconButton";
 
 import {
   HeaderRow,
@@ -43,9 +41,6 @@ const QuestionHeader = ({
         placeholder="שאלה"
       />
 
-      <IconButton>
-        <CropOriginalIcon />
-      </IconButton>
       <TypeSelect
         value={questionType}
         onChange={(e) => onTypeChange(e.target.value as QuestionType)}
