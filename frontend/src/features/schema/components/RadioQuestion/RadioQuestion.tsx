@@ -8,7 +8,6 @@ import {
 interface QuestionCardProps {
   isActive: boolean;
   onActivate: () => void;
-  questionType: "";
 }
 
 const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {

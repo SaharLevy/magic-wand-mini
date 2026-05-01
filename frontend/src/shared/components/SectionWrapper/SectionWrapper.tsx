@@ -1,6 +1,4 @@
 import BaseQuestion from "../../../features/schema/components/BaseQuestion/BaseQuestion";
-import RadioQuestion from "../../../features/schema/components/RadioQuestion/RadioQuestion";
-import TextQuestion from "../../../features/schema/components/TextQuestion/TextQuestion";
 import FormHeaderCard from "../FormHeaderCard/FormHeaderCard";
 import { SectionContainer } from "./SectionWrapper.styles";
 

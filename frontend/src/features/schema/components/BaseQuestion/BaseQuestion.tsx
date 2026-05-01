@@ -5,6 +5,7 @@ import QuestionHeader from "../../../../shared/components/QuestionHeader/Questio
 import TextQuestion from "../TextQuestion/TextQuestion";
 import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
 import RadioQuestion from "../RadioQuestion/RadioQuestion";
+import CheckboxQuestion from "../CheckBoxQuestion/CheckboxQuestion";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -59,6 +60,13 @@ const BaseQuestion = ({
               <RadioQuestion
                 isActive={activeCardId === "q3"}
                 onActivate={() => onCardClick("q3")}
+              />
+            );
+          case "checkboxes":
+            return (
+              <CheckboxQuestion
+                isActive={activeCardId === "q4"}
+                onActivate={() => onCardClick("q4")}
               />
             );
           default:
