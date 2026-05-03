@@ -16,3 +16,17 @@ export const OptionContainer = styled("div")({
 export const RadioIcon = styled(RadioButtonUncheckedIcon)({
   color: "#BDBDBD",
 });
+
+export const AddOption = styled("button")({
+  display: "flex",
+  alignItems: "center",
+  background: "none",
+  border: "none",
+  cursor: "pointer",
+  color: "#BDBDBD",
+  padding: 0,
+  fontSize: "inherit",
+  "&:hover": {
+    color: "#757575",
+  },
+});

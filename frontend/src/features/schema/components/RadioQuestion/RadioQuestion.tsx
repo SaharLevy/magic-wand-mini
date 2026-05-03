@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  AddOption,
   OptionContainer,
   OptionsContainer,
   RadioIcon,
@@ -11,13 +12,24 @@ interface QuestionCardProps {
 }
 
 const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[]>(["Asda"]);
+
+  const addOptionHandler = () => {
+    const newOption = `אפשרות ${options.length + 1}`;
+    setOptions([...options, newOption]);
+  };
 
   return !options.length ? (
     <div>
-      <OptionContainer>
-        <RadioIcon /> {"אפשרות 1"}
-      </OptionContainer>
+      <OptionsContainer>
+        <OptionContainer>
+          <RadioIcon /> {"אפשרות 1"}
+        </OptionContainer>
+        <OptionContainer>
+          <RadioIcon />
+          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+        </OptionContainer>
+      </OptionsContainer>
     </div>
   ) : (
     <div>
@@ -27,6 +39,10 @@ const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
             <RadioIcon /> {option}
           </OptionContainer>
         ))}
+        <OptionContainer>
+          <RadioIcon />
+          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+        </OptionContainer>{" "}
       </OptionsContainer>
     </div>
   );

@@ -6,6 +6,7 @@ import TextQuestion from "../TextQuestion/TextQuestion";
 import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
 import RadioQuestion from "../RadioQuestion/RadioQuestion";
 import CheckboxQuestion from "../CheckBoxQuestion/CheckboxQuestion";
+import { CheckboxIcon } from "../CheckBoxQuestion/CheckBoxQuestion.styles";
 
 interface QuestionCardProps {
   isActive: boolean;
