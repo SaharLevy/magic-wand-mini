@@ -4,6 +4,7 @@ import {
   OptionContainer,
   OptionsContainer,
 } from "./CheckBoxQuestion.styles";
+import { AddOption, OptionInput } from "../RadioQuestion/RadioQuestion.styles";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -11,24 +12,52 @@ interface QuestionCardProps {
 }
 
 const CheckboxQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
 
-  return !options.length ? (
-    <div>
-      <OptionContainer>
-        <CheckboxIcon /> {"אפשרות 1"}
-      </OptionContainer>
-    </div>
-  ) : (
-    <div>
+  const addOptionHandler = () => {
+    const newOption = `אפשרות ${options.length + 1}`;
+    setOptions([...options, newOption]);
+  };
+  return !isActive ? (
+    <>
       <OptionsContainer>
         {options.map((option) => (
           <OptionContainer key={option}>
-            <CheckboxIcon /> {option}
+            <CheckboxIcon />
+            {option}
           </OptionContainer>
         ))}
+        <OptionContainer>
+          <CheckboxIcon />
+          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+        </OptionContainer>
       </OptionsContainer>
-    </div>
+    </>
+  ) : (
+    <>
+      <OptionsContainer>
+        {options.map((option, index) => (
+          <OptionContainer key={option}>
+            <CheckboxIcon />
+            <OptionInput
+              fullWidth
+              multiline
+              defaultValue={option}
+              onBlur={(e) => {
+                const updated = [...options];
+                updated[index] = e.target.value;
+                setOptions(updated);
+              }}
+              
+            />
+          </OptionContainer>
+        ))}
+        <OptionContainer>
+          <CheckboxIcon />
+          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+        </OptionContainer>
+      </OptionsContainer>
+    </>
   );
 };
 

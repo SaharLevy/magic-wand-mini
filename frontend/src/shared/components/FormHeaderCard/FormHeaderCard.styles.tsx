@@ -1,36 +1,22 @@
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-
-const baseInputStyles = {
-  width: "100%",
-  fontFamily: "inherit",
-  letterSpacing: "normal",
-  borderBottom: "1px solid #e0e0e0",
-  transition: "border-color 0.2s ease-in-out",
-  "&:hover": {
-    borderBottomColor: "#bdbdbd",
-  },
-  "&.Mui-focused": {
-    borderBottomColor: "#4285f4",
-  },
-  "& .MuiInputBase-input": {
-    padding: "0px 0px 8px 0px", 
-  },
-};
+import { baseInputStyles } from "../../styles";
 
 export const TitleInput = styled(InputBase)({
   ...baseInputStyles,
+  borderBottom: "1px solid #e0e0e0",
   "& .MuiInputBase-input": {
-    padding: "0px 0px 8px 0px", 
+    padding: "0px 0px 8px 0px",
     fontSize: "2rem",
-    lineHeight: "1.2", 
-    height: "auto", 
+    lineHeight: "1.2",
+    height: "auto",
   },
 });
 
 export const DescriptionInput = styled(InputBase)({
   ...baseInputStyles,
+  borderBottom: "1px solid #e0e0e0",
   "&.MuiInputBase-multiline": {
     padding: 0,
   },

@@ -1,5 +1,7 @@
 import { styled } from "@mui/material/styles";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import { baseInputStyles } from "../../../../shared/styles";
+import InputBase from "@mui/material/InputBase";
 
 export const OptionsContainer = styled("div")({
   display: "flex",
@@ -28,5 +30,18 @@ export const AddOption = styled("button")({
   fontSize: "inherit",
   "&:hover": {
     color: "#757575",
+  },
+});
+
+export const OptionInput = styled(InputBase)({
+  ...baseInputStyles,
+  borderBottom: "1px solid transparent",
+
+  "&.MuiInputBase-multiline": {
+    padding: 0,
+  },
+  "& .MuiInputBase-input": {
+    fontSize: "1rem",
+    lineHeight: "1.5",
   },
 });

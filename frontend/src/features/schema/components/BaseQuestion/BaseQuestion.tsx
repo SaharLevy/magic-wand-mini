@@ -41,7 +41,7 @@ const BaseQuestion = ({
           case "short":
             return (
               <TextQuestion
-                isActive={activeCardId === "q1"}
+                isActive={isActive}
                 onActivate={() => onCardClick("q1")}
                 isParagraph={false}
                 questionType={"short"}
@@ -50,7 +50,7 @@ const BaseQuestion = ({
           case "paragraph":
             return (
               <TextQuestion
-                isActive={activeCardId === "q2"}
+                isActive={isActive}
                 onActivate={() => onCardClick("q2")}
                 isParagraph={true}
                 questionType={"paragraph"}
@@ -59,14 +59,14 @@ const BaseQuestion = ({
           case "multipleChoice":
             return (
               <RadioQuestion
-                isActive={activeCardId === "q3"}
+                isActive={isActive}
                 onActivate={() => onCardClick("q3")}
               />
             );
           case "checkboxes":
             return (
               <CheckboxQuestion
-                isActive={activeCardId === "q4"}
+                isActive={isActive}
                 onActivate={() => onCardClick("q4")}
               />
             );
