@@ -33,11 +33,31 @@ export const QuestionTitleInput = styled(InputBase)({
 export const TypeSelect = styled(Select)({
   minWidth: "14rem",
   fontFamily: "inherit",
+  "& .MuiSelect-select": {
+    paddingRight: "1rem !important",
+  },
+  "& .MuiSelect-icon": {
+    left: "7px",
+    right: "auto",
+  },
+  div: {
+    flexDirection: "row-reverse",
+    justifyContent: "flex-end",
+  },
 });
 
 export const TypeMenuItem = styled(MenuItem)({
-  gap: "0.5rem",
+  display: "flex",
+  gap: "1rem",
   fontFamily: "inherit",
+  flexDirection: "row-reverse",
+});
+
+export const MenuItemContent = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  justifyContent: "flex-start",
 });
 
 export const ViewTitle = styled(Typography)({

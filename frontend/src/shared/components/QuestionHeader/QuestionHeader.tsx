@@ -9,6 +9,7 @@ import {
   QuestionTitleInput,
   TypeSelect,
   TypeMenuItem,
+  MenuItemContent,
 } from "./QuestionHeader.styles";
 
 export type QuestionType =
@@ -44,30 +45,41 @@ const QuestionHeader = ({
       <TypeSelect
         value={questionType}
         onChange={(e) => onTypeChange(e.target.value as QuestionType)}
+        
       >
         <TypeMenuItem value="short">
-          <ShortTextIcon />
-          תשובה קצרה
+          <MenuItemContent>
+            {"תשובה קצרה"}
+            <ShortTextIcon />
+          </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value="paragraph">
-          <SubjectIcon />
-          פסקה
+          <MenuItemContent>
+            פסקה
+            <SubjectIcon />
+          </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value="multipleChoice">
-          <RadioButtonCheckedIcon />
-          בחירה מרובה
+          <MenuItemContent>
+            בחירה מרובה
+            <RadioButtonCheckedIcon />
+          </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value="checkboxes">
-          <CheckBoxIcon />
-          תיבות סימון
+          <MenuItemContent>
+            תיבות סימון
+            <CheckBoxIcon />
+          </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value="dropdown">
-          <ArrowDropDownCircleIcon />
-          רשימה נפתחת
+          <MenuItemContent>
+            רשימה נפתחת
+            <ArrowDropDownCircleIcon />
+          </MenuItemContent>
         </TypeMenuItem>
       </TypeSelect>
     </HeaderRow>
