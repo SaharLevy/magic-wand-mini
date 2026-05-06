@@ -6,7 +6,7 @@ import TextQuestion from "../TextQuestion/TextQuestion";
 import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
 import RadioQuestion from "../RadioQuestion/RadioQuestion";
 import CheckboxQuestion from "../CheckBoxQuestion/CheckboxQuestion";
-import { CheckboxIcon } from "../CheckBoxQuestion/CheckBoxQuestion.styles";
+import LinearScaleQuestion from "../LinearScaleQuestion/LinearScaleQuestion";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -68,6 +68,13 @@ const BaseQuestion = ({
               <CheckboxQuestion
                 isActive={isActive}
                 onActivate={() => onCardClick("q4")}
+              />
+            );
+          case "linearScale":
+            return (
+              <LinearScaleQuestion
+                isActive={isActive}
+                onActivate={() => onCardClick("q5")}
               />
             );
           default:

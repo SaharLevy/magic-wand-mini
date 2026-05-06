@@ -23,3 +23,12 @@ export const CardContainer = styled("div")<CardContainerProps>(
     transition: "border 0.2s ease-in-out",
   }),
 );
+
+export const ContainerX = styled("div")<{ paddingRight?: string }>(
+  ({ paddingRight }) => ({
+    display: "flex",
+    justifyContent: "flex-start",
+    gap: "2rem",
+    paddingRight: paddingRight,
+  }),
+);

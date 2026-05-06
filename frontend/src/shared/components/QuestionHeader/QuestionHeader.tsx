@@ -3,6 +3,7 @@ import SubjectIcon from "@mui/icons-material/Subject";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import {
   HeaderRow,
@@ -17,7 +18,8 @@ export type QuestionType =
   | "paragraph"
   | "multipleChoice"
   | "checkboxes"
-  | "dropdown";
+  | "dropdown"
+  | "linearScale";
 
 interface QuestionHeaderProps {
   questionText: string;
@@ -45,7 +47,6 @@ const QuestionHeader = ({
       <TypeSelect
         value={questionType}
         onChange={(e) => onTypeChange(e.target.value as QuestionType)}
-        
       >
         <TypeMenuItem value="short">
           <MenuItemContent>
@@ -79,6 +80,13 @@ const QuestionHeader = ({
           <MenuItemContent>
             רשימה נפתחת
             <ArrowDropDownCircleIcon />
+          </MenuItemContent>
+        </TypeMenuItem>
+
+        <TypeMenuItem value="linearScale">
+          <MenuItemContent>
+            {"סולם לינארי"}
+            <MoreHorizIcon />
           </MenuItemContent>
         </TypeMenuItem>
       </TypeSelect>
