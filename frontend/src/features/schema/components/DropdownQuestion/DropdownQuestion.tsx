@@ -1,47 +1,39 @@
 import { useState } from "react";
 import {
   AddOption,
-  OptionContainer,
   OptionInput,
   OptionsContainer,
-  RadioIcon,
-} from "./RadioQuestion.styles";
+} from "../RadioQuestion/RadioQuestion.styles";
+import { OptionContainer } from "./DropdownQuestion.style";
 
 interface QuestionCardProps {
   isActive: boolean;
   onActivate: () => void;
 }
 
-const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const DropdownQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
   const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
 
-  //i have some duplicates between components will take care of it later.
   const addOptionHandler = () => {
     const newOption = `אפשרות ${options.length + 1}`;
     setOptions([...options, newOption]);
   };
 
   return !isActive ? (
-    <>
-      <OptionsContainer>
-        {options.map((option) => (
-          <OptionContainer key={option}>
-            <RadioIcon />
-            {option}
-          </OptionContainer>
-        ))}
-        <OptionContainer>
-          <RadioIcon />
-          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+    <OptionsContainer>
+      {options.map((option, index) => (
+        <OptionContainer key={option}>
+          {`${index}.`}
+          {option}
         </OptionContainer>
-      </OptionsContainer>
-    </>
+      ))}
+    </OptionsContainer>
   ) : (
     <>
       <OptionsContainer>
         {options.map((option, index) => (
           <OptionContainer key={option}>
-            <RadioIcon />
+            {`${index}.`}
             <OptionInput
               fullWidth
               multiline
@@ -55,7 +47,6 @@ const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
           </OptionContainer>
         ))}
         <OptionContainer>
-          <RadioIcon />
           <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
         </OptionContainer>
       </OptionsContainer>
@@ -63,4 +54,4 @@ const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
   );
 };
 
-export default RadioQuestion;
+export default DropdownQuestion;

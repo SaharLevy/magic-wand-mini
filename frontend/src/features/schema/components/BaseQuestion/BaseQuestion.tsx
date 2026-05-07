@@ -7,6 +7,7 @@ import { ViewTitle } from "../../../../shared/components/QuestionHeader/Question
 import RadioQuestion from "../RadioQuestion/RadioQuestion";
 import CheckboxQuestion from "../CheckBoxQuestion/CheckboxQuestion";
 import LinearScaleQuestion from "../LinearScaleQuestion/LinearScaleQuestion";
+import DropdownQuestion from "../DropdownQuestion/DropdownQuestion";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -70,11 +71,18 @@ const BaseQuestion = ({
                 onActivate={() => onCardClick("q4")}
               />
             );
+          case "dropdown":
+            return (
+              <DropdownQuestion
+                isActive={isActive}
+                onActivate={() => onCardClick("q5")}
+              />
+            );
           case "linearScale":
             return (
               <LinearScaleQuestion
                 isActive={isActive}
-                onActivate={() => onCardClick("q5")}
+                onActivate={() => onCardClick("q6")}
               />
             );
           default:
