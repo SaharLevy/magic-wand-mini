@@ -6,3 +6,10 @@ export const OptionContainer = styled("div")({
   gap: "0.6rem",
   alignItems: "center",
 });
+
+export const NumberContainer = styled("div")({
+  width: "1rem",
+  display: "flex",
+  alignContent: "center",
+  justifyContent: "center",
+});

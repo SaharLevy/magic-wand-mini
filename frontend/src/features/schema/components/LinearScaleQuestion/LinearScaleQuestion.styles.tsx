@@ -56,3 +56,10 @@ export const ScaleNumberContainer = styled("div")({
   gap: "1rem",
   alignItems: "center",
 });
+
+export const NumberContainer = styled("div")({
+  width: "0.5rem",
+  display: "flex",
+  alignContent: "center",
+  justifyContent: "center",
+});

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  NumberContainer,
   ScaleInput,
   ScaleMenuItem,
   ScaleNumberContainer,
@@ -86,7 +87,7 @@ const LinearScaleQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
 
       <ContainerY paddingTop="2rem">
         <ContainerX>
-          {minScale}
+          <NumberContainer> {minScale}</NumberContainer>
           <ScaleInput
             placeholder="תווית (אופציונאלי)"
             multiline
@@ -97,7 +98,7 @@ const LinearScaleQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
           />
         </ContainerX>
         <ContainerX>
-          {maxScale}
+          <NumberContainer> {maxScale}</NumberContainer>
           <ScaleInput
             placeholder="תווית (אופציונאלי)"
             multiline

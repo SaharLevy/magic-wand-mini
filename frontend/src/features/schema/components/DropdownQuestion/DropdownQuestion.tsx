@@ -4,7 +4,7 @@ import {
   OptionInput,
   OptionsContainer,
 } from "../RadioQuestion/RadioQuestion.styles";
-import { OptionContainer } from "./DropdownQuestion.style";
+import { NumberContainer, OptionContainer } from "./DropdownQuestion.style";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -23,7 +23,7 @@ const DropdownQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
     <OptionsContainer>
       {options.map((option, index) => (
         <OptionContainer key={option}>
-          {`${index}.`}
+          <NumberContainer>{`${index}.`}</NumberContainer>
           {option}
         </OptionContainer>
       ))}
@@ -47,6 +47,7 @@ const DropdownQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
           </OptionContainer>
         ))}
         <OptionContainer>
+          <NumberContainer>{`${options.length}.`}</NumberContainer>
           <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
         </OptionContainer>
       </OptionsContainer>
