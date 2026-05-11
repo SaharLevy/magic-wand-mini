@@ -33,7 +33,7 @@ const DropdownQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
       <OptionsContainer>
         {options.map((option, index) => (
           <OptionContainer key={option}>
-            {`${index}.`}
+            <NumberContainer>{`${index}.`}</NumberContainer>
             <OptionInput
               fullWidth
               multiline
