@@ -24,7 +24,7 @@ const RadioTableQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
     setCols((prev) => Math.max(1, prev - 1));
   };
 
-  return !isActive ? <></> : <></>;
+  return !isActive ? <div></div> : <div></div>;
 };
 
 export default RadioTableQuestion;

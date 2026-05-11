@@ -3,6 +3,7 @@ import SubjectIcon from "@mui/icons-material/Subject";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
+import AppsIcon from "@mui/icons-material/Apps";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import {
@@ -11,6 +12,7 @@ import {
   TypeSelect,
   TypeMenuItem,
   MenuItemContent,
+  MenuIcon,
 } from "./QuestionHeader.styles";
 
 export type QuestionType =
@@ -19,7 +21,8 @@ export type QuestionType =
   | "multipleChoice"
   | "checkboxes"
   | "dropdown"
-  | "linearScale";
+  | "linearScale"
+  | "radioTable";
 
 interface QuestionHeaderProps {
   questionText: string;
@@ -87,6 +90,13 @@ const QuestionHeader = ({
           <MenuItemContent>
             {"סולם לינארי"}
             <MoreHorizIcon />
+          </MenuItemContent>
+        </TypeMenuItem>
+
+        <TypeMenuItem value="radioTable">
+          <MenuItemContent>
+            {"רשת של בחירה מרובה"}
+            <MenuIcon src="../../public/menu.png" alt="menu" />
           </MenuItemContent>
         </TypeMenuItem>
       </TypeSelect>

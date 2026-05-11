@@ -65,3 +65,7 @@ export const ViewTitle = styled(Typography)({
   fontFamily: "inherit",
   marginBottom: "1.5rem",
 });
+
+export const MenuIcon = styled("img")({
+  cursor: "pointer",
+});

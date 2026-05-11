@@ -8,6 +8,7 @@ import RadioQuestion from "../RadioQuestion/RadioQuestion";
 import CheckboxQuestion from "../CheckBoxQuestion/CheckboxQuestion";
 import LinearScaleQuestion from "../LinearScaleQuestion/LinearScaleQuestion";
 import DropdownQuestion from "../DropdownQuestion/DropdownQuestion";
+import RadioTableQuestion from "../RadioTableQuestion/RadioTableQuestion";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -83,6 +84,13 @@ const BaseQuestion = ({
               <LinearScaleQuestion
                 isActive={isActive}
                 onActivate={() => onCardClick("q6")}
+              />
+            );
+          case "radioTable":
+            return (
+              <RadioTableQuestion
+                isActive={isActive}
+                onActivate={() => onCardClick("q7")}
               />
             );
           default:
