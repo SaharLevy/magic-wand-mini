@@ -31,7 +31,7 @@ export const QuestionTitleInput = styled(InputBase)({
 });
 
 export const TypeSelect = styled(Select)({
-  minWidth: "14rem",
+  minWidth: "15rem",
   fontFamily: "inherit",
   "& .MuiSelect-select": {
     paddingRight: "1rem !important",

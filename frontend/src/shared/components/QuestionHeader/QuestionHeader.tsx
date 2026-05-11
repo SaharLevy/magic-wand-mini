@@ -99,6 +99,13 @@ const QuestionHeader = ({
             <MenuIcon src="../../public/menu.png" alt="menu" />
           </MenuItemContent>
         </TypeMenuItem>
+
+        <TypeMenuItem value="">
+          <MenuItemContent>
+            {"רשת תיבות סימון"}
+            <AppsIcon />
+          </MenuItemContent>
+        </TypeMenuItem>
       </TypeSelect>
     </HeaderRow>
   );
