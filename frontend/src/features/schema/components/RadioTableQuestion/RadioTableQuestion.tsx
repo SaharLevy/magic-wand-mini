@@ -6,6 +6,7 @@ import {
 import { RowsColsContainer } from "./RadioTableQuestion.styles";
 import { NumberContainer } from "../DropdownQuestion/DropdownQuestion.style";
 import RadioTableQuestionActive from "./RadioTableQuestionActive/RadioTableQuestionActive";
+import RadioTableQuestionNotActive from "./RadioTableQuestionNotActive/RadioTableQuestionNotActive";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -32,16 +33,10 @@ const RadioTableQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
   };
 
   return !isActive ? (
-    <RowsColsContainer>
-      <OptionsContainer>
-        {rowsOptions.map((option, index) => (
-          <OptionContainer key={option}>
-            <NumberContainer>{`${index + 1}.`}</NumberContainer>
-            {option}
-          </OptionContainer>
-        ))}
-      </OptionsContainer>
-    </RowsColsContainer>
+    <RadioTableQuestionNotActive
+      rowsOptions={rowsOptions}
+      colsOptions={colsOptions}
+    />
   ) : (
     <RadioTableQuestionActive
       rowsOptions={rowsOptions}

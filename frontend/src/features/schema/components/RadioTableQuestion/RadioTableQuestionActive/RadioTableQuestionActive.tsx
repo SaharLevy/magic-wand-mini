@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import { NumberContainer } from "../../DropdownQuestion/DropdownQuestion.style";
 import {
   AddOption,
   OptionContainer,
@@ -7,7 +6,7 @@ import {
   OptionsContainer,
   RadioIcon,
 } from "../../RadioQuestion/RadioQuestion.styles";
-import { DeleteButton, RowsColsContainer } from "../RadioTableQuestion.styles";
+import { DeleteButton, NumberContainer, RowsColsContainer } from "../RadioTableQuestion.styles";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface QuestionCardProps {
