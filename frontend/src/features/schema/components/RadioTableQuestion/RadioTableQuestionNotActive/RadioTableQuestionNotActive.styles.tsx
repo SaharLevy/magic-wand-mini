@@ -8,18 +8,21 @@ export const RowsColsContainer = styled("div")({
 
 export const TableContainer = styled("div")({
   display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
   justifyContent: "center",
-  fontSize: "0.9rem"
+  fontSize: "1.5rem",
 });
 
-export const HeaderRows = styled("div")({
+export const Row = styled("div")({
   display: "flex",
   gap: "0.5rem",
-  justifyContent: "flex-end",
   alignItems: "center",
 });
 
-export const ColName = styled("div")({
+export const TableCell = styled("div")({
   display: "flex",
-  width: "4.5rem",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "3.4rem",
 });
