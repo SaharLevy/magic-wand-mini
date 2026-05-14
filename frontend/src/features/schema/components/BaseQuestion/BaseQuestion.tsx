@@ -9,6 +9,9 @@ import CheckboxQuestion from "../CheckBoxQuestion/CheckboxQuestion";
 import LinearScaleQuestion from "../LinearScaleQuestion/LinearScaleQuestion";
 import DropdownQuestion from "../DropdownQuestion/DropdownQuestion";
 import RadioTableQuestion from "../RadioTableQuestion/RadioTableQuestion";
+import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestion";
+import DateQuestion from "../DateQuestion/DateQuestion";
+import TimeQuestion from "../TimeQuestion/TimeQuestion";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -91,6 +94,27 @@ const BaseQuestion = ({
               <RadioTableQuestion
                 isActive={isActive}
                 onActivate={() => onCardClick("q7")}
+              />
+            );
+          case "checkboxTable":
+            return (
+              <CheckboxTableQuestion
+                isActive={isActive}
+                onActivate={() => onCardClick("q8")}
+              />
+            );
+          case "date":
+            return (
+              <DateQuestion
+                isActive={isActive}
+                onActivate={() => onCardClick("q8")}
+              />
+            );
+          case "time":
+            return (
+              <TimeQuestion
+                isActive={isActive}
+                onActivate={() => onCardClick("q8")}
               />
             );
           default:

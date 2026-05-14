@@ -5,6 +5,8 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
 import AppsIcon from "@mui/icons-material/Apps";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 import {
   HeaderRow,
@@ -22,7 +24,10 @@ export type QuestionType =
   | "checkboxes"
   | "dropdown"
   | "linearScale"
-  | "radioTable";
+  | "radioTable"
+  | "checkboxTable"
+  | "date"
+  | "time";
 
 interface QuestionHeaderProps {
   questionText: string;
@@ -100,10 +105,24 @@ const QuestionHeader = ({
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="">
+        <TypeMenuItem value="checkboxTable">
           <MenuItemContent>
             {"רשת תיבות סימון"}
             <AppsIcon />
+          </MenuItemContent>
+        </TypeMenuItem>
+
+        <TypeMenuItem value="date">
+          <MenuItemContent>
+            {"תאריך"}
+            <EventIcon />
+          </MenuItemContent>
+        </TypeMenuItem>
+
+        <TypeMenuItem value="time">
+          <MenuItemContent>
+            {"זמן"}
+            <AccessTimeIcon />
           </MenuItemContent>
         </TypeMenuItem>
       </TypeSelect>

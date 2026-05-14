@@ -4,15 +4,15 @@ import {
   OptionContainer,
   OptionInput,
   OptionsContainer,
-  RadioIcon,
 } from "../../RadioQuestion/RadioQuestion.styles";
 import {
   DeleteButton,
   NumberContainer,
   RowsColsContainer,
-} from "../RadioTableQuestion.styles";
+} from "../CheckboxTableQuestion.styles";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { CheckboxIcon } from "../../CheckBoxQuestion/CheckBoxQuestion.styles";
 
 interface QuestionCardProps {
   rowsOptions: string[];
@@ -25,7 +25,7 @@ interface QuestionCardProps {
   setColsOptions: Dispatch<SetStateAction<string[]>>;
 }
 
-const RadioTableQuestionActive = ({
+const CheckboxTableQuestionActive = ({
   rowsOptions,
   colsOptions,
   addRowOptionHandler,
@@ -75,7 +75,7 @@ const RadioTableQuestionActive = ({
         </OptionContainer>
         {colsOptions.map((col, index) => (
           <OptionContainer key={col}>
-            <RadioIcon />
+            <CheckboxIcon />
             <OptionInput
               fullWidth
               multiline
@@ -92,7 +92,7 @@ const RadioTableQuestionActive = ({
           </OptionContainer>
         ))}
         <OptionContainer>
-          <RadioIcon />
+          <CheckboxIcon />
           <AddOption onClick={addColOptionHandler}>{"הוספת אפשרות"}</AddOption>
         </OptionContainer>
       </OptionsContainer>
@@ -100,4 +100,4 @@ const RadioTableQuestionActive = ({
   );
 };
 
-export default RadioTableQuestionActive;
+export default CheckboxTableQuestionActive;

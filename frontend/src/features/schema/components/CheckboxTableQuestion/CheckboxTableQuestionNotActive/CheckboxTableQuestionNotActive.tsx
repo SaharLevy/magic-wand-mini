@@ -3,8 +3,8 @@ import {
   Row,
   TableCell,
   TableContainer,
-} from "./RadioTableQuestionNotActive.styles";
-import { RadioIcon } from "../../RadioQuestion/RadioQuestion.styles";
+} from "./CheckboxTableQuestionNotActive.styles";
+import { CheckboxIcon } from "../../CheckBoxQuestion/CheckBoxQuestion.styles";
 
 interface QuestionCardProps {
   rowsOptions: string[];
@@ -18,7 +18,7 @@ const RadioTableQuestionNotActive = ({
   return (
     <TableContainer>
       <Row>
-        <TableCell/>
+        <TableCell />
         {colsOptions.map((col) => (
           <TableCell key={col}>
             <Typography variant="body2" noWrap>
@@ -37,7 +37,7 @@ const RadioTableQuestionNotActive = ({
           </TableCell>
           {colsOptions.map((col) => (
             <TableCell key={col}>
-              <RadioIcon />
+              <CheckboxIcon />
             </TableCell>
           ))}
         </Row>
