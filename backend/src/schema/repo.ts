@@ -21,12 +21,18 @@ class Repo {
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
-  static createSchema = async (userId: MongoObjectId): Promise<ISchema> => {
+  static createSchema = async (
+    userId: MongoObjectId,
+    schemaTitle: string,
+  ): Promise<ISchema> => {
     // for now im leaving the createdBy as fixed ObjectId will come back for it when ill work on the User.
 
     const emptySchema = {
-      title: "",
-      createdBy: "507f1f77bcf86cd799439011",
+      title: schemaTitle,
+      createdBy: userId,
+      status: SchemaStatus.Draft,
+      assignedUsers: [],
+      sections: [],
     };
 
     return FormSchema.create(emptySchema);

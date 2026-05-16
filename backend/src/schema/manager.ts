@@ -17,8 +17,10 @@ class Manager {
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);
 
-  static createSchema = async (userId: MongoObjectId): Promise<ISchema> =>
-    Repo.createSchema(userId);
+  static createSchema = async (
+    userId: MongoObjectId,
+    schemaTitle: string,
+  ): Promise<ISchema> => Repo.createSchema(userId, schemaTitle);
 
   static createSection = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.createSection(schemaId);

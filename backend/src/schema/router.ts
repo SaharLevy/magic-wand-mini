@@ -31,7 +31,7 @@ schemasRouter.post(
   validate(schemasValidation.createSchema, async (req, res) => {
     res
       .status(StatusCodes.CREATED)
-      .json(await Manager.createSchema(req.params.userId));
+      .json(await Manager.createSchema(req.params.userId, req.body.title));
   }),
 );
 

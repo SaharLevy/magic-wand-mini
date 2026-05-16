@@ -1,6 +1,6 @@
 import BaseQuestion from "../../../features/schema/components/BaseQuestion/BaseQuestion";
 import FormHeaderCard from "../FormHeaderCard/FormHeaderCard";
-import { SectionContainer } from "./SectionWrapper.styles";
+import { PageContainer } from "./SectionWrapper.styles";
 
 interface SectionWrapperProps {
   activeCardId: string | null;
@@ -9,7 +9,7 @@ interface SectionWrapperProps {
 
 const SectionWrapper = ({ activeCardId, onCardClick }: SectionWrapperProps) => {
   return (
-    <SectionContainer>
+    <PageContainer>
       <FormHeaderCard
         isActive={activeCardId === "header"}
         onActivate={() => onCardClick("header")}
@@ -19,7 +19,7 @@ const SectionWrapper = ({ activeCardId, onCardClick }: SectionWrapperProps) => {
         isActive={activeCardId === "q3"}
         onActivate={() => onCardClick("q3")}
       />
-    </SectionContainer>
+    </PageContainer>
   );
 };
 

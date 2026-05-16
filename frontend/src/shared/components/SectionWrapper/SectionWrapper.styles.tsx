@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 
-export const SectionContainer = styled("div")({
+export const PageContainer = styled("div")({
   display: "flex",
   justifyContent: "flex-start",
   flexDirection: "column",
