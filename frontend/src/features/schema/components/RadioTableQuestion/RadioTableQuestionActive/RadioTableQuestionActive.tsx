@@ -13,6 +13,7 @@ import {
 } from "../RadioTableQuestion.styles";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { he } from "../../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   rowsOptions: string[];
@@ -40,7 +41,7 @@ const RadioTableQuestionActive = ({
       <OptionsContainer>
         <OptionContainer>
           <Typography variant="body2" noWrap>
-            {"שורות"}
+            {he.schema.creation.rows}
           </Typography>
         </OptionContainer>
         {rowsOptions.map((row, index) => (
@@ -63,14 +64,16 @@ const RadioTableQuestionActive = ({
         ))}
         <OptionContainer>
           <NumberContainer>{`${rowsOptions.length + 1}.`}</NumberContainer>
-          <AddOption onClick={addRowOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addRowOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
 
       <OptionsContainer>
         <OptionContainer>
           <Typography variant="body2" noWrap>
-            {"עמודות"}
+            {he.schema.creation.cols}
           </Typography>
         </OptionContainer>
         {colsOptions.map((col, index) => (
@@ -93,7 +96,9 @@ const RadioTableQuestionActive = ({
         ))}
         <OptionContainer>
           <RadioIcon />
-          <AddOption onClick={addColOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addColOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
     </RowsColsContainer>

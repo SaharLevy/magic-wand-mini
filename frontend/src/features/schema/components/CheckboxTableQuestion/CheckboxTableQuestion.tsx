@@ -7,9 +7,11 @@ interface QuestionCardProps {
   onActivate: () => void;
 }
 
+const DEFAULT_VALUE = "אפשרות 1";
+
 const CheckboxTableQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
-  const [rowsOptions, setRowsOptions] = useState<string[]>(["אפשרות 1"]);
-  const [colsOptions, setColsOptions] = useState<string[]>(["אפשרות 1"]);
+  const [rowsOptions, setRowsOptions] = useState<string[]>([DEFAULT_VALUE]);
+  const [colsOptions, setColsOptions] = useState<string[]>([DEFAULT_VALUE]);
 
   const addRowOptionHandler = () => {
     setRowsOptions((prev) => [...prev, `אפשרות ${prev.length + 1}`]);

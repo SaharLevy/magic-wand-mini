@@ -5,6 +5,9 @@ import {
   OptionsContainer,
 } from "./CheckBoxQuestion.styles";
 import { AddOption, OptionInput } from "../RadioQuestion/RadioQuestion.styles";
+import { he } from "../../../../shared/constants/i18";
+
+const DEFAULT_VALUE = "אפשרות 1";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -12,7 +15,7 @@ interface QuestionCardProps {
 }
 
 const CheckboxQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
+  const [options, setOptions] = useState<string[]>([DEFAULT_VALUE]);
 
   const addOptionHandler = () => {
     const newOption = `אפשרות ${options.length + 1}`;
@@ -29,7 +32,9 @@ const CheckboxQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
         ))}
         <OptionContainer>
           <CheckboxIcon />
-          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
     </>
@@ -48,13 +53,14 @@ const CheckboxQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
                 updated[index] = e.target.value;
                 setOptions(updated);
               }}
-              
             />
           </OptionContainer>
         ))}
         <OptionContainer>
           <CheckboxIcon />
-          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
     </>

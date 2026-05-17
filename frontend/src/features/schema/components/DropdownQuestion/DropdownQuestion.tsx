@@ -5,6 +5,7 @@ import {
   OptionsContainer,
 } from "../RadioQuestion/RadioQuestion.styles";
 import { NumberContainer, OptionContainer } from "./DropdownQuestion.style";
+import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -48,7 +49,9 @@ const DropdownQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
         ))}
         <OptionContainer>
           <NumberContainer>{`${options.length}.`}</NumberContainer>
-          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
     </>

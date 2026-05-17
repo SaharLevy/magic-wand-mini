@@ -12,6 +12,7 @@ import {
   ContainerY,
 } from "../../../../shared/components/CardContainer/CardContainer.styles";
 import { RadioIcon } from "../RadioQuestion/RadioQuestion.styles";
+import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -89,7 +90,7 @@ const LinearScaleQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
         <ContainerX>
           <NumberContainer> {minScale}</NumberContainer>
           <ScaleInput
-            placeholder="תווית (אופציונאלי)"
+            placeholder={he.schema.creation.titlePlaceholder}
             multiline
             defaultValue={minScaleInput}
             onBlur={(e) => {
@@ -100,7 +101,7 @@ const LinearScaleQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
         <ContainerX>
           <NumberContainer> {maxScale}</NumberContainer>
           <ScaleInput
-            placeholder="תווית (אופציונאלי)"
+            placeholder={he.schema.creation.titlePlaceholder}
             multiline
             defaultValue={maxScaleInput}
             onBlur={(e) => {

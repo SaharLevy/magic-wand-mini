@@ -1,6 +1,7 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { BorderLine, DateDisplay } from "../DateQuestion/DateQuestion.styles";
 import Typography from "@mui/material/Typography";
+import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -10,18 +11,22 @@ interface QuestionCardProps {
 const TimeQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
   return !isActive ? (
     <DateDisplay mode={"view"}>
-      <Typography variant="body2">{"שעה"}</Typography>
+      <Typography variant="body2">{he.schema.creation.time}</Typography>
       <AccessTimeIcon />
     </DateDisplay>
   ) : (
     <>
       <DateDisplay mode={"edit"}>
-        <Typography variant="body2">{"שעה"}</Typography>
+        <Typography variant="body2">{he.schema.creation.time}</Typography>
         <AccessTimeIcon />
       </DateDisplay>
       <BorderLine />
     </>
   );
 };
-
+{
+  {
+    he.schema.creation.time;
+  }
+}
 export default TimeQuestion;

@@ -1,3 +1,4 @@
+import { he } from "../../../../shared/constants/i18";
 import { DottedLine, DottedPlaceholder } from "./TextQuestion.styles";
 
 interface QuestionCardProps {
@@ -12,8 +13,8 @@ const TextQuestion = ({ isParagraph, questionType }: QuestionCardProps) => {
     <>
       <DottedPlaceholder isParagraph={isParagraph}>
         {questionType === "short"
-          ? "טקסט של תשובה קצרה"
-          : "טקסט של תשובה ארוכה"}
+          ? he.schema.creation.shortText
+          : he.schema.creation.longText}
       </DottedPlaceholder>
       <DottedLine />
     </>

@@ -1,10 +1,4 @@
 import { useState } from "react";
-import {
-  OptionContainer,
-  OptionsContainer,
-} from "../RadioQuestion/RadioQuestion.styles";
-import { RowsColsContainer } from "./RadioTableQuestion.styles";
-import { NumberContainer } from "../DropdownQuestion/DropdownQuestion.style";
 import RadioTableQuestionActive from "./RadioTableQuestionActive/RadioTableQuestionActive";
 import RadioTableQuestionNotActive from "./RadioTableQuestionNotActive/RadioTableQuestionNotActive";
 
@@ -13,9 +7,11 @@ interface QuestionCardProps {
   onActivate: () => void;
 }
 
+const DEFAULT_VALUE = "אפשרות 1";
+
 const RadioTableQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
-  const [rowsOptions, setRowsOptions] = useState<string[]>(["אפשרות 1"]);
-  const [colsOptions, setColsOptions] = useState<string[]>(["אפשרות 1"]);
+  const [rowsOptions, setRowsOptions] = useState<string[]>([DEFAULT_VALUE]);
+  const [colsOptions, setColsOptions] = useState<string[]>([DEFAULT_VALUE]);
 
   const addRowOptionHandler = () => {
     setRowsOptions((prev) => [...prev, `אפשרות ${prev.length + 1}`]);

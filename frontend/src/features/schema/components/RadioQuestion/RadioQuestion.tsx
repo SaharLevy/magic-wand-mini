@@ -6,6 +6,7 @@ import {
   OptionsContainer,
   RadioIcon,
 } from "./RadioQuestion.styles";
+import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -32,7 +33,9 @@ const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
         ))}
         <OptionContainer>
           <RadioIcon />
-          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
     </>
@@ -56,7 +59,9 @@ const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
         ))}
         <OptionContainer>
           <RadioIcon />
-          <AddOption onClick={addOptionHandler}>{"הוספת אפשרות"}</AddOption>
+          <AddOption onClick={addOptionHandler}>
+            {he.schema.creation.addOption}
+          </AddOption>
         </OptionContainer>
       </OptionsContainer>
     </>
