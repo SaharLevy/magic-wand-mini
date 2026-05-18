@@ -1,16 +1,32 @@
-import BaseQuestion from "../../../features/schema/components/BaseQuestion/BaseQuestion";
-import FormHeaderCard from "../FormHeaderCard/FormHeaderCard";
-import { PageContainer } from "./SectionWrapper.styles";
+import {
+  CardContainer,
+  PageContainer,
+  SectionContainer,
+  SectionHeader,
+} from "./SectionWrapper.styles";
+
+const sectionHeaderText = (sectionIndex: number, sectionsCount: number) =>
+  `סעיף ${sectionIndex} מתוך ${sectionsCount}`;
 
 interface SectionWrapperProps {
   activeCardId: string | null;
-  onCardClick: (cardId: string) => void;
+  sectionIndex: number;
+  sectionsCount: number;
 }
 
-const SectionWrapper = ({ activeCardId, onCardClick }: SectionWrapperProps) => {
+const SectionWrapper = ({
+  activeCardId,
+  sectionIndex,
+  sectionsCount,
+}: SectionWrapperProps) => {
   return (
     <PageContainer>
-      <FormHeaderCard
+      <SectionContainer>
+        <SectionHeader>{sectionHeaderText(sectionIndex,sectionsCount)}</SectionHeader>
+
+        <CardContainer></CardContainer>
+      </SectionContainer>
+      {/* <FormHeaderCard
         isActive={activeCardId === "header"}
         onActivate={() => onCardClick("header")}
       />
@@ -18,7 +34,7 @@ const SectionWrapper = ({ activeCardId, onCardClick }: SectionWrapperProps) => {
       <BaseQuestion
         isActive={activeCardId === "q3"}
         onActivate={() => onCardClick("q3")}
-      />
+      /> */}
     </PageContainer>
   );
 };

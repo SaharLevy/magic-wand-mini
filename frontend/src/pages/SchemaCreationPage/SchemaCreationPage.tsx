@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { he } from "../../shared/constants/i18";
 import { useCreateSchema } from "../../features/schema/hooks/useSchema";
 import FormHeaderCard from "../../shared/components/FormHeaderCard/FormHeaderCard";
+import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
 
 //TODO: move the creation into the button click handler, not the page mount, and then navigate with the new schema's ID in the URL
 
@@ -36,6 +37,7 @@ const SchemaCreationPage = () => {
         onTitleChange={setTitle}
         onDescriptionChange={setDescription}
       />
+      <SectionWrapper isActive={activeCardId === "sos"} />
     </>
   );
 };

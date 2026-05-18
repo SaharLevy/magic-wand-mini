@@ -2,6 +2,7 @@ import {
   IQuestionUpdate,
   ISchema,
   ISchemaUpdate,
+  ISection,
   ISectionUpdate,
   SchemaStatus,
 } from "./types.js";
@@ -46,10 +47,13 @@ class Repo {
       new NotFoundError(SCHEMA_NOT_FOUND),
     );
 
-  static createSection = async (schemaId: MongoObjectId): Promise<ISchema> =>
+  static createSection = async (
+    schemaId: MongoObjectId,
+    section: Partial<ISection>,
+  ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(
       schemaId,
-      { $push: { sections: {} } },
+      { $push: { sections: { section } } },
       { new: true },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
@@ -136,6 +140,17 @@ class Repo {
       { $pull: { "sections.$[section].questions": { _id: questionId } } },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+
+  static shiftSectionOrders = async (
+    schemaId: MongoObjectId,
+    fromOrder: number,
+  ): Promise<void> => {
+    await FormSchema.updateOne(
+      { _id: schemaId },
+      { $inc: { "sections.$[section].order": 1 } },
+      { arrayFilters: [{ "section.order": { $gte: fromOrder } }] },
+    );
+  };
 }
 
 export default Repo;
