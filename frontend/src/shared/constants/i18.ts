@@ -1,8 +1,10 @@
 export const he = {
   schema: {
     creation: {
-      defaultTitle: "טופס ללא כותרת",
+      defaultTitleSchema: "טופס ללא כותרת",
+      defaultTitleSection: "סעיף ללא שם",
       defaultDescription: "תיאור טופס",
+      defaultDescriptionSection: "תיאור (אופציונלי)",
       titlePlaceholder: "טופס ללא כותרת",
       descriptionPlaceholder: "תיאור טופס",
       addOption: "הוספת אפשרות",

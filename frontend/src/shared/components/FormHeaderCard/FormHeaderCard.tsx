@@ -6,13 +6,20 @@ import {
   ViewTitle,
 } from "./FormHeaderCard.styles";
 import { he } from "../../constants/i18";
-import { PageContainer } from "../SectionWrapper/SectionWrapper.styles";
+import {
+  PageContainer,
+  SectionContainer,
+  SectionHeader,
+} from "../SectionWrapper/SectionWrapper.styles";
+import TitleAndDescription from "../TitleAndDescription/TitleAndDescription";
+import { sectionHeaderText } from "../SectionWrapper/SectionWrapper";
 
 interface FormHeaderCardProps {
   isActive: boolean;
   onActivate: () => void;
   title: string;
   description: string;
+  sectionsCount: number;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
 }
@@ -22,39 +29,34 @@ const FormHeaderCard = ({
   onActivate,
   title,
   description,
+  sectionsCount,
   onTitleChange,
   onDescriptionChange,
 }: FormHeaderCardProps) => {
   return (
     <PageContainer>
-      <CardContainer isHeader={true} isActive={isActive} onClick={onActivate}>
-        {isActive ? (
-          <>
-            <TitleInput
-              fullWidth
-              value={title}
-              onChange={(e) => onTitleChange(e.target.value)}
-              placeholder={he.schema.creation.titlePlaceholder}
+      <SectionContainer>
+        <SectionHeader>{sectionHeaderText(1, sectionsCount)}</SectionHeader>
+        <CardContainer isHeader={true} isActive={isActive} onClick={onActivate}>
+          {isActive ? (
+            <TitleAndDescription
+              title={title}
+              description={description}
+              onTitleChange={onTitleChange}
+              onDescriptionChange={onDescriptionChange}
             />
-            <DescriptionInput
-              fullWidth
-              multiline
-              placeholder={he.schema.creation.descriptionPlaceholder}
-              value={description}
-              onChange={(e) => onDescriptionChange(e.target.value)}
-            />
-          </>
-        ) : (
-          <div>
-            <ViewTitle>
-              {title || he.schema.creation.titlePlaceholder}
-            </ViewTitle>
-            <ViewDescription>
-              {description || he.schema.creation.descriptionPlaceholder}
-            </ViewDescription>
-          </div>
-        )}
-      </CardContainer>
+          ) : (
+            <div>
+              <ViewTitle>
+                {title || he.schema.creation.titlePlaceholder}
+              </ViewTitle>
+              <ViewDescription>
+                {description || he.schema.creation.descriptionPlaceholder}
+              </ViewDescription>
+            </div>
+          )}
+        </CardContainer>
+      </SectionContainer>
     </PageContainer>
   );
 };

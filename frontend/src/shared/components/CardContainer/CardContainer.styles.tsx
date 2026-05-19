@@ -3,10 +3,11 @@ import styled from "@emotion/styled";
 interface CardContainerProps {
   isActive?: boolean;
   isHeader?: boolean;
+  isSection?: boolean;
 }
 
 export const CardContainer = styled("div")<CardContainerProps>(
-  ({ isActive, isHeader }) => ({
+  ({ isActive, isHeader, isSection }) => ({
     width: "100%",
     minHeight: "8rem",
     backgroundColor: "white",
@@ -18,8 +19,9 @@ export const CardContainer = styled("div")<CardContainerProps>(
     padding: "2rem",
     direction: "rtl",
     marginBottom: "1rem",
-    borderTop: isHeader ? "0.8rem solid #fbff00ff" : "1px solid transparent",
-    borderRight: isActive ? "0.5rem solid #4285f4" : "0.5rem solid transparent",
+    borderTop: isHeader ? "0.8rem solid #fbff00ff" : "0",
+    borderRight: isActive ? "0.5rem solid #4285f4" : "0.5rem solid #ceced3",
+    borderTopRightRadius: isSection || isHeader ? 0 : "0.5rem",
     transition: "border 0.2s ease-in-out",
   }),
 );

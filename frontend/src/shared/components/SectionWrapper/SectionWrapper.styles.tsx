@@ -13,28 +13,10 @@ export const PageContainer = styled("div")({
   display: "flex",
   justifyContent: "flex-start",
   flexDirection: "column",
-  height: "100vh",
+  // height: "100vh",
   width: "60%",
   padding: "1rem",
 });
-
-export const CardContainer = styled("div")<CardContainerProps>(
-  ({ isActive }) => ({
-    width: "100%",
-    minHeight: "8rem",
-    backgroundColor: "white",
-    display: "flex",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-    borderRadius: "0.5rem",
-    boxShadow: "0px 3px 6px rgba(0,0,0,0.1)",
-    padding: "2rem",
-    direction: "rtl",
-    marginBottom: "1rem",
-    borderRight: isActive ? "0.5rem solid #4285f4" : "0.5rem solid transparent",
-    transition: "border 0.2s ease-in-out",
-  }),
-);
 
 export const SectionContainer = styled("div")({
   width: "100%",
@@ -47,7 +29,7 @@ export const SectionContainer = styled("div")({
 export const SectionHeader = styled("div")({
   width: "20%",
   height: "2rem",
-  backgroundColor: "green",
+  backgroundColor: "#fbff00ff",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
