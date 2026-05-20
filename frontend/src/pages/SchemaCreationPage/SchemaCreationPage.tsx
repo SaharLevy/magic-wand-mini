@@ -4,6 +4,7 @@ import { useCreateSchema } from "../../features/schema/hooks/useSchema";
 import FormHeaderCard from "../../shared/components/FormHeaderCard/FormHeaderCard";
 import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
 import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
+import Toolbar from "../../shared/components/Toolbar/Toolbar";
 
 //TODO: move the creation into the button click handler, not the page mount, and then navigate with the new schema's ID in the URL
 
@@ -52,6 +53,7 @@ const SchemaCreationPage = () => {
       />
 
       <AppButton variant="contained">Home</AppButton>
+      <Toolbar/>
     </>
   );
 };
