@@ -1,15 +1,17 @@
 import { ToolbarContainer } from "./Toolbar.styles";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import MenuIcon from '@mui/icons-material/Menu';
-import DragHandleOutlinedIcon from '@mui/icons-material/DragHandleOutlined';
-
+import SplitscreenOutlinedIcon from "@mui/icons-material/SplitscreenOutlined";
+import IconButton from "@mui/material/IconButton";
 
 const Toolbar = () => {
   return (
     <ToolbarContainer>
-      <AddCircleOutlineOutlinedIcon />
-      <MenuIcon/>
-      <DragHandleOutlinedIcon/>
+      <IconButton>
+        <AddCircleOutlineOutlinedIcon />
+      </IconButton>
+      <IconButton>
+        <SplitscreenOutlinedIcon />
+      </IconButton>
     </ToolbarContainer>
   );
 };

@@ -53,7 +53,7 @@ class Repo {
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(
       schemaId,
-      { $push: { sections: { section } } },
+      { $push: { sections: section } },
       { new: true },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
