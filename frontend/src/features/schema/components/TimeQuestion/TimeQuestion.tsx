@@ -5,10 +5,9 @@ import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
-const TimeQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const TimeQuestion = ({ isActive }: QuestionCardProps) => {
   return !isActive ? (
     <DateDisplay mode={"view"}>
       <Typography variant="body2">{he.schema.creation.time}</Typography>

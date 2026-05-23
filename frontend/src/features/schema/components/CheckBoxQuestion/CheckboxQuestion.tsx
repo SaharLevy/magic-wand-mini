@@ -11,10 +11,9 @@ const DEFAULT_VALUE = "אפשרות 1";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
-const CheckboxQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const CheckboxQuestion = ({ isActive }: QuestionCardProps) => {
   const [options, setOptions] = useState<string[]>([DEFAULT_VALUE]);
 
   const addOptionHandler = () => {

@@ -16,24 +16,13 @@ import {
   MenuItemContent,
   MenuIcon,
 } from "./QuestionHeader.styles";
-
-export type QuestionType =
-  | "short"
-  | "paragraph"
-  | "multipleChoice"
-  | "checkboxes"
-  | "dropdown"
-  | "linearScale"
-  | "radioTable"
-  | "checkboxTable"
-  | "date"
-  | "time";
+import type { QuestionTypes } from "../../../features/schema/schemaTypes";
 
 interface QuestionHeaderProps {
   questionText: string;
   onQuestionChange: (val: string) => void;
-  questionType: QuestionType;
-  onTypeChange: (type: QuestionType) => void;
+  questionType: QuestionTypes;
+  onTypeChange: (type: QuestionTypes) => void;
 }
 
 const QuestionHeader = ({
@@ -54,7 +43,7 @@ const QuestionHeader = ({
 
       <TypeSelect
         value={questionType}
-        onChange={(e) => onTypeChange(e.target.value as QuestionType)}
+        onChange={(e) => onTypeChange(e.target.value as QuestionTypes)}
       >
         <TypeMenuItem value="short">
           <MenuItemContent>

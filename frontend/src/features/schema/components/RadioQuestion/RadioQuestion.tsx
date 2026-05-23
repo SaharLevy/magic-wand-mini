@@ -10,10 +10,9 @@ import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
-const RadioQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const RadioQuestion = ({ isActive }: QuestionCardProps) => {
   const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
 
   //i have some duplicates between components will take care of it later.

@@ -16,7 +16,6 @@ import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
 const enum MinScaleType {
@@ -36,7 +35,7 @@ const enum MaxScaleType {
   Ten = 10,
 }
 
-const LinearScaleQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const LinearScaleQuestion = ({ isActive }: QuestionCardProps) => {
   const [minScale, setMinScale] = useState<MinScaleType>(MinScaleType.One);
   const [minScaleInput, setMinScaleInput] = useState<string>();
   const [maxScale, setMaxScale] = useState<MaxScaleType>(MaxScaleType.Five);

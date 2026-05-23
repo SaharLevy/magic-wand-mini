@@ -4,12 +4,11 @@ import RadioTableQuestionNotActive from "./RadioTableQuestionNotActive/RadioTabl
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
 const DEFAULT_VALUE = "אפשרות 1";
 
-const RadioTableQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const RadioTableQuestion = ({ isActive }: QuestionCardProps) => {
   const [rowsOptions, setRowsOptions] = useState<string[]>([DEFAULT_VALUE]);
   const [colsOptions, setColsOptions] = useState<string[]>([DEFAULT_VALUE]);
 

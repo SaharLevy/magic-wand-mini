@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { QuestionType } from "../../../../shared/components/QuestionHeader/QuestionHeader";
 import { CardContainer } from "../../../../shared/components/CardContainer/CardContainer.styles";
 import QuestionHeader from "../../../../shared/components/QuestionHeader/QuestionHeader";
 import TextQuestion from "../TextQuestion/TextQuestion";
@@ -12,10 +11,11 @@ import RadioTableQuestion from "../RadioTableQuestion/RadioTableQuestion";
 import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestion";
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
+import { QuestionTypes } from "../../schemaTypes";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
+  onActivate: (element: HTMLElement) => void;
   activeCardId: string | null;
   onCardClick: (cardId: string) => void;
 }
@@ -27,10 +27,15 @@ const BaseQuestion = ({
   onCardClick,
 }: QuestionCardProps) => {
   const [questionText, setQuestionText] = useState("");
-  const [questionType, setQuestionType] = useState<QuestionType>("short");
+  const [questionType, setQuestionType] = useState<QuestionTypes>(
+    QuestionTypes.SHORT_TEXT,
+  );
 
   return (
-    <CardContainer isActive={isActive} onClick={onActivate}>
+    <CardContainer
+      isActive={isActive}
+      onClick={(e) => onActivate(e.currentTarget)}
+    >
       {isActive ? (
         <QuestionHeader
           questionText={questionText}
@@ -43,80 +48,38 @@ const BaseQuestion = ({
       )}
       {(() => {
         switch (questionType) {
-          case "short":
+          case QuestionTypes.SHORT_TEXT:
             return (
               <TextQuestion
                 isActive={isActive}
-                onActivate={() => onCardClick("q1")}
                 isParagraph={false}
                 questionType={"short"}
               />
             );
-          case "paragraph":
+          case QuestionTypes.PARAGRAPH:
             return (
               <TextQuestion
                 isActive={isActive}
-                onActivate={() => onCardClick("q2")}
                 isParagraph={true}
                 questionType={"paragraph"}
               />
             );
-          case "multipleChoice":
-            return (
-              <RadioQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q3")}
-              />
-            );
-          case "checkboxes":
-            return (
-              <CheckboxQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q4")}
-              />
-            );
-          case "dropdown":
-            return (
-              <DropdownQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q5")}
-              />
-            );
-          case "linearScale":
-            return (
-              <LinearScaleQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q6")}
-              />
-            );
-          case "radioTable":
-            return (
-              <RadioTableQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q7")}
-              />
-            );
-          case "checkboxTable":
-            return (
-              <CheckboxTableQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q8")}
-              />
-            );
-          case "date":
-            return (
-              <DateQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q8")}
-              />
-            );
-          case "time":
-            return (
-              <TimeQuestion
-                isActive={isActive}
-                onActivate={() => onCardClick("q8")}
-              />
-            );
+          case QuestionTypes.RADIO:
+            return <RadioQuestion isActive={isActive} />;
+          case QuestionTypes.CHECKBOX:
+            return <CheckboxQuestion isActive={isActive} />;
+          case QuestionTypes.DROPDOWN:
+            return <DropdownQuestion isActive={isActive} />;
+          case QuestionTypes.LINEAR_SCALE:
+            return <LinearScaleQuestion isActive={isActive} />;
+          case QuestionTypes.RADIO_TABLE:
+            return <RadioTableQuestion isActive={isActive} />;
+          case QuestionTypes.CHECKBOX_TABLE:
+            return <CheckboxTableQuestion isActive={isActive} />;
+          case QuestionTypes.DATE:
+            return <DateQuestion isActive={isActive} />;
+          case QuestionTypes.TIME:
+            return <TimeQuestion isActive={isActive} />;
           default:
             return null;
         }

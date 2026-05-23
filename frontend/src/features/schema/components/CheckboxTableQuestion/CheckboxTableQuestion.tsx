@@ -4,12 +4,11 @@ import RadioTableQuestionNotActive from "./CheckboxTableQuestionNotActive/Checkb
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
 const DEFAULT_VALUE = "אפשרות 1";
 
-const CheckboxTableQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const CheckboxTableQuestion = ({ isActive }: QuestionCardProps) => {
   const [rowsOptions, setRowsOptions] = useState<string[]>([DEFAULT_VALUE]);
   const [colsOptions, setColsOptions] = useState<string[]>([DEFAULT_VALUE]);
 

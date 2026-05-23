@@ -3,7 +3,6 @@ import { DottedLine, DottedPlaceholder } from "./TextQuestion.styles";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
   isParagraph: boolean;
   questionType: "short" | "paragraph";
 }

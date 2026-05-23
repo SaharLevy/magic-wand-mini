@@ -1,10 +1,5 @@
 import { CardContainer } from "../CardContainer/CardContainer.styles";
-import {
-  DescriptionInput,
-  TitleInput,
-  ViewDescription,
-  ViewTitle,
-} from "./FormHeaderCard.styles";
+import { ViewDescription, ViewTitle } from "./FormHeaderCard.styles";
 import { he } from "../../constants/i18";
 import {
   PageContainer,
@@ -16,7 +11,7 @@ import { sectionHeaderText } from "../SectionWrapper/SectionWrapper";
 
 interface FormHeaderCardProps {
   isActive: boolean;
-  onActivate: () => void;
+  onActivate: (element: HTMLElement) => void;
   title: string;
   description: string;
   sectionsCount: number;
@@ -37,7 +32,11 @@ const FormHeaderCard = ({
     <PageContainer>
       <SectionContainer>
         <SectionHeader>{sectionHeaderText(1, sectionsCount)}</SectionHeader>
-        <CardContainer isHeader={true} isActive={isActive} onClick={onActivate}>
+        <CardContainer
+          isHeader={true}
+          isActive={isActive}
+          onClick={(e) => onActivate(e.currentTarget)}
+        >
           {isActive ? (
             <TitleAndDescription
               title={title}

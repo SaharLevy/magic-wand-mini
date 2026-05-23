@@ -18,7 +18,7 @@ export const sectionHeaderText = (
 
 interface SectionWrapperProps {
   isActive: boolean;
-  onActivate: () => void;
+  onActivate: (element: HTMLElement) => void;
   sectionIndex: number;
   sectionsCount: number;
   title: string;
@@ -45,7 +45,7 @@ const SectionWrapper = ({
         </SectionHeader>
         <CardContainer
           isActive={isActive}
-          onClick={onActivate}
+          onClick={(e) => onActivate(e.currentTarget)}
           isSection={true}
         >
           {isActive ? (

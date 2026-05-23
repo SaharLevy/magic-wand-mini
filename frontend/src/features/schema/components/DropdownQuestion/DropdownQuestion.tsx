@@ -9,10 +9,9 @@ import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
-  onActivate: () => void;
 }
 
-const DropdownQuestion = ({ isActive, onActivate }: QuestionCardProps) => {
+const DropdownQuestion = ({ isActive }: QuestionCardProps) => {
   const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
 
   const addOptionHandler = () => {

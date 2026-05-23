@@ -1,6 +1,6 @@
 import HomePage from "./pages/HomePage/HomePage";
 import { Navigate } from "react-router-dom";
-import SchemaCreationPage from "./pages/SchemaCreationPage/SchemaCreationPage";
+import SchemaEditPage from "./pages/SchemaEditPage/SchemaEditPage";
 
 interface RouteConfig {
   path: string;
@@ -12,9 +12,9 @@ export const routesObj = {
     path: "/",
     element: () => <HomePage />,
   },
-  schemaCreation: {
-    path: "/createSchema",
-    element: () => <SchemaCreationPage />,
+  schemaEdit: {
+    path: "/schemas/:schemaId",
+    element: () => <SchemaEditPage />,
   },
   default: {
     path: "*",
