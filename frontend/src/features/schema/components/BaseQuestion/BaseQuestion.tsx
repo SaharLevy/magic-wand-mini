@@ -12,6 +12,7 @@ import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestio
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
 import { QuestionTypes } from "../../schemaTypes";
+import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -44,7 +45,9 @@ const BaseQuestion = ({
           onTypeChange={setQuestionType}
         />
       ) : (
-        <ViewTitle>{questionText || "שאלה"}</ViewTitle>
+        <ViewTitle>
+          {questionText || he.schema.creation.baseQuestionDefaultText}
+        </ViewTitle>
       )}
       {(() => {
         switch (questionType) {

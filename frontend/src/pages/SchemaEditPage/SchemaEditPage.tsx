@@ -44,9 +44,9 @@ const SchemaEditPage = () => {
     setDescription(schema.description ?? "");
     setSectionDrafts(
       Object.fromEntries(
-        schema.sections.map((s) => [
-          s._id,
-          { title: s.title, description: s.description ?? "" },
+        schema.sections.map((section) => [
+          section._id,
+          { title: section.title, description: section.description ?? "" },
         ]),
       ),
     );

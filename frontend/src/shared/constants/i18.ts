@@ -15,6 +15,7 @@ export const he = {
       optionalTag: "תווית (אופציונאלי)",
       shortText: "טקסט של תשובה קצרה",
       longText: "טקסט של תשובה ארוכה",
+      baseQuestionDefaultText: "שאלה",
     },
   },
 };
