@@ -16,7 +16,7 @@ import {
   MenuItemContent,
   MenuIcon,
 } from "./QuestionHeader.styles";
-import type { QuestionTypes } from "../../../features/schema/schemaTypes";
+import { QuestionTypes } from "../../../features/schema/schemaTypes";
 import { he } from "../../constants/i18";
 
 interface QuestionHeaderProps {
@@ -46,70 +46,70 @@ const QuestionHeader = ({
         value={questionType}
         onChange={(e) => onTypeChange(e.target.value as QuestionTypes)}
       >
-        <TypeMenuItem value="short">
+        <TypeMenuItem value={QuestionTypes.SHORT_TEXT}>
           <MenuItemContent>
             {"תשובה קצרה"}
             <ShortTextIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="paragraph">
+        <TypeMenuItem value={QuestionTypes.PARAGRAPH}>
           <MenuItemContent>
             פסקה
             <SubjectIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="multipleChoice">
+        <TypeMenuItem value={QuestionTypes.RADIO}>
           <MenuItemContent>
             בחירה מרובה
             <RadioButtonCheckedIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="checkboxes">
+        <TypeMenuItem value={QuestionTypes.CHECKBOX}>
           <MenuItemContent>
             תיבות סימון
             <CheckBoxIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="dropdown">
+        <TypeMenuItem value={QuestionTypes.DROPDOWN}>
           <MenuItemContent>
             רשימה נפתחת
             <ArrowDropDownCircleIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="linearScale">
+        <TypeMenuItem value={QuestionTypes.LINEAR_SCALE}>
           <MenuItemContent>
             {"סולם לינארי"}
             <MoreHorizIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="radioTable">
+        <TypeMenuItem value={QuestionTypes.RADIO_TABLE}>
           <MenuItemContent>
             {"רשת של בחירה מרובה"}
             <MenuIcon src="../../public/menu.png" alt="menu" />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="checkboxTable">
+        <TypeMenuItem value={QuestionTypes.CHECKBOX_TABLE}>
           <MenuItemContent>
             {"רשת תיבות סימון"}
             <AppsIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="date">
+        <TypeMenuItem value={QuestionTypes.DATE}>
           <MenuItemContent>
             {"תאריך"}
             <EventIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
-        <TypeMenuItem value="time">
+        <TypeMenuItem value={QuestionTypes.TIME}>
           <MenuItemContent>
             {"זמן"}
             <AccessTimeIcon />

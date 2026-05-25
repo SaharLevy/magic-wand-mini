@@ -11,26 +11,30 @@ import RadioTableQuestion from "../RadioTableQuestion/RadioTableQuestion";
 import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestion";
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
-import { QuestionTypes } from "../../schemaTypes";
+import {
+  QuestionTypes,
+  type IQuestion,
+  type IQuestionUpdate,
+} from "../../schemaTypes";
 import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
+  question: IQuestion;
   isActive: boolean;
   onActivate: (element: HTMLElement) => void;
-  activeCardId: string | null;
-  onCardClick: (cardId: string) => void;
+  onChange: (patch: IQuestionUpdate) => void;
 }
 
 const BaseQuestion = ({
+  question,
   isActive,
   onActivate,
-  activeCardId,
-  onCardClick,
+  onChange,
 }: QuestionCardProps) => {
-  const [questionText, setQuestionText] = useState("");
-  const [questionType, setQuestionType] = useState<QuestionTypes>(
-    QuestionTypes.SHORT_TEXT,
-  );
+  // const [questionText, setQuestionText] = useState("");
+  // const [questionType, setQuestionType] = useState<QuestionTypes>(
+  //   QuestionTypes.SHORT_TEXT,
+  // );
 
   return (
     <CardContainer
@@ -39,18 +43,18 @@ const BaseQuestion = ({
     >
       {isActive ? (
         <QuestionHeader
-          questionText={questionText}
-          onQuestionChange={setQuestionText}
-          questionType={questionType}
-          onTypeChange={setQuestionType}
+          questionText={question.title}
+          onQuestionChange={(value) => onChange({ title: value })}
+          questionType={question.type}
+          onTypeChange={(type) => onChange({ type })}
         />
       ) : (
         <ViewTitle>
-          {questionText || he.schema.creation.baseQuestionDefaultText}
+          {question.title || he.schema.creation.baseQuestionDefaultText}
         </ViewTitle>
       )}
       {(() => {
-        switch (questionType) {
+        switch (question.type) {
           case QuestionTypes.SHORT_TEXT:
             return (
               <TextQuestion

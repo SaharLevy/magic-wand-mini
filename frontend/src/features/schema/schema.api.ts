@@ -1,6 +1,6 @@
 import { he } from "../../shared/constants/i18";
 import { request } from "../../shared/network/request";
-import type { ISchema, ISection } from "./schemaTypes";
+import type { IQuestion, ISchema, ISection } from "./schemaTypes";
 
 export const createSchema = (userId: string): Promise<ISchema> =>
   request<ISchema>({
@@ -24,8 +24,8 @@ export const createSection = (schemaId: string): Promise<ISection> =>
 export const createQuestion = (
   schemaId: string,
   sectionId: string,
-): Promise<ISchema> =>
-  request<ISchema>({
+): Promise<IQuestion> =>
+  request<IQuestion>({
     method: "PATCH",
     url: `/schemas/${schemaId}/createQuestion`,
     data: { sectionId },

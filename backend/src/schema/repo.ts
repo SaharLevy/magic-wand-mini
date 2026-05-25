@@ -1,4 +1,5 @@
 import {
+  IQuestion,
   IQuestionUpdate,
   ISchema,
   ISchemaUpdate,
@@ -84,7 +85,7 @@ class Repo {
   static createQuestion = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
-  ): Promise<ISchema> => {
+  ): Promise<IQuestion> => {
     // TODO:
     // - make it so that its not a must to include order to update the section/question
     // - refactor createQuestion so that the question order number auto inc.
@@ -95,11 +96,23 @@ class Repo {
       order: 1,
     };
 
-    return FormSchema.findByIdAndUpdate(
+    const updatedSchema = await FormSchema.findByIdAndUpdate(
       schemaId,
       { $push: { "sections.$[section].questions": emptyQuestion } },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+
+    const updatedSection = updatedSchema.sections.find((section) =>
+      section._id.equals(sectionId),
+    );
+
+    if (!updatedSection) throw new Error("Section not found after update");
+
+    const newQuestion = updatedSection.questions.at(-1);
+
+    if (!newQuestion) throw new Error("Failed to retrieve created question");
+
+    return newQuestion;
   };
 
   static updateQuestion = async (

@@ -1,4 +1,8 @@
-import type { ISection } from "../../../features/schema/schemaTypes";
+import BaseQuestion from "../../../features/schema/components/BaseQuestion/BaseQuestion";
+import type {
+  IQuestionUpdate,
+  ISection,
+} from "../../../features/schema/schemaTypes";
 import { he } from "../../constants/i18";
 import { CardContainer } from "../CardContainer/CardContainer.styles";
 import {
@@ -24,9 +28,12 @@ interface SectionWrapperProps {
   sectionsCount: number;
   title: string;
   description: string;
-  section: ISection
+  section: ISection;
+  activeCardId: string | null;
+  onCardActivate: (cardId: string, element: HTMLElement) => void;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
+  onQuestionChange: (questionId: string, patch: IQuestionUpdate) => void;
 }
 
 const SectionWrapper = ({
@@ -37,8 +44,11 @@ const SectionWrapper = ({
   title,
   description,
   section,
+  activeCardId,
+  onCardActivate,
   onTitleChange,
   onDescriptionChange,
+  onQuestionChange,
 }: SectionWrapperProps) => {
   return (
     <PageContainer>
@@ -70,6 +80,16 @@ const SectionWrapper = ({
             </>
           )}
         </CardContainer>
+
+        {section.questions.map((question) => (
+          <BaseQuestion
+            key={question._id}
+            question={question}
+            isActive={activeCardId === question._id}
+            onActivate={(el) => onCardActivate(question._id, el)}
+            onChange={(patch) => onQuestionChange(question._id, patch)}
+          />
+        ))}
       </SectionContainer>
     </PageContainer>
   );

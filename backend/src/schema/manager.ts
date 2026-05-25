@@ -1,5 +1,6 @@
 import Repo from "./repo.js";
 import {
+  IQuestion,
   IQuestionUpdateRequest,
   ISchema,
   ISchemaUpdate,
@@ -46,7 +47,7 @@ class Manager {
   static createQuestion = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
-  ): Promise<ISchema> => Repo.createQuestion(schemaId, sectionId);
+  ): Promise<IQuestion> => Repo.createQuestion(schemaId, sectionId);
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,

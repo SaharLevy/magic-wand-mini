@@ -5,7 +5,7 @@ import {
   getSchema,
 } from "../schema.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ISchema, ISection } from "../schemaTypes";
+import type { IQuestion, ISchema, ISection } from "../schemaTypes";
 
 const TEMP_USER_ID = "507f1f77bcf86cd799439011";
 
@@ -25,7 +25,7 @@ export const useCreateSchema = () => {
 export const useCreateSection = (schemaId: string | undefined) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError } = useMutation<ISection, Error>({
+  const { mutateAsync, isPending, isError } = useMutation<ISection, Error>({
     mutationFn: () => {
       if (!schemaId) throw new Error("Missing schemaId");
       return createSection(schemaId);
@@ -35,13 +35,17 @@ export const useCreateSection = (schemaId: string | undefined) => {
     },
   });
 
-  return { createSection: mutate, isPending, isError };
+  return { createSection: mutateAsync, isPending, isError };
 };
 
 export const useCreateQuestion = (schemaId: string | undefined) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError } = useMutation<ISchema, Error, string>({
+  const { mutateAsync, isPending, isError } = useMutation<
+    IQuestion,
+    Error,
+    string
+  >({
     mutationFn: (sectionId: string) => {
       if (!schemaId) throw new Error("Missing schemaId");
       return createQuestion(schemaId, sectionId);
@@ -51,7 +55,7 @@ export const useCreateQuestion = (schemaId: string | undefined) => {
     },
   });
 
-  return { createQuestion: mutate, isPending, isError };
+  return { createQuestion: mutateAsync, isPending, isError };
 };
 
 export const useGetSchema = (schemaId: string | undefined) => {
