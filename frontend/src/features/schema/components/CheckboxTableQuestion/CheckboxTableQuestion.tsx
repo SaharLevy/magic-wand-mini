@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RadioTableQuestionActive from "./CheckboxTableQuestionActive/CheckboxTableQuestionActive";
 import RadioTableQuestionNotActive from "./CheckboxTableQuestionNotActive/CheckboxTableQuestionNotActive";
+import { he } from "../../../../shared/constants/i18";
 
 interface QuestionCardProps {
   isActive: boolean;
@@ -13,11 +14,17 @@ const CheckboxTableQuestion = ({ isActive }: QuestionCardProps) => {
   const [colsOptions, setColsOptions] = useState<string[]>([DEFAULT_VALUE]);
 
   const addRowOptionHandler = () => {
-    setRowsOptions((prev) => [...prev, `אפשרות ${prev.length + 1}`]);
+    setRowsOptions((prev) => [
+      ...prev,
+      `${he.schema.creation.option} ${prev.length + 1}`,
+    ]);
   };
 
   const addColOptionHandler = () => {
-    setColsOptions((prev) => [...prev, `אפשרות ${prev.length + 1}`]);
+    setColsOptions((prev) => [
+      ...prev,
+      `${he.schema.creation.option} ${prev.length + 1}`,
+    ]);
   };
 
   const removeRowHandler = (index: number) => {

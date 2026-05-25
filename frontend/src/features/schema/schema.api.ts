@@ -1,6 +1,6 @@
 import { he } from "../../shared/constants/i18";
 import { request } from "../../shared/network/request";
-import type { ISchema } from "./schemaTypes";
+import type { ISchema, ISection } from "./schemaTypes";
 
 export const createSchema = (userId: string): Promise<ISchema> =>
   request<ISchema>({
@@ -15,8 +15,8 @@ export const getSchema = (schemaId: string | undefined): Promise<ISchema> =>
     url: `/schemas/${schemaId}`,
   });
 
-export const createSection = (schemaId: string): Promise<ISchema> =>
-  request<ISchema>({
+export const createSection = (schemaId: string): Promise<ISection> =>
+  request<ISection>({
     method: "PATCH",
     url: `/schemas/${schemaId}/createSection`,
   });

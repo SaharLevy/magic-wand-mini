@@ -17,7 +17,7 @@ const CheckboxQuestion = ({ isActive }: QuestionCardProps) => {
   const [options, setOptions] = useState<string[]>([DEFAULT_VALUE]);
 
   const addOptionHandler = () => {
-    const newOption = `אפשרות ${options.length + 1}`;
+    const newOption = `${he.schema.creation.baseQuestionDefaultText} ${options.length + 1}`;
     setOptions([...options, newOption]);
   };
   return !isActive ? (

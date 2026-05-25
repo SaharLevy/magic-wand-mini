@@ -3,6 +3,7 @@ import {
   IQuestionUpdateRequest,
   ISchema,
   ISchemaUpdate,
+  ISection,
   ISectionUpdateRequest,
   SchemaStatus,
 } from "./types.js";
@@ -25,7 +26,7 @@ class Manager {
   static createSection = async (
     schemaId: MongoObjectId,
     insertAtOrder?: number,
-  ): Promise<ISchema> => {
+  ): Promise<ISection> => {
     const schema = await Repo.getSchemaById(schemaId);
     const order = insertAtOrder ?? schema.sections.length;
 

@@ -9,8 +9,10 @@ import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
 import Toolbar from "../../shared/components/Toolbar/Toolbar";
 import { useParams } from "react-router-dom";
 import { useCreateSection } from "../../features/schema/hooks/useSchema";
+import { he } from "../../shared/constants/i18";
+import type { ISchema } from "../../features/schema/schemaTypes";
 
-type SectionDraft = { title: string; description: string };
+// type SectionDraft = { title: string; description: string };
 
 const SchemaEditPage = () => {
   const { schemaId } = useParams<{ schemaId: string }>();
@@ -18,9 +20,7 @@ const SchemaEditPage = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [sectionDrafts, setSectionDrafts] = useState<
-    Record<string, SectionDraft>
-  >({});
+  const [schemaDraft, setSchemaDraft] = useState<ISchema | null>(null);
 
   const { schema, isPending, isError } = useGetSchema(schemaId);
   const { createSection } = useCreateSection(schemaId);
@@ -33,6 +33,17 @@ const SchemaEditPage = () => {
     ? () => createQuestion(activeSectionId)
     : undefined;
 
+  const handleAddSection = async () => {
+    const newSection = await createSection();
+    setSchemaDraft(
+      (prev) =>
+        prev && {
+          ...prev,
+          sections: [...prev.sections, newSection],
+        },
+    );
+  };
+
   const handleActivate = (cardId: string, element: HTMLElement) => {
     setActiveCardId(cardId);
     setAnchorEl(element);
@@ -40,24 +51,13 @@ const SchemaEditPage = () => {
 
   useEffect(() => {
     if (!schema) return;
-    setTitle(schema.title);
-    setDescription(schema.description ?? "");
-    setSectionDrafts(
-      Object.fromEntries(
-        schema.sections.map((section) => [
-          section._id,
-          { title: section.title, description: section.description ?? "" },
-        ]),
-      ),
-    );
+    if (schemaDraft) return;
+    setSchemaDraft(schema);
   }, [schema]);
 
-  if (isPending) return <div>Loading...</div>;
+  if (isPending || !schemaDraft) return <div>Loading...</div>;
   if (isError || !schema) return <div>Error...</div>;
 
-  const updateSectionDraft = (id: string, patch: Partial<SectionDraft>) => {
-    setSectionDrafts((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }));
-  };
   const sectionsCount = schema.sections.length + 1;
 
   return (
@@ -73,7 +73,7 @@ const SchemaEditPage = () => {
       />
       {schema.sections.map((section, index) => {
         const draft = sectionDrafts[section._id] ?? {
-          title: section.title,
+          ...section,
           description: section.description ?? "",
         };
         return (
@@ -85,6 +85,7 @@ const SchemaEditPage = () => {
             onActivate={(el) => handleActivate(section._id, el)}
             title={draft.title}
             description={draft.description}
+            section={draft}
             onTitleChange={(value) =>
               updateSectionDraft(section._id, { title: value })
             }
@@ -95,7 +96,7 @@ const SchemaEditPage = () => {
         );
       })}
 
-      <AppButton variant="contained">Home</AppButton>
+      <AppButton variant="contained">{`${he.homePage.homeButton}`}</AppButton>
       <Toolbar
         anchorEl={anchorEl}
         onAddSection={() => createSection()}

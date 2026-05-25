@@ -5,7 +5,7 @@ import {
   getSchema,
 } from "../schema.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ISchema } from "../schemaTypes";
+import type { ISchema, ISection } from "../schemaTypes";
 
 const TEMP_USER_ID = "507f1f77bcf86cd799439011";
 
@@ -25,13 +25,12 @@ export const useCreateSchema = () => {
 export const useCreateSection = (schemaId: string | undefined) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError } = useMutation<ISchema, Error>({
+  const { mutate, isPending, isError } = useMutation<ISection, Error>({
     mutationFn: () => {
       if (!schemaId) throw new Error("Missing schemaId");
       return createSection(schemaId);
     },
     onSuccess: () => {
-      console.log("🔍 Invalidating with schemaId:", schemaId);
       queryClient.invalidateQueries({ queryKey: ["schema", schemaId] });
     },
   });

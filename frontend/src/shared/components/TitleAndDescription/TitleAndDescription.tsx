@@ -7,7 +7,7 @@ import {
 interface TitleAndDescriptionProps {
   title: string;
   isSection?: boolean;
-  description: string;
+  description?: string;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
 }

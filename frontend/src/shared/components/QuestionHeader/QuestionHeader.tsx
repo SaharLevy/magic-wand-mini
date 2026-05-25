@@ -17,6 +17,7 @@ import {
   MenuIcon,
 } from "./QuestionHeader.styles";
 import type { QuestionTypes } from "../../../features/schema/schemaTypes";
+import { he } from "../../constants/i18";
 
 interface QuestionHeaderProps {
   questionText: string;
@@ -38,7 +39,7 @@ const QuestionHeader = ({
         multiline
         value={questionText}
         onChange={(e) => onQuestionChange(e.target.value)}
-        placeholder="שאלה"
+        placeholder={he.schema.creation.baseQuestionDefaultText}
       />
 
       <TypeSelect

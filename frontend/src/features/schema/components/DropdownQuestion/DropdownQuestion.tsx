@@ -15,7 +15,7 @@ const DropdownQuestion = ({ isActive }: QuestionCardProps) => {
   const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
 
   const addOptionHandler = () => {
-    const newOption = `אפשרות ${options.length + 1}`;
+    const newOption = `${he.schema.creation.option} ${options.length + 1}`;
     setOptions([...options, newOption]);
   };
 

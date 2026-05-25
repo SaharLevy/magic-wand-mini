@@ -17,7 +17,7 @@ const RadioQuestion = ({ isActive }: QuestionCardProps) => {
 
   //i have some duplicates between components will take care of it later.
   const addOptionHandler = () => {
-    const newOption = `אפשרות ${options.length + 1}`;
+    const newOption = `${he.schema.creation.option} ${options.length + 1}`;
     setOptions([...options, newOption]);
   };
 

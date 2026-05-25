@@ -8,6 +8,7 @@ export const he = {
       titlePlaceholder: "טופס ללא כותרת",
       descriptionPlaceholder: "תיאור טופס",
       addOption: "הוספת אפשרות",
+      option: "אפשרות",
       rows: "שורות",
       cols: "עמודות",
       date: "יום, חודש, שנה",
@@ -17,5 +18,10 @@ export const he = {
       longText: "טקסט של תשובה ארוכה",
       baseQuestionDefaultText: "שאלה",
     },
+  },
+  homePage: {
+    creatingSchema: "יוצר..",
+    createNewForm: "יצירת טופס",
+    homeButton: "בית",
   },
 };

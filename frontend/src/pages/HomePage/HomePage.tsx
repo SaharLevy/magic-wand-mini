@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
 import { useCreateSchema } from "../../features/schema/hooks/useSchema";
+import { he } from "../../shared/constants/i18";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -18,7 +19,9 @@ const HomePage = () => {
         onClick={handleCreate}
         disabled={isPending}
       >
-        {isPending ? "Creating..." : "Create new form"}
+        {isPending
+          ? `${he.homePage.creatingSchema}`
+          : `${he.homePage.createNewForm}`}
       </AppButton>
     </>
   );

@@ -50,12 +50,19 @@ class Repo {
   static createSection = async (
     schemaId: MongoObjectId,
     section: Partial<ISection>,
-  ): Promise<ISchema> =>
-    FormSchema.findByIdAndUpdate(
+  ): Promise<ISection> => {
+    const updatedSchema = await FormSchema.findByIdAndUpdate(
       schemaId,
       { $push: { sections: section } },
       { new: true },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+
+    const newSection = updatedSchema.sections.at(-1);
+
+    if (!newSection) throw new Error("Failed to retrieve created section");
+
+    return newSection;
+  };
 
   static updateSection = async (
     schemaId: MongoObjectId,

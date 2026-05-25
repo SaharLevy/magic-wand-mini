@@ -1,3 +1,4 @@
+import type { ISection } from "../../../features/schema/schemaTypes";
 import { he } from "../../constants/i18";
 import { CardContainer } from "../CardContainer/CardContainer.styles";
 import {
@@ -23,6 +24,7 @@ interface SectionWrapperProps {
   sectionsCount: number;
   title: string;
   description: string;
+  section: ISection
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
 }
@@ -34,6 +36,7 @@ const SectionWrapper = ({
   sectionsCount,
   title,
   description,
+  section,
   onTitleChange,
   onDescriptionChange,
 }: SectionWrapperProps) => {
@@ -50,8 +53,8 @@ const SectionWrapper = ({
         >
           {isActive ? (
             <TitleAndDescription
-              title={title}
-              description={description}
+              title={section.title}
+              description={section.description}
               onTitleChange={onTitleChange}
               onDescriptionChange={onDescriptionChange}
               isSection={true}
