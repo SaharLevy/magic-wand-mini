@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   useCreateQuestion,
   useGetSchema,
+  useUpdateSchema,
 } from "../../features/schema/hooks/useSchema";
 import FormHeaderCard from "../../shared/components/FormHeaderCard/FormHeaderCard";
 import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
@@ -27,6 +28,7 @@ const SchemaEditPage = () => {
   const { schema, isPending, isError } = useGetSchema(schemaId);
   const { createSection } = useCreateSection(schemaId);
   const { createQuestion } = useCreateQuestion(schemaId);
+  const { updateSchema: saveSchema, isPending: isSaving } = useUpdateSchema();
 
   const updateSchema = (patch: Partial<ISchema>) => {
     setSchemaDraft((prev) => prev && { ...prev, ...patch });
@@ -108,6 +110,11 @@ const SchemaEditPage = () => {
     setAnchorEl(element);
   };
 
+  const handleSaveSchema = () => {
+    if (!schemaDraft) return;
+    saveSchema(schemaDraft);
+  };
+
   useEffect(() => {
     if (!schema) return;
     if (schemaDraft) return;
@@ -159,7 +166,10 @@ const SchemaEditPage = () => {
         </Link>
       </TopRightSlot>
       <BottomLeftStack>
-        <AppButton variant="contained">{`${he.schema.creation.saveButtonText}`}</AppButton>
+        <AppButton
+          variant="contained"
+          onClick={handleSaveSchema}
+        >{`${he.schema.creation.saveButtonText}`}</AppButton>
         <AppButton variant="contained">{`${he.schema.creation.publishSchemaButtonText}`}</AppButton>
       </BottomLeftStack>
 

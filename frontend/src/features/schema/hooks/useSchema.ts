@@ -23,13 +23,22 @@ export const useCreateSchema = () => {
   };
 };
 
-export const useUpdateSchema = (updatedSchema: ISchema) => {
-  const { mutate, data, isPending, isError } = useMutation<ISchema, Error>({
-    mutationFn: () => updateSchema(TEMP_USER_ID, updatedSchema),
+export const useUpdateSchema = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, data, isPending, isError } = useMutation<
+    ISchema,
+    Error,
+    ISchema
+  >({
+    mutationFn: (updatedSchema) => updateSchema(TEMP_USER_ID, updatedSchema),
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ["schema", updated._id] });
+    },
   });
 
   return {
-    createSchema: mutate,
+    updateSchema: mutate,
     schema: data,
     isPending,
     isError,

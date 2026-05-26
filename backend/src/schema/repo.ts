@@ -2,6 +2,7 @@ import {
   IQuestion,
   IQuestionUpdate,
   ISchema,
+  ISchemaInput,
   ISchemaUpdate,
   ISection,
   ISectionUpdate,
@@ -42,7 +43,7 @@ class Repo {
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,
-    newSchema: ISchemaUpdate,
+    newSchema: ISchema,
   ): Promise<ISchema> =>
     FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
       new NotFoundError(SCHEMA_NOT_FOUND),

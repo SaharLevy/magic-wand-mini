@@ -38,11 +38,9 @@ schemasRouter.post(
 schemasRouter.put(
   "/:schemaId",
   validate(schemasValidation.updateSchemaById, async (req, res) => {
-    res.status(StatusCodes.OK).json(
-      await Manager.updateSchemaById(req.params.schemaId, {
-        ...req.body,
-      }),
-    );
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.updateSchemaById(req.params.schemaId, req.body));
   }),
 );
 

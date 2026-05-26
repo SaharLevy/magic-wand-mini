@@ -7,6 +7,7 @@ import {
   sectionIdSchema,
   statusesSchema,
   createSchemaBody,
+  schemaWithIdSchema,
 } from "./types.js";
 import { objectIdString } from "../shared/types.js";
 
@@ -75,7 +76,7 @@ const schemasValidation = {
     params: z.object({
       schemaId: objectIdString,
     }),
-    body: updateSchema,
+    body: schemaWithIdSchema,
     query: z.object({}),
   },
   updateSection: {

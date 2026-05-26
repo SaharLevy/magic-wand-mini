@@ -3,6 +3,7 @@ import {
   IQuestion,
   IQuestionUpdateRequest,
   ISchema,
+  ISchemaInput,
   ISchemaUpdate,
   ISection,
   ISectionUpdateRequest,
@@ -51,8 +52,8 @@ class Manager {
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,
-    newSchema: ISchemaUpdate,
-  ): Promise<ISchema> => Repo.updateSchemaById(schemaId, newSchema);
+    newSchema: ISchema,
+  ): Promise<ISchema> => Repo.updateSchemaById(newSchema._id, newSchema);
 
   static updateSection = async (
     schemaId: MongoObjectId,
