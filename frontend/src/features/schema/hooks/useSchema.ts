@@ -3,6 +3,7 @@ import {
   createSchema,
   createSection,
   getSchema,
+  updateSchema,
 } from "../schema.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IQuestion, ISchema, ISection } from "../schemaTypes";
@@ -12,6 +13,19 @@ const TEMP_USER_ID = "507f1f77bcf86cd799439011";
 export const useCreateSchema = () => {
   const { mutate, data, isPending, isError } = useMutation<ISchema, Error>({
     mutationFn: () => createSchema(TEMP_USER_ID),
+  });
+
+  return {
+    createSchema: mutate,
+    schema: data,
+    isPending,
+    isError,
+  };
+};
+
+export const useUpdateSchema = (updatedSchema: ISchema) => {
+  const { mutate, data, isPending, isError } = useMutation<ISchema, Error>({
+    mutationFn: () => updateSchema(TEMP_USER_ID, updatedSchema),
   });
 
   return {

@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 
 export const AppButton = styled(Button)({
   color: "black",
+  width: "5rem",
   borderColor: "#4285f4",
   "&:hover": {
     borderColor: "#4285f4",

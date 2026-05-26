@@ -9,6 +9,16 @@ export const createSchema = (userId: string): Promise<ISchema> =>
     data: { title: he.schema.creation.defaultTitleSchema },
   });
 
+export const updateSchema = (
+  userId: string,
+  updatedSchema: ISchema,
+): Promise<ISchema> =>
+  request<ISchema>({
+    method: "PUT",
+    url: `/schemas/${userId}`,
+    data: updatedSchema,
+  });
+
 export const getSchema = (schemaId: string | undefined): Promise<ISchema> =>
   request<ISchema>({
     method: "GET",

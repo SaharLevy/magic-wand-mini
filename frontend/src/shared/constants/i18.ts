@@ -17,6 +17,8 @@ export const he = {
       shortText: "טקסט של תשובה קצרה",
       longText: "טקסט של תשובה ארוכה",
       baseQuestionDefaultText: "שאלה",
+      saveButtonText: "שמור",
+      publishSchemaButtonText: "פרסם",
     },
   },
   homePage: {

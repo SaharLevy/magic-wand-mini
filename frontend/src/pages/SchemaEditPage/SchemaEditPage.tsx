@@ -7,7 +7,7 @@ import FormHeaderCard from "../../shared/components/FormHeaderCard/FormHeaderCar
 import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
 import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
 import Toolbar from "../../shared/components/Toolbar/Toolbar";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useCreateSection } from "../../features/schema/hooks/useSchema";
 import { he } from "../../shared/constants/i18";
 import type {
@@ -16,6 +16,7 @@ import type {
   ISchema,
   ISection,
 } from "../../features/schema/schemaTypes";
+import { BottomLeftStack, TopRightSlot } from "./SchemaEditPage.styles";
 
 const SchemaEditPage = () => {
   const { schemaId } = useParams<{ schemaId: string }>();
@@ -152,8 +153,16 @@ const SchemaEditPage = () => {
           />
         );
       })}
+      <TopRightSlot>
+        <Link to={"/"}>
+          <AppButton variant="contained">{`${he.homePage.homeButton}`}</AppButton>
+        </Link>
+      </TopRightSlot>
+      <BottomLeftStack>
+        <AppButton variant="contained">{`${he.schema.creation.saveButtonText}`}</AppButton>
+        <AppButton variant="contained">{`${he.schema.creation.publishSchemaButtonText}`}</AppButton>
+      </BottomLeftStack>
 
-      <AppButton variant="contained">{`${he.homePage.homeButton}`}</AppButton>
       <Toolbar
         anchorEl={anchorEl}
         onAddSection={handleAddSection}
