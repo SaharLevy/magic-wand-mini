@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CardContainer } from "../../../../shared/components/CardContainer/CardContainer.styles";
 import QuestionHeader from "../../../../shared/components/QuestionHeader/QuestionHeader";
 import TextQuestion from "../TextQuestion/TextQuestion";
@@ -17,6 +16,7 @@ import {
   type IQuestionUpdate,
 } from "../../schemaTypes";
 import { he } from "../../../../shared/constants/i18";
+import QuestionFooter from "../../../../shared/components/QuestionFooter/QuestionFooter";
 
 interface QuestionCardProps {
   question: IQuestion;
@@ -31,11 +31,6 @@ const BaseQuestion = ({
   onActivate,
   onChange,
 }: QuestionCardProps) => {
-  // const [questionText, setQuestionText] = useState("");
-  // const [questionType, setQuestionType] = useState<QuestionTypes>(
-  //   QuestionTypes.SHORT_TEXT,
-  // );
-
   return (
     <CardContainer
       isActive={isActive}
@@ -91,6 +86,13 @@ const BaseQuestion = ({
             return null;
         }
       })()}
+
+      {isActive && (
+        <QuestionFooter
+          isRequired={question.required}
+          onQuestionChange={(value) => onChange({ required: value })}
+        />
+      )}
     </CardContainer>
   );
 };

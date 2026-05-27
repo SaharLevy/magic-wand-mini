@@ -2,6 +2,7 @@ import {
   createQuestion,
   createSchema,
   createSection,
+  deleteQuestion,
   getSchema,
   updateSchema,
 } from "../schema.api";
@@ -94,3 +95,28 @@ export const useGetSchema = (schemaId: string | undefined) => {
     isError,
   };
 };
+
+// export const useDeleteQuestion = (schemaId: string | undefined) => {
+//   const queryClient = useQueryClient();
+
+//   const { mutateAsync, isPending, isError } = useMutation<
+//     ISchema,
+//     Error,
+//     string
+//   >({
+//     mutationFn: (
+//       sectionId: string | undefined,
+//       questionId: string | undefined,
+//     ) => {
+//       if (!schemaId || !sectionId || !questionId) {
+//         throw new Error("Missing schemaId, sectionId, or questionId");
+//       }
+//       return deleteQuestion(schemaId, sectionId, questionId);
+//     },
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["schema", schemaId] });
+//     },
+//   });
+
+//   return { deleteQuestion: mutateAsync, isPending, isError };
+// };

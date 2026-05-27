@@ -38,13 +38,15 @@ const QuestionHeader = ({
         fullWidth
         multiline
         value={questionText}
-        onChange={(e) => onQuestionChange(e.target.value)}
+        onChange={(element) => onQuestionChange(element.target.value)}
         placeholder={he.schema.creation.baseQuestionDefaultText}
       />
 
       <TypeSelect
         value={questionType}
-        onChange={(e) => onTypeChange(e.target.value as QuestionTypes)}
+        onChange={(element) =>
+          onTypeChange(element.target.value as QuestionTypes)
+        }
       >
         <TypeMenuItem value={QuestionTypes.SHORT_TEXT}>
           <MenuItemContent>

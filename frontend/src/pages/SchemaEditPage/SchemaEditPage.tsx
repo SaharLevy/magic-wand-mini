@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   useCreateQuestion,
+  // useDeleteQuestion,
   useGetSchema,
   useUpdateSchema,
 } from "../../features/schema/hooks/useSchema";
@@ -29,7 +30,6 @@ const SchemaEditPage = () => {
   const { createSection } = useCreateSection(schemaId);
   const { createQuestion } = useCreateQuestion(schemaId);
   const { updateSchema: saveSchema, isPending: isSaving } = useUpdateSchema();
-
   const updateSchema = (patch: Partial<ISchema>) => {
     setSchemaDraft((prev) => prev && { ...prev, ...patch });
   };

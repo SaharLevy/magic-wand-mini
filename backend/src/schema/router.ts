@@ -98,7 +98,7 @@ schemasRouter.delete(
       .status(StatusCodes.OK)
       .json(
         await Manager.deleteQuestion(
-          req.body.schemaId,
+          req.params.schemaId,
           req.body.sectionId,
           req.body.questionId,
         ),

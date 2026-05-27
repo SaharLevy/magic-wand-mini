@@ -86,7 +86,7 @@ const SectionWrapper = ({
             key={question._id}
             question={question}
             isActive={activeCardId === question._id}
-            onActivate={(el) => onCardActivate(question._id, el)}
+            onActivate={(element) => onCardActivate(question._id, element)}
             onChange={(patch) => onQuestionChange(question._id, patch)}
           />
         ))}

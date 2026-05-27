@@ -2,6 +2,8 @@ import { he } from "../../shared/constants/i18";
 import { request } from "../../shared/network/request";
 import type { IQuestion, ISchema, ISection } from "./schemaTypes";
 
+//userId is missing for now.
+
 export const createSchema = (userId: string): Promise<ISchema> =>
   request<ISchema>({
     method: "POST",
@@ -39,4 +41,15 @@ export const createQuestion = (
     method: "PATCH",
     url: `/schemas/${schemaId}/createQuestion`,
     data: { sectionId },
+  });
+
+export const deleteQuestion = (
+  schemaId: string,
+  sectionId: string,
+  questionId: string,
+): Promise<ISchema> =>
+  request<ISchema>({
+    method: "DELETE",
+    url: `/schemas/${schemaId}/deleteQuestion`,
+    data: { sectionId, questionId },
   });

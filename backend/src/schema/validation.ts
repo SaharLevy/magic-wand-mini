@@ -64,9 +64,8 @@ const schemasValidation = {
     query: z.object({}),
   },
   deleteQuestion: {
-    params: z.object({}),
+    params: z.object({ schemaId: objectIdString }),
     body: z.object({
-      schemaId: objectIdString,
       sectionId: objectIdString,
       questionId: objectIdString,
     }),
