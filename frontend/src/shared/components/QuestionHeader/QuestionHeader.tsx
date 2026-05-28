@@ -50,70 +50,70 @@ const QuestionHeader = ({
       >
         <TypeMenuItem value={QuestionTypes.SHORT_TEXT}>
           <MenuItemContent>
-            {"תשובה קצרה"}
+            {he.schema.creation.headerQuestionShortText}
             <ShortTextIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.PARAGRAPH}>
           <MenuItemContent>
-            פסקה
+            {he.schema.creation.headerQuestionParagraph}
             <SubjectIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.RADIO}>
           <MenuItemContent>
-            בחירה מרובה
+            {he.schema.creation.headerQuestionRadio}
             <RadioButtonCheckedIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.CHECKBOX}>
           <MenuItemContent>
-            תיבות סימון
+            {he.schema.creation.headerQuestionCheckbox}
             <CheckBoxIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.DROPDOWN}>
           <MenuItemContent>
-            רשימה נפתחת
+            {he.schema.creation.headerQuestionDropdown}
             <ArrowDropDownCircleIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.LINEAR_SCALE}>
           <MenuItemContent>
-            {"סולם לינארי"}
+            {he.schema.creation.headerQuestionLinearScale}
             <MoreHorizIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.RADIO_TABLE}>
           <MenuItemContent>
-            {"רשת של בחירה מרובה"}
+            {he.schema.creation.headerQuestionRadioTable}
             <MenuIcon src="../../public/menu.png" alt="menu" />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.CHECKBOX_TABLE}>
           <MenuItemContent>
-            {"רשת תיבות סימון"}
+            {he.schema.creation.headerQuestionCheckboxTable}
             <AppsIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.DATE}>
           <MenuItemContent>
-            {"תאריך"}
+            {he.schema.creation.headerQuestionDate}
             <EventIcon />
           </MenuItemContent>
         </TypeMenuItem>
 
         <TypeMenuItem value={QuestionTypes.TIME}>
           <MenuItemContent>
-            {"זמן"}
+            {he.schema.creation.time}
             <AccessTimeIcon />
           </MenuItemContent>
         </TypeMenuItem>

@@ -12,7 +12,9 @@ interface QuestionCardProps {
 }
 
 const DropdownQuestion = ({ isActive }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
+  const [options, setOptions] = useState<string[]>([
+    he.schema.creation.defaultValueOptionsState,
+  ]);
 
   const addOptionHandler = () => {
     const newOption = `${he.schema.creation.option} ${options.length + 1}`;

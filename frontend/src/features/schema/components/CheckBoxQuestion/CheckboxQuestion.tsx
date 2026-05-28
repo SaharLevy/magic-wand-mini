@@ -7,14 +7,14 @@ import {
 import { AddOption, OptionInput } from "../RadioQuestion/RadioQuestion.styles";
 import { he } from "../../../../shared/constants/i18";
 
-const DEFAULT_VALUE = "אפשרות 1";
-
 interface QuestionCardProps {
   isActive: boolean;
 }
 
 const CheckboxQuestion = ({ isActive }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>([DEFAULT_VALUE]);
+  const [options, setOptions] = useState<string[]>([
+    he.schema.creation.defaultValueOptionsState,
+  ]);
 
   const addOptionHandler = () => {
     const newOption = `${he.schema.creation.baseQuestionDefaultText} ${options.length + 1}`;
