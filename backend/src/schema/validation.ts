@@ -56,9 +56,8 @@ const schemasValidation = {
     query: z.object({}),
   },
   deleteSection: {
-    params: z.object({}),
+    params: z.object({ schemaId: objectIdString }),
     body: z.object({
-      schemaId: objectIdString,
       sectionId: objectIdString,
     }),
     query: z.object({}),
@@ -76,6 +75,11 @@ const schemasValidation = {
       schemaId: objectIdString,
     }),
     body: schemaWithIdSchema,
+    query: z.object({}),
+  },
+  publishSchema: {
+    params: z.object({ schemaId: objectIdString }).strict(),
+    body: z.object({}),
     query: z.object({}),
   },
   updateSection: {

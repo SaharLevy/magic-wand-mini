@@ -1,15 +1,14 @@
-import Repo from "./repo.js";
+import Repo, { SCHEMA_NOT_EDITABLE } from "./repo.js";
 import {
   IQuestion,
   IQuestionUpdateRequest,
   ISchema,
-  ISchemaInput,
-  ISchemaUpdate,
   ISection,
   ISectionUpdateRequest,
   SchemaStatus,
 } from "./types.js";
 import { MongoObjectId } from "../shared/types.js";
+import { ConflictError } from "../utils/customErrors.js";
 
 class Manager {
   static getSchemasByUserId = async (
@@ -29,7 +28,7 @@ class Manager {
     schemaId: MongoObjectId,
     insertAtOrder?: number,
   ): Promise<ISection> => {
-    const schema = await Repo.getSchemaById(schemaId);
+    const schema = await this.assertDraft(schemaId);
     const order = insertAtOrder ?? schema.sections.length;
 
     if (insertAtOrder !== undefined)
@@ -48,17 +47,24 @@ class Manager {
   static createQuestion = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
-  ): Promise<IQuestion> => Repo.createQuestion(schemaId, sectionId);
+  ): Promise<IQuestion> => {
+    await this.assertDraft(schemaId);
+    return Repo.createQuestion(schemaId, sectionId);
+  };
 
   static updateSchemaById = async (
     schemaId: MongoObjectId,
     newSchema: ISchema,
-  ): Promise<ISchema> => Repo.updateSchemaById(newSchema._id, newSchema);
+  ): Promise<ISchema> => {
+    await this.assertDraft(schemaId);
+    return Repo.updateSchemaById(schemaId, newSchema);
+  };
 
   static updateSection = async (
     schemaId: MongoObjectId,
     sectionData: ISectionUpdateRequest,
   ): Promise<ISchema> => {
+    await this.assertDraft(schemaId);
     const { sectionId, ...updatedSection } = sectionData;
 
     return Repo.updateSection(schemaId, sectionId, updatedSection);
@@ -68,6 +74,7 @@ class Manager {
     schemaId: MongoObjectId,
     questionData: IQuestionUpdateRequest,
   ): Promise<ISchema> => {
+    await this.assertDraft(schemaId);
     const { sectionId, questionId, ...updatedQuestion } = questionData;
 
     return Repo.updateQuestion(
@@ -78,16 +85,36 @@ class Manager {
     );
   };
 
+  static publishSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    Repo.publishSchema(schemaId);
+
   static deleteSection = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
-  ): Promise<ISchema> => Repo.deleteSection(schemaId, sectionId);
+  ): Promise<ISchema> => {
+    await this.assertDraft(schemaId);
+    return Repo.deleteSection(schemaId, sectionId);
+  };
 
   static deleteQuestion = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
     questionId: MongoObjectId,
-  ): Promise<ISchema> => Repo.deleteQuestion(schemaId, sectionId, questionId);
+  ): Promise<ISchema> => {
+    await this.assertDraft(schemaId);
+    return Repo.deleteQuestion(schemaId, sectionId, questionId);
+  };
+
+  private static assertDraft = async (
+    schemaId: MongoObjectId,
+  ): Promise<ISchema> => {
+    const schema = await Repo.getSchemaById(schemaId);
+
+    if (schema.status !== SchemaStatus.Draft)
+      throw new ConflictError(SCHEMA_NOT_EDITABLE);
+
+    return schema;
+  };
 }
 
 export default Manager;

@@ -12,12 +12,12 @@ export const createSchema = (userId: string): Promise<ISchema> =>
   });
 
 export const updateSchema = (
-  userId: string,
+  schemaId: string,
   updatedSchema: ISchema,
 ): Promise<ISchema> =>
   request<ISchema>({
     method: "PUT",
-    url: `/schemas/${userId}`,
+    url: `/schemas/${schemaId}`,
     data: updatedSchema,
   });
 
@@ -50,6 +50,12 @@ export const deleteQuestion = (
 ): Promise<ISchema> =>
   request<ISchema>({
     method: "DELETE",
-    url: `/schemas/${schemaId}/deleteQuestion`,
+    url: `/schemas/${schemaId}/question`,
     data: { sectionId, questionId },
+  });
+
+export const publishSchema = (schemaId: string): Promise<ISchema> =>
+  request<ISchema>({
+    method: "PATCH",
+    url: `/schemas/${schemaId}/publish`,
   });

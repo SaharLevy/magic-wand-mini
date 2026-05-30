@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   CheckboxIcon,
   OptionContainer,
@@ -6,32 +5,32 @@ import {
 } from "./CheckBoxQuestion.styles";
 import { AddOption, OptionInput } from "../RadioQuestion/RadioQuestion.styles";
 import { he } from "../../../../shared/constants/i18";
+import type { IOption } from "../../schemaTypes";
+import { addOption, updateOption } from "../BaseQuestion/QuestionsHelpers";
 
 interface QuestionCardProps {
   isActive: boolean;
+  options: IOption[];
+  onChange: (options: IOption[]) => void;
 }
 
-const CheckboxQuestion = ({ isActive }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>([
-    he.schema.creation.defaultValueOptionsState,
-  ]);
-
-  const addOptionHandler = () => {
-    const newOption = `${he.schema.creation.baseQuestionDefaultText} ${options.length + 1}`;
-    setOptions([...options, newOption]);
-  };
+const CheckboxQuestion = ({
+  isActive,
+  options,
+  onChange,
+}: QuestionCardProps) => {
   return !isActive ? (
     <>
       <OptionsContainer>
-        {options.map((option) => (
-          <OptionContainer key={option}>
+        {options.map((option, index) => (
+          <OptionContainer key={index}>
             <CheckboxIcon />
-            {option}
+            {option.text}
           </OptionContainer>
         ))}
         <OptionContainer>
           <CheckboxIcon />
-          <AddOption onClick={addOptionHandler}>
+          <AddOption onClick={() => onChange(addOption(options))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>
@@ -41,23 +40,21 @@ const CheckboxQuestion = ({ isActive }: QuestionCardProps) => {
     <>
       <OptionsContainer>
         {options.map((option, index) => (
-          <OptionContainer key={option}>
+          <OptionContainer key={index}>
             <CheckboxIcon />
             <OptionInput
               fullWidth
               multiline
-              defaultValue={option}
-              onBlur={(e) => {
-                const updated = [...options];
-                updated[index] = e.target.value;
-                setOptions(updated);
-              }}
+              defaultValue={option.text}
+              onBlur={(e) =>
+                onChange(updateOption(options, index, e.target.value))
+              }
             />
           </OptionContainer>
         ))}
         <OptionContainer>
           <CheckboxIcon />
-          <AddOption onClick={addOptionHandler}>
+          <AddOption onClick={() => onChange(addOption(options))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>

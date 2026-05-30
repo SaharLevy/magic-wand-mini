@@ -8,19 +8,19 @@ import { he } from "../../constants/i18";
 interface QuestionFooterProps {
   onQuestionChange: (val: boolean) => void;
   isRequired: boolean;
-  //   questionDeleteHandler: () => void;
+  questionDeleteHandler: () => void;
 }
 
 const QuestionFooter = ({
   isRequired,
   onQuestionChange,
-  //   questionDeleteHandler,
+  questionDeleteHandler,
 }: QuestionFooterProps) => {
   return (
     <>
       <FooterLine />
       <FooterContainer>
-        <IconButton /*onClick={questionDeleteHandler}*/>
+        <IconButton onClick={questionDeleteHandler}>
           <DeleteIcon />
         </IconButton>
 

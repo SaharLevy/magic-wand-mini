@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AddOption,
   OptionContainer,
@@ -7,32 +6,28 @@ import {
   RadioIcon,
 } from "./RadioQuestion.styles";
 import { he } from "../../../../shared/constants/i18";
+import type { IOption } from "../../schemaTypes";
+import { addOption, updateOption } from "../BaseQuestion/QuestionsHelpers";
 
 interface QuestionCardProps {
   isActive: boolean;
+  options: IOption[];
+  onChange: (options: IOption[]) => void;
 }
 
-const RadioQuestion = ({ isActive }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>(["אפשרות 1"]);
-
-  //i have some duplicates between components will take care of it later.
-  const addOptionHandler = () => {
-    const newOption = `${he.schema.creation.option} ${options.length + 1}`;
-    setOptions([...options, newOption]);
-  };
-
+const RadioQuestion = ({ isActive, options, onChange }: QuestionCardProps) => {
   return !isActive ? (
     <>
       <OptionsContainer>
-        {options.map((option) => (
-          <OptionContainer key={option}>
+        {options.map((option, index) => (
+          <OptionContainer key={index}>
             <RadioIcon />
-            {option}
+            {option.text}
           </OptionContainer>
         ))}
         <OptionContainer>
           <RadioIcon />
-          <AddOption onClick={addOptionHandler}>
+          <AddOption onClick={() => onChange(addOption(options))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>
@@ -42,23 +37,21 @@ const RadioQuestion = ({ isActive }: QuestionCardProps) => {
     <>
       <OptionsContainer>
         {options.map((option, index) => (
-          <OptionContainer key={option}>
+          <OptionContainer key={index}>
             <RadioIcon />
             <OptionInput
               fullWidth
               multiline
-              defaultValue={option}
-              onBlur={(e) => {
-                const updated = [...options];
-                updated[index] = e.target.value;
-                setOptions(updated);
-              }}
+              defaultValue={option.text}
+              onBlur={(e) =>
+                onChange(updateOption(options, index, e.target.value))
+              }
             />
           </OptionContainer>
         ))}
         <OptionContainer>
           <RadioIcon />
-          <AddOption onClick={addOptionHandler}>
+          <AddOption onClick={() => onChange(addOption(options))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>

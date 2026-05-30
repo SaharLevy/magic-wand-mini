@@ -4,12 +4,14 @@ import {
   createSection,
   deleteQuestion,
   getSchema,
+  publishSchema,
   updateSchema,
 } from "../schema.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IQuestion, ISchema, ISection } from "../schemaTypes";
 
 const TEMP_USER_ID = "507f1f77bcf86cd799439011";
+const MISSING_SCHEMA_ID = "Missing schemaId";
 
 export const useCreateSchema = () => {
   const { mutate, data, isPending, isError } = useMutation<ISchema, Error>({
@@ -32,7 +34,8 @@ export const useUpdateSchema = () => {
     Error,
     ISchema
   >({
-    mutationFn: (updatedSchema) => updateSchema(TEMP_USER_ID, updatedSchema),
+    mutationFn: (updatedSchema) =>
+      updateSchema(updatedSchema._id, updatedSchema),
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: ["schema", updated._id] });
     },
@@ -51,7 +54,7 @@ export const useCreateSection = (schemaId: string | undefined) => {
 
   const { mutateAsync, isPending, isError } = useMutation<ISection, Error>({
     mutationFn: () => {
-      if (!schemaId) throw new Error("Missing schemaId");
+      if (!schemaId) throw new Error(MISSING_SCHEMA_ID);
       return createSection(schemaId);
     },
     onSuccess: () => {
@@ -71,7 +74,7 @@ export const useCreateQuestion = (schemaId: string | undefined) => {
     string
   >({
     mutationFn: (sectionId: string) => {
-      if (!schemaId) throw new Error("Missing schemaId");
+      if (!schemaId) throw new Error(MISSING_SCHEMA_ID);
       return createQuestion(schemaId, sectionId);
     },
     onSuccess: () => {
@@ -96,27 +99,40 @@ export const useGetSchema = (schemaId: string | undefined) => {
   };
 };
 
-// export const useDeleteQuestion = (schemaId: string | undefined) => {
-//   const queryClient = useQueryClient();
+export const useDeleteQuestion = (schemaId: string | undefined) => {
+  const queryClient = useQueryClient();
 
-//   const { mutateAsync, isPending, isError } = useMutation<
-//     ISchema,
-//     Error,
-//     string
-//   >({
-//     mutationFn: (
-//       sectionId: string | undefined,
-//       questionId: string | undefined,
-//     ) => {
-//       if (!schemaId || !sectionId || !questionId) {
-//         throw new Error("Missing schemaId, sectionId, or questionId");
-//       }
-//       return deleteQuestion(schemaId, sectionId, questionId);
-//     },
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["schema", schemaId] });
-//     },
-//   });
+  const { mutateAsync, isPending, isError } = useMutation<
+    ISchema,
+    Error,
+    { sectionId: string; questionId: string }
+  >({
+    mutationFn: ({ sectionId, questionId }) => {
+      if (!schemaId) throw new Error(MISSING_SCHEMA_ID);
+      return deleteQuestion(schemaId, sectionId, questionId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["schema", schemaId] });
+    },
+  });
 
-//   return { deleteQuestion: mutateAsync, isPending, isError };
-// };
+  return { deleteQuestion: mutateAsync, isPending, isError };
+};
+
+export const usePublishSchema = (schemaId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending, isError } = useMutation<ISchema, Error, void>(
+    {
+      mutationFn: () => {
+        if (!schemaId) throw new Error(MISSING_SCHEMA_ID);
+        return publishSchema(schemaId);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["schema", schemaId] });
+      },
+    },
+  );
+
+  return { publishSchema: mutateAsync, isPending, isError };
+};

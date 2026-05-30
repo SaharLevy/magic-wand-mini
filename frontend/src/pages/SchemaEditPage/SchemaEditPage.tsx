@@ -1,75 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useCreateQuestion,
-  // useDeleteQuestion,
+  useDeleteQuestion,
   useGetSchema,
+  usePublishSchema,
   useUpdateSchema,
+  useCreateSection,
 } from "../../features/schema/hooks/useSchema";
 import FormHeaderCard from "../../shared/components/FormHeaderCard/FormHeaderCard";
 import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
 import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
 import Toolbar from "../../shared/components/Toolbar/Toolbar";
 import { Link, useParams } from "react-router-dom";
-import { useCreateSection } from "../../features/schema/hooks/useSchema";
 import { he } from "../../shared/constants/i18";
-import type {
-  IQuestion,
-  IQuestionUpdate,
-  ISchema,
-  ISection,
-} from "../../features/schema/schemaTypes";
+import { SchemaStatus } from "../../features/schema/schemaTypes";
 import { BottomLeftStack, TopRightSlot } from "./SchemaEditPage.styles";
+import { useSchemaDraft } from "../../features/schema/hooks/useSchemaDraft";
 
 const SchemaEditPage = () => {
   const { schemaId } = useParams<{ schemaId: string }>();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [schemaDraft, setSchemaDraft] = useState<ISchema | null>(null);
-
   const { schema, isPending, isError } = useGetSchema(schemaId);
   const { createSection } = useCreateSection(schemaId);
   const { createQuestion } = useCreateQuestion(schemaId);
   const { updateSchema: saveSchema, isPending: isSaving } = useUpdateSchema();
-  const updateSchema = (patch: Partial<ISchema>) => {
-    setSchemaDraft((prev) => prev && { ...prev, ...patch });
-  };
-
-  const updateSection = (sectionId: string, patch: Partial<ISection>) => {
-    setSchemaDraft(
-      (prev) =>
-        prev && {
-          ...prev,
-          sections: prev.sections.map((section) =>
-            section._id === sectionId ? { ...section, ...patch } : section,
-          ),
-        },
-    );
-  };
-
-  const updateQuestion = (
-    sectionId: string,
-    questionId: string,
-    patch: IQuestionUpdate,
-  ) => {
-    setSchemaDraft(
-      (prev) =>
-        prev && {
-          ...prev,
-          sections: prev.sections.map((section) =>
-            section._id === sectionId
-              ? {
-                  ...section,
-                  questions: section.questions.map((question) =>
-                    question._id === questionId
-                      ? ({ ...question, ...patch } as IQuestion)
-                      : question,
-                  ),
-                }
-              : section,
-          ),
-        },
-    );
-  };
+  const { deleteQuestion } = useDeleteQuestion(schemaId);
+  const { publishSchema } = usePublishSchema(schemaId);
+  const {
+    schemaDraft,
+    updateSchema,
+    updateSection,
+    updateQuestion,
+    addSection,
+    addQuestion,
+    removeQuestion,
+    publishDraft,
+  } = useSchemaDraft(schema);
 
   const activeSectionId =
     activeCardId && activeCardId !== "header" ? activeCardId : null;
@@ -77,32 +44,27 @@ const SchemaEditPage = () => {
   const handleAddQuestion = activeSectionId
     ? async () => {
         const newQuestion = await createQuestion(activeSectionId);
-        setSchemaDraft(
-          (prev) =>
-            prev && {
-              ...prev,
-              sections: prev.sections.map((section) =>
-                section._id === activeSectionId
-                  ? {
-                      ...section,
-                      questions: [...section.questions, newQuestion],
-                    }
-                  : section,
-              ),
-            },
-        );
+        addQuestion(activeSectionId, newQuestion);
       }
     : undefined;
 
+  const handleDeleteQuestion = async (
+    sectionId: string,
+    questionId: string,
+  ) => {
+    await deleteQuestion({ sectionId, questionId });
+    removeQuestion(sectionId, questionId);
+  };
+
   const handleAddSection = async () => {
     const newSection = await createSection();
-    setSchemaDraft(
-      (prev) =>
-        prev && {
-          ...prev,
-          sections: [...prev.sections, newSection],
-        },
-    );
+    addSection(newSection);
+  };
+
+  const handlePublishSchema = async () => {
+    if (!schemaDraft) return;
+    await publishSchema();
+    publishDraft();
   };
 
   const handleActivate = (cardId: string, element: HTMLElement) => {
@@ -115,14 +77,10 @@ const SchemaEditPage = () => {
     saveSchema(schemaDraft);
   };
 
-  useEffect(() => {
-    if (!schema) return;
-    if (schemaDraft) return;
-    setSchemaDraft(schema);
-  }, [schema]);
-
   if (isPending || !schemaDraft) return <div>Loading...</div>;
   if (isError || !schema) return <div>Error...</div>;
+
+  const isPublished = schemaDraft.status === SchemaStatus.Published;
 
   return (
     <>
@@ -157,6 +115,7 @@ const SchemaEditPage = () => {
             onQuestionChange={(questionId, patch) =>
               updateQuestion(section._id, questionId, patch)
             }
+            onDeleteQuestion={handleDeleteQuestion}
           />
         );
       })}
@@ -169,8 +128,13 @@ const SchemaEditPage = () => {
         <AppButton
           variant="contained"
           onClick={handleSaveSchema}
+          disabled={isPublished}
         >{`${he.schema.creation.saveButtonText}`}</AppButton>
-        <AppButton variant="contained">{`${he.schema.creation.publishSchemaButtonText}`}</AppButton>
+        <AppButton
+          variant="contained"
+          onClick={handlePublishSchema}
+          disabled={isPublished}
+        >{`${he.schema.creation.publishSchemaButtonText}`}</AppButton>
       </BottomLeftStack>
 
       <Toolbar

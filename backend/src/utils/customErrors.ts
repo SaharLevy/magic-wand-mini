@@ -22,4 +22,11 @@ class BadRequestError extends CustomError {
   }
 }
 
-export { CustomError, BadRequestError, NotFoundError };
+class ConflictError extends CustomError {
+  constructor(message: string) {
+    super(message, StatusCodes.CONFLICT);
+    this.name = "ConflictError";
+  }
+}
+
+export { CustomError, BadRequestError, NotFoundError, ConflictError };

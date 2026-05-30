@@ -82,17 +82,28 @@ schemasRouter.patch(
   }),
 );
 
-schemasRouter.delete(
-  "/section",
-  validate(schemasValidation.deleteSection, async (req, res) => {
+schemasRouter.patch(
+  "/:schemaId/publish",
+  validate(schemasValidation.publishSchema, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.deleteSection(req.body.schemaId, req.body.sectionId));
+      .json(await Manager.publishSchema(req.params.schemaId));
   }),
 );
 
 schemasRouter.delete(
-  "/question",
+  "/:schemaId/section",
+  validate(schemasValidation.deleteSection, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(
+        await Manager.deleteSection(req.params.schemaId, req.body.sectionId),
+      );
+  }),
+);
+
+schemasRouter.delete(
+  "/:schemaId/question",
   validate(schemasValidation.deleteQuestion, async (req, res) => {
     res
       .status(StatusCodes.OK)

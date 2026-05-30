@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
 import {
   AddOption,
   OptionContainer,
@@ -14,27 +13,24 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { CheckboxIcon } from "../../CheckBoxQuestion/CheckBoxQuestion.styles";
 import { he } from "../../../../../shared/constants/i18";
+import {
+  addItem,
+  removeItem,
+  updateItem,
+} from "../../BaseQuestion/QuestionsHelpers";
 
 interface QuestionCardProps {
   rowsOptions: string[];
   colsOptions: string[];
-  addRowOptionHandler: () => void;
-  addColOptionHandler: () => void;
-  removeRowHandler: (index: number) => void;
-  removeColHandler: (index: number) => void;
-  setRowsOptions: Dispatch<SetStateAction<string[]>>;
-  setColsOptions: Dispatch<SetStateAction<string[]>>;
+  onRowsChange: (rows: string[]) => void;
+  onColumnsChange: (columns: string[]) => void;
 }
 
 const CheckboxTableQuestionActive = ({
   rowsOptions,
   colsOptions,
-  addRowOptionHandler,
-  addColOptionHandler,
-  removeRowHandler,
-  removeColHandler,
-  setRowsOptions,
-  setColsOptions,
+  onRowsChange,
+  onColumnsChange,
 }: QuestionCardProps) => {
   return (
     <RowsColsContainer>
@@ -45,26 +41,26 @@ const CheckboxTableQuestionActive = ({
           </Typography>
         </OptionContainer>
         {rowsOptions.map((row, index) => (
-          <OptionContainer key={row}>
+          <OptionContainer key={index}>
             <NumberContainer>{`${index + 1}.`}</NumberContainer>
             <OptionInput
               fullWidth
               multiline
               defaultValue={row}
-              onBlur={(e) => {
-                const updated = [...rowsOptions];
-                updated[index] = e.target.value;
-                setRowsOptions(updated);
-              }}
+              onBlur={(e) =>
+                onRowsChange(updateItem(rowsOptions, index, e.target.value))
+              }
             />
-            <DeleteButton onClick={() => removeRowHandler(index)}>
+            <DeleteButton
+              onClick={() => onRowsChange(removeItem(rowsOptions, index))}
+            >
               <CloseIcon />
             </DeleteButton>
           </OptionContainer>
         ))}
         <OptionContainer>
           <NumberContainer>{`${rowsOptions.length + 1}.`}</NumberContainer>
-          <AddOption onClick={addRowOptionHandler}>
+          <AddOption onClick={() => onRowsChange(addItem(rowsOptions))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>
@@ -77,26 +73,26 @@ const CheckboxTableQuestionActive = ({
           </Typography>
         </OptionContainer>
         {colsOptions.map((col, index) => (
-          <OptionContainer key={col}>
+          <OptionContainer key={index}>
             <CheckboxIcon />
             <OptionInput
               fullWidth
               multiline
               defaultValue={col}
-              onBlur={(e) => {
-                const updated = [...colsOptions];
-                updated[index] = e.target.value;
-                setColsOptions(updated);
-              }}
+              onBlur={(e) =>
+                onColumnsChange(updateItem(colsOptions, index, e.target.value))
+              }
             />
-            <DeleteButton onClick={() => removeColHandler(index)}>
+            <DeleteButton
+              onClick={() => onColumnsChange(removeItem(colsOptions, index))}
+            >
               <CloseIcon />
             </DeleteButton>
           </OptionContainer>
         ))}
         <OptionContainer>
           <CheckboxIcon />
-          <AddOption onClick={addColOptionHandler}>
+          <AddOption onClick={() => onColumnsChange(addItem(colsOptions))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>

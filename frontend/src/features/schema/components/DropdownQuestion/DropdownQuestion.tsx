@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AddOption,
   OptionInput,
@@ -6,27 +5,26 @@ import {
 } from "../RadioQuestion/RadioQuestion.styles";
 import { NumberContainer, OptionContainer } from "./DropdownQuestion.style";
 import { he } from "../../../../shared/constants/i18";
+import type { IOption } from "../../schemaTypes";
+import { addOption, updateOption } from "../BaseQuestion/QuestionsHelpers";
 
 interface QuestionCardProps {
   isActive: boolean;
+  options: IOption[];
+  onChange: (options: IOption[]) => void;
 }
 
-const DropdownQuestion = ({ isActive }: QuestionCardProps) => {
-  const [options, setOptions] = useState<string[]>([
-    he.schema.creation.defaultValueOptionsState,
-  ]);
-
-  const addOptionHandler = () => {
-    const newOption = `${he.schema.creation.option} ${options.length + 1}`;
-    setOptions([...options, newOption]);
-  };
-
+const DropdownQuestion = ({
+  isActive,
+  options,
+  onChange,
+}: QuestionCardProps) => {
   return !isActive ? (
     <OptionsContainer>
       {options.map((option, index) => (
-        <OptionContainer key={option}>
+        <OptionContainer key={index}>
           <NumberContainer>{`${index}.`}</NumberContainer>
-          {option}
+          {option.text}
         </OptionContainer>
       ))}
     </OptionsContainer>
@@ -34,23 +32,21 @@ const DropdownQuestion = ({ isActive }: QuestionCardProps) => {
     <>
       <OptionsContainer>
         {options.map((option, index) => (
-          <OptionContainer key={option}>
+          <OptionContainer key={index}>
             <NumberContainer>{`${index}.`}</NumberContainer>
             <OptionInput
               fullWidth
               multiline
-              defaultValue={option}
-              onBlur={(e) => {
-                const updated = [...options];
-                updated[index] = e.target.value;
-                setOptions(updated);
-              }}
+              defaultValue={option.text}
+              onBlur={(e) =>
+                onChange(updateOption(options, index, e.target.value))
+              }
             />
           </OptionContainer>
         ))}
         <OptionContainer>
           <NumberContainer>{`${options.length}.`}</NumberContainer>
-          <AddOption onClick={addOptionHandler}>
+          <AddOption onClick={() => onChange(addOption(options))}>
             {he.schema.creation.addOption}
           </AddOption>
         </OptionContainer>

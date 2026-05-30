@@ -34,6 +34,7 @@ interface SectionWrapperProps {
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onQuestionChange: (questionId: string, patch: IQuestionUpdate) => void;
+  onDeleteQuestion: (sectionId: string, questionId: string) => void;
 }
 
 const SectionWrapper = ({
@@ -49,6 +50,7 @@ const SectionWrapper = ({
   onTitleChange,
   onDescriptionChange,
   onQuestionChange,
+  onDeleteQuestion,
 }: SectionWrapperProps) => {
   return (
     <PageContainer>
@@ -88,6 +90,7 @@ const SectionWrapper = ({
             isActive={activeCardId === question._id}
             onActivate={(element) => onCardActivate(question._id, element)}
             onChange={(patch) => onQuestionChange(question._id, patch)}
+            onDelete={() => onDeleteQuestion(section._id, question._id)}
           />
         ))}
       </SectionContainer>

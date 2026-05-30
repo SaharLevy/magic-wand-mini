@@ -19,8 +19,8 @@ const RadioTableQuestionNotActive = ({
     <TableContainer>
       <Row>
         <TableCell />
-        {colsOptions.map((col) => (
-          <TableCell key={col}>
+        {colsOptions.map((col, index) => (
+          <TableCell key={index}>
             <Typography variant="body2" noWrap>
               {col}
             </Typography>
@@ -28,15 +28,15 @@ const RadioTableQuestionNotActive = ({
         ))}
       </Row>
 
-      {rowsOptions.map((row) => (
-        <Row key={row}>
+      {rowsOptions.map((row, index) => (
+        <Row key={index}>
           <TableCell>
             <Typography variant="body2" noWrap>
               {row}
             </Typography>
           </TableCell>
-          {colsOptions.map((col) => (
-            <TableCell key={col}>
+          {colsOptions.map((col, index) => (
+            <TableCell key={index}>
               <CheckboxIcon />
             </TableCell>
           ))}

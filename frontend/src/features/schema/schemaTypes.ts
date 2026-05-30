@@ -11,6 +11,19 @@ export enum QuestionTypes {
   TIME = "TIME",
 }
 
+export const questionTypeDefaults: Record<QuestionTypes, Partial<IQuestion>> = {
+  [QuestionTypes.SHORT_TEXT]: {},
+  [QuestionTypes.PARAGRAPH]: {},
+  [QuestionTypes.RADIO]: { options: [] },
+  [QuestionTypes.CHECKBOX]: { options: [] },
+  [QuestionTypes.DROPDOWN]: { options: [] },
+  [QuestionTypes.LINEAR_SCALE]: { scaleMin: 1, scaleMax: 5 },
+  [QuestionTypes.RADIO_TABLE]: { rows: [], columns: [] },
+  [QuestionTypes.CHECKBOX_TABLE]: { rows: [], columns: [] },
+  [QuestionTypes.DATE]: {},
+  [QuestionTypes.TIME]: {},
+};
+
 export enum SchemaStatus {
   Draft = "Draft",
   Published = "Published",

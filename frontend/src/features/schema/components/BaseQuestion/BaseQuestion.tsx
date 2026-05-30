@@ -11,6 +11,7 @@ import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestio
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
 import {
+  questionTypeDefaults,
   QuestionTypes,
   type IQuestion,
   type IQuestionUpdate,
@@ -23,6 +24,7 @@ interface QuestionCardProps {
   isActive: boolean;
   onActivate: (element: HTMLElement) => void;
   onChange: (patch: IQuestionUpdate) => void;
+  onDelete: () => void;
 }
 
 const BaseQuestion = ({
@@ -30,6 +32,7 @@ const BaseQuestion = ({
   isActive,
   onActivate,
   onChange,
+  onDelete,
 }: QuestionCardProps) => {
   return (
     <CardContainer
@@ -41,7 +44,9 @@ const BaseQuestion = ({
           questionText={question.title}
           onQuestionChange={(value) => onChange({ title: value })}
           questionType={question.type}
-          onTypeChange={(type) => onChange({ type })}
+          onTypeChange={(type) =>
+            onChange({ type, ...questionTypeDefaults[type] })
+          }
         />
       ) : (
         <ViewTitle>
@@ -67,17 +72,102 @@ const BaseQuestion = ({
               />
             );
           case QuestionTypes.RADIO:
-            return <RadioQuestion isActive={isActive} />;
+            return (
+              <RadioQuestion
+                isActive={isActive}
+                options={
+                  question.type === QuestionTypes.RADIO ? question.options : []
+                }
+                onChange={(options) => onChange({ options })}
+              />
+            );
           case QuestionTypes.CHECKBOX:
-            return <CheckboxQuestion isActive={isActive} />;
+            return (
+              <CheckboxQuestion
+                isActive={isActive}
+                options={
+                  question.type === QuestionTypes.CHECKBOX
+                    ? question.options
+                    : []
+                }
+                onChange={(options) => onChange({ options })}
+              />
+            );
           case QuestionTypes.DROPDOWN:
-            return <DropdownQuestion isActive={isActive} />;
+            return (
+              <DropdownQuestion
+                isActive={isActive}
+                options={
+                  question.type === QuestionTypes.DROPDOWN
+                    ? question.options
+                    : []
+                }
+                onChange={(options) => onChange({ options })}
+              />
+            );
           case QuestionTypes.LINEAR_SCALE:
-            return <LinearScaleQuestion isActive={isActive} />;
+            return (
+              <LinearScaleQuestion
+                isActive={isActive}
+                scaleMin={
+                  question.type === QuestionTypes.LINEAR_SCALE
+                    ? question.scaleMin
+                    : 1
+                }
+                scaleMax={
+                  question.type === QuestionTypes.LINEAR_SCALE
+                    ? question.scaleMax
+                    : 5
+                }
+                scaleMinLabel={
+                  question.type === QuestionTypes.LINEAR_SCALE
+                    ? question.scaleMinLabel
+                    : undefined
+                }
+                scaleMaxLabel={
+                  question.type === QuestionTypes.LINEAR_SCALE
+                    ? question.scaleMaxLabel
+                    : undefined
+                }
+                onChange={onChange}
+              />
+            );
           case QuestionTypes.RADIO_TABLE:
-            return <RadioTableQuestion isActive={isActive} />;
+            return (
+              <RadioTableQuestion
+                isActive={isActive}
+                rows={
+                  question.type === QuestionTypes.RADIO_TABLE
+                    ? question.rows
+                    : []
+                }
+                columns={
+                  question.type === QuestionTypes.RADIO_TABLE
+                    ? question.columns
+                    : []
+                }
+                onRowsChange={(rows) => onChange({ rows })}
+                onColumnsChange={(columns) => onChange({ columns })}
+              />
+            );
           case QuestionTypes.CHECKBOX_TABLE:
-            return <CheckboxTableQuestion isActive={isActive} />;
+            return (
+              <CheckboxTableQuestion
+                isActive={isActive}
+                rows={
+                  question.type === QuestionTypes.CHECKBOX_TABLE
+                    ? question.rows
+                    : []
+                }
+                columns={
+                  question.type === QuestionTypes.CHECKBOX_TABLE
+                    ? question.columns
+                    : []
+                }
+                onRowsChange={(rows) => onChange({ rows })}
+                onColumnsChange={(columns) => onChange({ columns })}
+              />
+            );
           case QuestionTypes.DATE:
             return <DateQuestion isActive={isActive} />;
           case QuestionTypes.TIME:
@@ -91,6 +181,7 @@ const BaseQuestion = ({
         <QuestionFooter
           isRequired={question.required}
           onQuestionChange={(value) => onChange({ required: value })}
+          questionDeleteHandler={onDelete}
         />
       )}
     </CardContainer>

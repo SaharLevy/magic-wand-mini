@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   NumberContainer,
   ScaleInput,
@@ -13,99 +12,89 @@ import {
 } from "../../../../shared/components/CardContainer/CardContainer.styles";
 import { RadioIcon } from "../RadioQuestion/RadioQuestion.styles";
 import { he } from "../../../../shared/constants/i18";
+import type { IQuestionUpdate } from "../../schemaTypes";
 
 interface QuestionCardProps {
   isActive: boolean;
+  scaleMin: number;
+  scaleMax: number;
+  scaleMinLabel?: string;
+  scaleMaxLabel?: string;
+  onChange: (patch: IQuestionUpdate) => void;
 }
 
-const enum MinScaleType {
-  Zero = 0,
-  One = 1,
-}
+const MIN_VALUES = [0, 1];
+const MAX_VALUES = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-const enum MaxScaleType {
-  Two = 2,
-  Three = 3,
-  Four = 4,
-  Five = 5,
-  Six = 6,
-  Seven = 7,
-  Eight = 8,
-  Nine = 9,
-  Ten = 10,
-}
-
-const LinearScaleQuestion = ({ isActive }: QuestionCardProps) => {
-  const [minScale, setMinScale] = useState<MinScaleType>(MinScaleType.One);
-  const [minScaleInput, setMinScaleInput] = useState<string>();
-  const [maxScale, setMaxScale] = useState<MaxScaleType>(MaxScaleType.Five);
-  const [maxScaleInput, setMaxScaleInput] = useState<string>();
-
+const LinearScaleQuestion = ({
+  isActive,
+  scaleMin,
+  scaleMax,
+  scaleMinLabel,
+  scaleMaxLabel,
+  onChange,
+}: QuestionCardProps) => {
   return !isActive ? (
     <ViewContainer>
-      <ContainerY>{minScaleInput}</ContainerY>
+      <ContainerY>{scaleMinLabel}</ContainerY>
       {Array.from(
-        { length: maxScale - minScale + 1 },
-        (_, i) => minScale + i,
+        { length: scaleMax - scaleMin + 1 },
+        (_, i) => scaleMin + i,
       ).map((value) => (
         <ScaleNumberContainer>
           <ScaleNumberContainer key={value}>{value}</ScaleNumberContainer>
           <RadioIcon />
         </ScaleNumberContainer>
       ))}
-      <ContainerY>{maxScaleInput}</ContainerY>
+      <ContainerY>{scaleMaxLabel}</ContainerY>
     </ViewContainer>
   ) : (
     <>
       <ContainerX paddingRight="1rem">
         <ScaleSelect
-          value={minScale}
+          value={scaleMin}
           variant="standard"
           autoWidth={true}
-          onChange={(e) => setMinScale(e.target.value as MinScaleType)}
+          onChange={(e) => onChange({ scaleMin: Number(e.target.value) })}
         >
-          <ScaleMenuItem value={MinScaleType.Zero}>{0}</ScaleMenuItem>
-          <ScaleMenuItem value={MinScaleType.One}>{1}</ScaleMenuItem>
+          {MIN_VALUES.map((number) => (
+            <ScaleMenuItem key={number} value={number}>
+              {number}
+            </ScaleMenuItem>
+          ))}
         </ScaleSelect>
 
         <ScaleSelect
-          value={maxScale}
+          value={scaleMax}
           variant="standard"
           autoWidth={true}
-          onChange={(e) => setMaxScale(e.target.value as MaxScaleType)}
+          onChange={(e) => onChange({ scaleMax: Number(e.target.value) })}
         >
-          <ScaleMenuItem value={MaxScaleType.Three}>{3}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Four}>{4}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Five}>{5}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Six}>{6}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Seven}>{7}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Eight}>{8}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Nine}>{9}</ScaleMenuItem>
-          <ScaleMenuItem value={MaxScaleType.Ten}>{10}</ScaleMenuItem>
+          {MAX_VALUES.map((number) => (
+            <ScaleMenuItem key={number} value={number}>
+              {number}
+            </ScaleMenuItem>
+          ))}
         </ScaleSelect>
       </ContainerX>
 
       <ContainerY paddingTop="2rem">
         <ContainerX>
-          <NumberContainer> {minScale}</NumberContainer>
+          <NumberContainer> {scaleMin}</NumberContainer>
           <ScaleInput
             placeholder={he.schema.creation.titlePlaceholder}
             multiline
-            defaultValue={minScaleInput}
-            onBlur={(e) => {
-              setMinScaleInput(e.target.value);
-            }}
+            defaultValue={scaleMinLabel}
+            onBlur={(e) => onChange({ scaleMinLabel: e.target.value })}
           />
         </ContainerX>
         <ContainerX>
-          <NumberContainer> {maxScale}</NumberContainer>
+          <NumberContainer> {scaleMax}</NumberContainer>
           <ScaleInput
             placeholder={he.schema.creation.titlePlaceholder}
             multiline
-            defaultValue={maxScaleInput}
-            onBlur={(e) => {
-              setMaxScaleInput(e.target.value);
-            }}
+            defaultValue={scaleMaxLabel}
+            onBlur={(e) => onChange({ scaleMaxLabel: e.target.value })}
           />
         </ContainerX>
       </ContainerY>

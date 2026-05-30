@@ -2,8 +2,6 @@ import {
   IQuestion,
   IQuestionUpdate,
   ISchema,
-  ISchemaInput,
-  ISchemaUpdate,
   ISection,
   ISectionUpdate,
   SchemaStatus,
@@ -13,6 +11,9 @@ import { NotFoundError } from "../utils/customErrors.js";
 import { MongoObjectId, QuestionTypes } from "../shared/types.js";
 
 export const SCHEMA_NOT_FOUND = "Schema not found";
+export const SCHEMA_NOT_EDITABLE = "Schema isnt editable.";
+
+// to add an error object that will save the error texts.
 
 class Repo {
   static getSchemasByUserId = async (
@@ -140,6 +141,13 @@ class Repo {
       },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
   };
+
+  static publishSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    FormSchema.findByIdAndUpdate(
+      schemaId,
+      { $set: { status: SchemaStatus.Published } },
+      { new: true },
+    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
   static deleteSection = async (
     schemaId: MongoObjectId,
