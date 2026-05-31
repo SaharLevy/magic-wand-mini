@@ -1,7 +1,7 @@
 import RadioTableQuestionActive from "./CheckboxTableQuestionActive/CheckboxTableQuestionActive";
 import RadioTableQuestionNotActive from "./CheckboxTableQuestionNotActive/CheckboxTableQuestionNotActive";
 
-interface QuestionCardProps {
+interface CheckboxTableQuestionProps {
   isActive: boolean;
   rows: string[];
   columns: string[];
@@ -15,7 +15,7 @@ const CheckboxTableQuestion = ({
   columns,
   onRowsChange,
   onColumnsChange,
-}: QuestionCardProps) => {
+}: CheckboxTableQuestionProps) => {
   return !isActive ? (
     <RadioTableQuestionNotActive rowsOptions={rows} colsOptions={columns} />
   ) : (

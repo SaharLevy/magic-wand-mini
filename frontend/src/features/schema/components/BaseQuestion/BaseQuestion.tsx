@@ -11,7 +11,6 @@ import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestio
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
 import {
-  questionTypeDefaults,
   QuestionTypes,
   type IQuestion,
   type IQuestionUpdate,
@@ -44,9 +43,7 @@ const BaseQuestion = ({
           questionText={question.title}
           onQuestionChange={(value) => onChange({ title: value })}
           questionType={question.type}
-          onTypeChange={(type) =>
-            onChange({ type, ...questionTypeDefaults[type] })
-          }
+          onTypeChange={(type) => onChange({ type })}
         />
       ) : (
         <ViewTitle>
@@ -75,9 +72,7 @@ const BaseQuestion = ({
             return (
               <RadioQuestion
                 isActive={isActive}
-                options={
-                  question.type === QuestionTypes.RADIO ? question.options : []
-                }
+                options={question.options}
                 onChange={(options) => onChange({ options })}
               />
             );
@@ -85,11 +80,7 @@ const BaseQuestion = ({
             return (
               <CheckboxQuestion
                 isActive={isActive}
-                options={
-                  question.type === QuestionTypes.CHECKBOX
-                    ? question.options
-                    : []
-                }
+                options={question.options}
                 onChange={(options) => onChange({ options })}
               />
             );
@@ -97,11 +88,7 @@ const BaseQuestion = ({
             return (
               <DropdownQuestion
                 isActive={isActive}
-                options={
-                  question.type === QuestionTypes.DROPDOWN
-                    ? question.options
-                    : []
-                }
+                options={question.options}
                 onChange={(options) => onChange({ options })}
               />
             );
@@ -109,26 +96,10 @@ const BaseQuestion = ({
             return (
               <LinearScaleQuestion
                 isActive={isActive}
-                scaleMin={
-                  question.type === QuestionTypes.LINEAR_SCALE
-                    ? question.scaleMin
-                    : 1
-                }
-                scaleMax={
-                  question.type === QuestionTypes.LINEAR_SCALE
-                    ? question.scaleMax
-                    : 5
-                }
-                scaleMinLabel={
-                  question.type === QuestionTypes.LINEAR_SCALE
-                    ? question.scaleMinLabel
-                    : undefined
-                }
-                scaleMaxLabel={
-                  question.type === QuestionTypes.LINEAR_SCALE
-                    ? question.scaleMaxLabel
-                    : undefined
-                }
+                scaleMin={question.scaleMin}
+                scaleMax={question.scaleMax}
+                scaleMinLabel={question.scaleMinLabel}
+                scaleMaxLabel={question.scaleMaxLabel}
                 onChange={onChange}
               />
             );
@@ -136,16 +107,8 @@ const BaseQuestion = ({
             return (
               <RadioTableQuestion
                 isActive={isActive}
-                rows={
-                  question.type === QuestionTypes.RADIO_TABLE
-                    ? question.rows
-                    : []
-                }
-                columns={
-                  question.type === QuestionTypes.RADIO_TABLE
-                    ? question.columns
-                    : []
-                }
+                rows={question.rows}
+                columns={question.columns}
                 onRowsChange={(rows) => onChange({ rows })}
                 onColumnsChange={(columns) => onChange({ columns })}
               />
@@ -154,16 +117,8 @@ const BaseQuestion = ({
             return (
               <CheckboxTableQuestion
                 isActive={isActive}
-                rows={
-                  question.type === QuestionTypes.CHECKBOX_TABLE
-                    ? question.rows
-                    : []
-                }
-                columns={
-                  question.type === QuestionTypes.CHECKBOX_TABLE
-                    ? question.columns
-                    : []
-                }
+                rows={question.rows}
+                columns={question.columns}
                 onRowsChange={(rows) => onChange({ rows })}
                 onColumnsChange={(columns) => onChange({ columns })}
               />

@@ -26,6 +26,59 @@ interface QuestionHeaderProps {
   onTypeChange: (type: QuestionTypes) => void;
 }
 
+const questionTypeOptions = [
+  {
+    type: QuestionTypes.SHORT_TEXT,
+    label: he.schema.creation.headerQuestionShortText,
+    icon: <ShortTextIcon />,
+  },
+  {
+    type: QuestionTypes.PARAGRAPH,
+    label: he.schema.creation.headerQuestionParagraph,
+    icon: <SubjectIcon />,
+  },
+  {
+    type: QuestionTypes.RADIO,
+    label: he.schema.creation.headerQuestionRadio,
+    icon: <RadioButtonCheckedIcon />,
+  },
+  {
+    type: QuestionTypes.CHECKBOX,
+    label: he.schema.creation.headerQuestionCheckbox,
+    icon: <CheckBoxIcon />,
+  },
+  {
+    type: QuestionTypes.DROPDOWN,
+    label: he.schema.creation.headerQuestionDropdown,
+    icon: <ArrowDropDownCircleIcon />,
+  },
+  {
+    type: QuestionTypes.LINEAR_SCALE,
+    label: he.schema.creation.headerQuestionLinearScale,
+    icon: <MoreHorizIcon />,
+  },
+  {
+    type: QuestionTypes.RADIO_TABLE,
+    label: he.schema.creation.headerQuestionRadioTable,
+    icon: <MenuIcon src="../../public/menu.png" alt="menu" />,
+  },
+  {
+    type: QuestionTypes.CHECKBOX_TABLE,
+    label: he.schema.creation.headerQuestionCheckboxTable,
+    icon: <AppsIcon />,
+  },
+  {
+    type: QuestionTypes.DATE,
+    label: he.schema.creation.headerQuestionDate,
+    icon: <EventIcon />,
+  },
+  {
+    type: QuestionTypes.TIME,
+    label: he.schema.creation.time,
+    icon: <AccessTimeIcon />,
+  },
+];
+
 const QuestionHeader = ({
   questionText,
   onQuestionChange,
@@ -48,75 +101,14 @@ const QuestionHeader = ({
           onTypeChange(element.target.value as QuestionTypes)
         }
       >
-        <TypeMenuItem value={QuestionTypes.SHORT_TEXT}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionShortText}
-            <ShortTextIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.PARAGRAPH}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionParagraph}
-            <SubjectIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.RADIO}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionRadio}
-            <RadioButtonCheckedIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.CHECKBOX}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionCheckbox}
-            <CheckBoxIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.DROPDOWN}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionDropdown}
-            <ArrowDropDownCircleIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.LINEAR_SCALE}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionLinearScale}
-            <MoreHorizIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.RADIO_TABLE}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionRadioTable}
-            <MenuIcon src="../../public/menu.png" alt="menu" />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.CHECKBOX_TABLE}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionCheckboxTable}
-            <AppsIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.DATE}>
-          <MenuItemContent>
-            {he.schema.creation.headerQuestionDate}
-            <EventIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
-
-        <TypeMenuItem value={QuestionTypes.TIME}>
-          <MenuItemContent>
-            {he.schema.creation.time}
-            <AccessTimeIcon />
-          </MenuItemContent>
-        </TypeMenuItem>
+        {questionTypeOptions.map(({ type, label, icon }) => (
+          <TypeMenuItem key={type} value={type}>
+            <MenuItemContent>
+              {label}
+              {icon}
+            </MenuItemContent>
+          </TypeMenuItem>
+        ))}
       </TypeSelect>
     </HeaderRow>
   );

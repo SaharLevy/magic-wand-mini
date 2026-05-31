@@ -9,13 +9,13 @@ import { he } from "../../../../shared/constants/i18";
 import type { IOption } from "../../schemaTypes";
 import { addOption, updateOption } from "../BaseQuestion/QuestionsHelpers";
 
-interface QuestionCardProps {
+interface RadioQuestionProps {
   isActive: boolean;
   options: IOption[];
   onChange: (options: IOption[]) => void;
 }
 
-const RadioQuestion = ({ isActive, options, onChange }: QuestionCardProps) => {
+const RadioQuestion = ({ isActive, options, onChange }: RadioQuestionProps) => {
   return !isActive ? (
     <>
       <OptionsContainer>

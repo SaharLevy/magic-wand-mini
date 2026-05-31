@@ -46,19 +46,21 @@ class Repo {
     schemaId: MongoObjectId,
     newSchema: ISchema,
   ): Promise<ISchema> =>
-    FormSchema.findByIdAndUpdate(schemaId, newSchema, { new: true }).orFail(
-      new NotFoundError(SCHEMA_NOT_FOUND),
-    );
+    FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
+      newSchema,
+      { new: true },
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
 
   static createSection = async (
     schemaId: MongoObjectId,
     section: Partial<ISection>,
   ): Promise<ISection> => {
-    const updatedSchema = await FormSchema.findByIdAndUpdate(
-      schemaId,
+    const updatedSchema = await FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $push: { sections: section } },
       { new: true },
-    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
 
     const newSection = updatedSchema.sections.at(-1);
 
@@ -77,11 +79,11 @@ class Repo {
       newSectionQueries[`sections.$[section].${key}`] = value;
     });
 
-    return FormSchema.findByIdAndUpdate(
-      schemaId,
+    return FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $set: newSectionQueries },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
-    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
   };
 
   static createQuestion = async (
@@ -98,11 +100,11 @@ class Repo {
       order: 1,
     };
 
-    const updatedSchema = await FormSchema.findByIdAndUpdate(
-      schemaId,
+    const updatedSchema = await FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $push: { "sections.$[section].questions": emptyQuestion } },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
-    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
 
     const updatedSection = updatedSchema.sections.find((section) =>
       section._id.equals(sectionId),
@@ -129,8 +131,8 @@ class Repo {
         value;
     });
 
-    return FormSchema.findByIdAndUpdate(
-      schemaId,
+    return FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $set: newQuestionQueries },
       {
         new: true,
@@ -139,7 +141,7 @@ class Repo {
           { "question._id": questionId },
         ],
       },
-    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
   };
 
   static publishSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
@@ -153,29 +155,29 @@ class Repo {
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
   ): Promise<ISchema> =>
-    FormSchema.findByIdAndUpdate(
-      schemaId,
+    FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $pull: { sections: { _id: sectionId } } },
       { new: true },
-    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
 
   static deleteQuestion = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
     questionId: MongoObjectId,
   ): Promise<ISchema> =>
-    FormSchema.findByIdAndUpdate(
-      schemaId,
+    FormSchema.findOneAndUpdate(
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $pull: { "sections.$[section].questions": { _id: questionId } } },
       { new: true, arrayFilters: [{ "section._id": sectionId }] },
-    ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
 
   static shiftSectionOrders = async (
     schemaId: MongoObjectId,
     fromOrder: number,
   ): Promise<void> => {
     await FormSchema.updateOne(
-      { _id: schemaId },
+      { _id: schemaId, status: SchemaStatus.Draft },
       { $inc: { "sections.$[section].order": 1 } },
       { arrayFilters: [{ "section.order": { $gte: fromOrder } }] },
     );

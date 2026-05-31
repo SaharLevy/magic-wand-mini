@@ -1,5 +1,10 @@
 import { he } from "../../../../shared/constants/i18";
-import type { IOption } from "../../schemaTypes";
+import {
+  type IOption,
+  questionTypeDefaults,
+  type QuestionTypes,
+  type IQuestion,
+} from "../../schemaTypes";
 
 export const addOption = (options: IOption[]): IOption[] => [
   ...options,
@@ -29,3 +34,17 @@ export const updateItem = (
 
 export const removeItem = (items: string[], index: number): string[] =>
   items.filter((_, i) => i !== index);
+
+export const changeQuestionType = (
+  question: IQuestion,
+  type: QuestionTypes,
+): IQuestion =>
+  ({
+    _id: question._id,
+    title: question.title,
+    description: question.description,
+    required: question.required,
+    order: question.order,
+    type,
+    ...questionTypeDefaults[type],
+  }) as IQuestion;

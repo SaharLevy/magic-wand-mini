@@ -6,15 +6,15 @@ import {
 } from "./CheckboxTableQuestionNotActive.styles";
 import { CheckboxIcon } from "../../CheckBoxQuestion/CheckBoxQuestion.styles";
 
-interface QuestionCardProps {
+interface CheckboxTableQuestionNotActiveProps {
   rowsOptions: string[];
   colsOptions: string[];
 }
 
-const RadioTableQuestionNotActive = ({
+const CheckboxTableQuestionNotActive = ({
   rowsOptions,
   colsOptions,
-}: QuestionCardProps) => {
+}: CheckboxTableQuestionNotActiveProps) => {
   return (
     <TableContainer>
       <Row>
@@ -35,7 +35,7 @@ const RadioTableQuestionNotActive = ({
               {row}
             </Typography>
           </TableCell>
-          {colsOptions.map((col, index) => (
+          {colsOptions.map((_, index) => (
             <TableCell key={index}>
               <CheckboxIcon />
             </TableCell>
@@ -46,4 +46,4 @@ const RadioTableQuestionNotActive = ({
   );
 };
 
-export default RadioTableQuestionNotActive;
+export default CheckboxTableQuestionNotActive;

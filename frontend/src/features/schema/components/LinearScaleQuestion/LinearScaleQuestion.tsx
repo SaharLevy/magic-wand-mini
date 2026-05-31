@@ -14,7 +14,7 @@ import { RadioIcon } from "../RadioQuestion/RadioQuestion.styles";
 import { he } from "../../../../shared/constants/i18";
 import type { IQuestionUpdate } from "../../schemaTypes";
 
-interface QuestionCardProps {
+interface LinearScaleQuestionProps {
   isActive: boolean;
   scaleMin: number;
   scaleMax: number;
@@ -33,7 +33,7 @@ const LinearScaleQuestion = ({
   scaleMinLabel,
   scaleMaxLabel,
   onChange,
-}: QuestionCardProps) => {
+}: LinearScaleQuestionProps) => {
   return !isActive ? (
     <ViewContainer>
       <ContainerY>{scaleMinLabel}</ContainerY>

@@ -7,6 +7,7 @@ import type {
 } from "../schemaTypes";
 import { SchemaStatus } from "../schemaTypes";
 import { useNavigate } from "react-router-dom";
+import { changeQuestionType } from "../components/BaseQuestion/QuestionsHelpers";
 
 const mapSection = (
   schema: ISchema,
@@ -52,11 +53,12 @@ export const useSchemaDraft = (schema: ISchema | undefined) => {
         prev &&
         mapSection(prev, sectionId, (section) => ({
           ...section,
-          questions: section.questions.map((question) =>
-            question._id === questionId
-              ? ({ ...question, ...patch } as IQuestion)
-              : question,
-          ),
+          questions: section.questions.map((question) => {
+            if (question._id !== questionId) return question;
+            return patch.type && patch.type !== question.type
+              ? changeQuestionType(question, patch.type)
+              : ({ ...question, ...patch } as IQuestion);
+          }),
         })),
     );
 

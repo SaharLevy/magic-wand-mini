@@ -1,7 +1,7 @@
 import RadioTableQuestionActive from "./RadioTableQuestionActive/RadioTableQuestionActive";
 import RadioTableQuestionNotActive from "./RadioTableQuestionNotActive/RadioTableQuestionNotActive";
 
-interface QuestionCardProps {
+interface RadioTableQuestionProps {
   isActive: boolean;
   rows: string[];
   columns: string[];
@@ -15,7 +15,7 @@ const RadioTableQuestion = ({
   columns,
   onRowsChange,
   onColumnsChange,
-}: QuestionCardProps) => {
+}: RadioTableQuestionProps) => {
   return !isActive ? (
     <RadioTableQuestionNotActive rowsOptions={rows} colsOptions={columns} />
   ) : (

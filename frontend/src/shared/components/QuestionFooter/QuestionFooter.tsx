@@ -28,7 +28,7 @@ const QuestionFooter = ({
           sx={{ ml: 0, mr: 0 }}
           control={
             <Switch
-              checked={isRequired ?? false}
+              checked={isRequired}
               onChange={(element) => onQuestionChange(element.target.checked)}
             />
           }

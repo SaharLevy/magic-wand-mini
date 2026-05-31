@@ -8,7 +8,7 @@ import { he } from "../../../../shared/constants/i18";
 import type { IOption } from "../../schemaTypes";
 import { addOption, updateOption } from "../BaseQuestion/QuestionsHelpers";
 
-interface QuestionCardProps {
+interface CheckboxQuestionProps {
   isActive: boolean;
   options: IOption[];
   onChange: (options: IOption[]) => void;
@@ -18,7 +18,7 @@ const CheckboxQuestion = ({
   isActive,
   options,
   onChange,
-}: QuestionCardProps) => {
+}: CheckboxQuestionProps) => {
   return !isActive ? (
     <>
       <OptionsContainer>
