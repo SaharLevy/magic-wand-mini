@@ -1,10 +1,5 @@
 import { styled } from "@mui/system";
 
-interface CardContainerProps {
-  isActive?: boolean;
-  isHeader?: boolean;
-}
-
 interface SectionHeader {
   sectionIndex?: number;
 }
@@ -13,7 +8,6 @@ export const PageContainer = styled("div")({
   display: "flex",
   justifyContent: "flex-start",
   flexDirection: "column",
-  // height: "100vh",
   width: "60%",
   padding: "1rem",
 });

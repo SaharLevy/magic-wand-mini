@@ -6,6 +6,7 @@ import type {
   ISection,
 } from "../schemaTypes";
 import { SchemaStatus } from "../schemaTypes";
+import { useNavigate } from "react-router-dom";
 
 const mapSection = (
   schema: ISchema,
@@ -20,9 +21,14 @@ const mapSection = (
 
 export const useSchemaDraft = (schema: ISchema | undefined) => {
   const [schemaDraft, setSchemaDraft] = useState<ISchema | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!schema || schemaDraft) return;
+    if (schema.status === SchemaStatus.Published) {
+      navigate("/", { replace: true });
+      return;
+    }
     setSchemaDraft(schema);
   }, [schema]);
 
@@ -32,7 +38,8 @@ export const useSchemaDraft = (schema: ISchema | undefined) => {
   const updateSection = (sectionId: string, patch: Partial<ISection>) =>
     setSchemaDraft(
       (prev) =>
-        prev && mapSection(prev, sectionId, (section) => ({ ...section, ...patch })),
+        prev &&
+        mapSection(prev, sectionId, (section) => ({ ...section, ...patch })),
     );
 
   const updateQuestion = (

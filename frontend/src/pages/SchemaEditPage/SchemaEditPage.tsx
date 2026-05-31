@@ -11,7 +11,7 @@ import FormHeaderCard from "../../shared/components/FormHeaderCard/FormHeaderCar
 import SectionWrapper from "../../shared/components/SectionWrapper/SectionWrapper";
 import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
 import Toolbar from "../../shared/components/Toolbar/Toolbar";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { he } from "../../shared/constants/i18";
 import { SchemaStatus } from "../../features/schema/schemaTypes";
 import { BottomLeftStack, TopRightSlot } from "./SchemaEditPage.styles";
@@ -27,6 +27,8 @@ const SchemaEditPage = () => {
   const { updateSchema: saveSchema, isPending: isSaving } = useUpdateSchema();
   const { deleteQuestion } = useDeleteQuestion(schemaId);
   const { publishSchema } = usePublishSchema(schemaId);
+  const navigate = useNavigate();
+
   const {
     schemaDraft,
     updateSchema,
@@ -65,6 +67,7 @@ const SchemaEditPage = () => {
     if (!schemaDraft) return;
     await publishSchema();
     publishDraft();
+    navigate("/", { replace: true });
   };
 
   const handleActivate = (cardId: string, element: HTMLElement) => {

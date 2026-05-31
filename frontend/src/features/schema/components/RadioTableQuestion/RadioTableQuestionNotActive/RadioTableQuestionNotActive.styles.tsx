@@ -3,7 +3,6 @@ import { styled } from "@mui/material/styles";
 export const RowsColsContainer = styled("div")({
   display: "flex",
   justifyContent: "space-around",
-  //   gap: "1rem",
 });
 
 export const TableContainer = styled("div")({

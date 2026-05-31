@@ -1,7 +1,5 @@
 import { z } from "zod";
 import {
-  schemaInput,
-  updateSchema,
   updateQuestionSchema,
   updateSectionSchema,
   sectionIdSchema,
