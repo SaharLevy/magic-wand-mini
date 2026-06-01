@@ -42,7 +42,9 @@ const LinearScaleQuestion = ({
         (_, i) => scaleMin + i,
       ).map((value) => (
         <ScaleNumberContainer>
-          <ScaleNumberContainer key={value}>{value}</ScaleNumberContainer>
+          <ScaleNumberContainer key={value}>
+            <div>{value}</div>
+          </ScaleNumberContainer>
           <RadioIcon />
         </ScaleNumberContainer>
       ))}

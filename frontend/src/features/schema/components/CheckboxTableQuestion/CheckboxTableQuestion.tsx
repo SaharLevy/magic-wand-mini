@@ -1,5 +1,5 @@
-import RadioTableQuestionActive from "./CheckboxTableQuestionActive/CheckboxTableQuestionActive";
-import RadioTableQuestionNotActive from "./CheckboxTableQuestionNotActive/CheckboxTableQuestionNotActive";
+import CheckboxTableQuestionActive from "./CheckboxTableQuestionActive/CheckboxTableQuestionActive";
+import CheckboxTableQuestionNotActive from "./CheckboxTableQuestionNotActive/CheckboxTableQuestionNotActive";
 
 interface CheckboxTableQuestionProps {
   isActive: boolean;
@@ -17,9 +17,9 @@ const CheckboxTableQuestion = ({
   onColumnsChange,
 }: CheckboxTableQuestionProps) => {
   return !isActive ? (
-    <RadioTableQuestionNotActive rowsOptions={rows} colsOptions={columns} />
+    <CheckboxTableQuestionNotActive rowsOptions={rows} colsOptions={columns} />
   ) : (
-    <RadioTableQuestionActive
+    <CheckboxTableQuestionActive
       rowsOptions={rows}
       colsOptions={columns}
       onRowsChange={onRowsChange}

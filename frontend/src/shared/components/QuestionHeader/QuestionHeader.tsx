@@ -7,6 +7,7 @@ import AppsIcon from "@mui/icons-material/Apps";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EventIcon from "@mui/icons-material/Event";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import Menu from "../../../../public/menu.png";
 
 import {
   HeaderRow,
@@ -14,7 +15,6 @@ import {
   TypeSelect,
   TypeMenuItem,
   MenuItemContent,
-  MenuIcon,
 } from "./QuestionHeader.styles";
 import { QuestionTypes } from "../../../features/schema/schemaTypes";
 import { he } from "../../constants/i18";
@@ -60,7 +60,7 @@ const questionTypeOptions = [
   {
     type: QuestionTypes.RADIO_TABLE,
     label: he.schema.creation.headerQuestionRadioTable,
-    icon: <MenuIcon src="../../public/menu.png" alt="menu" />,
+    icon: <img src={Menu} alt="menu" />,
   },
   {
     type: QuestionTypes.CHECKBOX_TABLE,

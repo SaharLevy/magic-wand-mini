@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
-export const DeleteButton = styled(CloseIcon)`
+export const DeleteButton = styled(IconButton)`
   padding: 4px;
 `;
 

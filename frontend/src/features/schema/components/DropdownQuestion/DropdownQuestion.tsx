@@ -23,7 +23,7 @@ const DropdownQuestion = ({
     <OptionsContainer>
       {options.map((option, index) => (
         <OptionContainer key={index}>
-          <NumberContainer>{`${index}.`}</NumberContainer>
+          <NumberContainer>{`${index + 1}.`}</NumberContainer>
           {option.text}
         </OptionContainer>
       ))}
@@ -33,7 +33,7 @@ const DropdownQuestion = ({
       <OptionsContainer>
         {options.map((option, index) => (
           <OptionContainer key={index}>
-            <NumberContainer>{`${index}.`}</NumberContainer>
+            <NumberContainer>{`${index + 1}.`}</NumberContainer>
             <OptionInput
               fullWidth
               multiline
@@ -45,7 +45,7 @@ const DropdownQuestion = ({
           </OptionContainer>
         ))}
         <OptionContainer>
-          <NumberContainer>{`${options.length}.`}</NumberContainer>
+          <NumberContainer>{`${options.length + 1}.`}</NumberContainer>
           <AddOption onClick={() => onChange(addOption(options))}>
             {he.schema.creation.addOption}
           </AddOption>

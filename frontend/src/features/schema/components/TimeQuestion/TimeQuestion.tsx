@@ -23,9 +23,5 @@ const TimeQuestion = ({ isActive }: TimeQuestionProps) => {
     </>
   );
 };
-{
-  {
-    he.schema.creation.time;
-  }
-}
+
 export default TimeQuestion;

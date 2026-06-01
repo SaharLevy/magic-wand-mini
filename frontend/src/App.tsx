@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import routes, { routesObj } from "./routesConfig";
+import { Route, Routes } from "react-router-dom";
+import routes from "./routesConfig";
 
 function App() {
   return (
@@ -8,10 +8,6 @@ function App() {
         {routes.map((route) => (
           <Route key={route.path} path={route.path} Component={route.element} />
         ))}
-        <Route
-          path="*"
-          element={<Navigate to={routesObj.items.path} replace={true} />}
-        />
       </Routes>
     </>
   );

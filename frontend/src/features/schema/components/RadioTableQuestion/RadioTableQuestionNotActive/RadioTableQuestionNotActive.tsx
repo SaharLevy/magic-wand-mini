@@ -35,7 +35,7 @@ const RadioTableQuestionNotActive = ({
               {row}
             </Typography>
           </TableCell>
-          {colsOptions.map((col, index) => (
+          {colsOptions.map((_, index) => (
             <TableCell key={index}>
               <RadioIcon />
             </TableCell>

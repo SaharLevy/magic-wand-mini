@@ -1,9 +1,5 @@
 import { styled } from "@mui/system";
 
-interface SectionHeader {
-  sectionIndex?: number;
-}
-
 export const PageContainer = styled("div")({
   display: "flex",
   justifyContent: "flex-start",

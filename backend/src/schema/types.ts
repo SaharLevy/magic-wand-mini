@@ -118,7 +118,7 @@ export const schemaInput = z.object({
   sections: z.array(sectionSchema).default([]),
 });
 
-// created this new schema becuase of a problem where im not sending any createdBy atm will check it again later
+// Temporary: createSchemaBody omits createdBy until user/auth handling is implemented.
 export const createSchemaBody = z.object({
   title: z.string().default(""),
   description: z.string().optional(),

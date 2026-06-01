@@ -24,7 +24,7 @@ const SchemaEditPage = () => {
   const { schema, isPending, isError } = useGetSchema(schemaId);
   const { createSection } = useCreateSection(schemaId);
   const { createQuestion } = useCreateQuestion(schemaId);
-  const { updateSchema: saveSchema, isPending: isSaving } = useUpdateSchema();
+  const { updateSchema: saveSchema } = useUpdateSchema();
   const { deleteQuestion } = useDeleteQuestion(schemaId);
   const { publishSchema } = usePublishSchema(schemaId);
   const navigate = useNavigate();

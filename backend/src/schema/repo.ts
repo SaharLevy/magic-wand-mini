@@ -11,7 +11,7 @@ import { NotFoundError } from "../utils/customErrors.js";
 import { MongoObjectId, QuestionTypes } from "../shared/types.js";
 
 export const SCHEMA_NOT_FOUND = "Schema not found";
-export const SCHEMA_NOT_EDITABLE = "Schema isnt editable.";
+export const SCHEMA_NOT_EDITABLE = "Schema isn't editable.";
 
 // to add an error object that will save the error texts.
 
