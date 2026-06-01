@@ -11,9 +11,7 @@ schemasRouter.get(
   validate(schemasValidation.getSchemasByUserId, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(
-        await Manager.getSchemasByUserId(req.params.userId, req.query.statuses),
-      );
+      .json(await Manager.getSchemasByUserId(req.params.userId));
   }),
 );
 

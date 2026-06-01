@@ -1,11 +1,21 @@
+import type { ReactNode } from "react";
+import {
+  StyledCard,
+  CardBody,
+  CardTitle,
+  CardButtons,
+} from "./FormCard.styles";
 
 interface FormCardProps {
   formTitle: string;
-  formId: string;
+  actions: ReactNode;
 }
 
-const FormCard = ({ formTitle, formId, formStatus }: FormCardProps) => {
-  return  <div></div> 
-};
-
-export default FormCard;
+export const FormCard = ({ formTitle, actions }: FormCardProps) => (
+  <StyledCard variant="outlined">
+    <CardBody>
+      <CardTitle variant="subtitle1">{formTitle}</CardTitle>
+    </CardBody>
+    <CardButtons>{actions}</CardButtons>
+  </StyledCard>
+);

@@ -3,7 +3,6 @@ import {
   updateQuestionSchema,
   updateSectionSchema,
   sectionIdSchema,
-  statusesSchema,
   createSchemaBody,
   schemaWithIdSchema,
 } from "./types.js";
@@ -17,7 +16,7 @@ const schemasValidation = {
       })
       .strict(),
     body: z.object({}),
-    query: statusesSchema,
+    query: z.object({}),
   },
   getSchemaById: {
     params: z

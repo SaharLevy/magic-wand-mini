@@ -4,6 +4,7 @@ import {
   createSection,
   deleteQuestion,
   getSchema,
+  getSchemas,
   publishSchema,
   updateSchema,
 } from "../schema.api";
@@ -94,6 +95,19 @@ export const useGetSchema = (schemaId: string | undefined) => {
 
   return {
     schema: data,
+    isPending,
+    isError,
+  };
+};
+
+export const useGetSchemas = () => {
+  const { data, isPending, isError } = useQuery<ISchema[]>({
+    queryKey: ["schemas", TEMP_USER_ID],
+    queryFn: () => getSchemas(TEMP_USER_ID),
+  });
+
+  return {
+    schemas: data,
     isPending,
     isError,
   };

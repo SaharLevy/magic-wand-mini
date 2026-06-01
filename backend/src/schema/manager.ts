@@ -12,8 +12,7 @@ import { MongoObjectId } from "../shared/types.js";
 class Manager {
   static getSchemasByUserId = async (
     userId: MongoObjectId,
-    statuses: SchemaStatus[],
-  ): Promise<ISchema[]> => Repo.getSchemasByUserId(userId, statuses);
+  ): Promise<ISchema[]> => Repo.getSchemasByUserId(userId);
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);

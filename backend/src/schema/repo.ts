@@ -18,9 +18,7 @@ export const SCHEMA_NOT_EDITABLE = "Schema isn't editable.";
 class Repo {
   static getSchemasByUserId = async (
     userId: MongoObjectId,
-    statuses: SchemaStatus[],
-  ): Promise<ISchema[]> =>
-    FormSchema.find({ filledBy: userId, status: { $in: statuses } });
+  ): Promise<ISchema[]> => FormSchema.find({ createdBy: userId });
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     FormSchema.findById(schemaId).orFail(new NotFoundError(SCHEMA_NOT_FOUND));

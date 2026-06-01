@@ -1,19 +1,41 @@
 import { useNavigate } from "react-router-dom";
 import { AppButton } from "../../shared/components/AppButton/AppButton.styles";
-import { useCreateSchema } from "../../features/schema/hooks/useSchema";
+import {
+  useCreateSchema,
+  useGetSchemas,
+} from "../../features/schema/hooks/useSchema";
 import { he } from "../../shared/constants/i18";
+import { SchemaStatus } from "../../features/schema/schemaTypes";
+import { Carousel } from "./components/Carousel/Carousel";
+import { FormCard } from "./components/FormCard/FormCard";
+import { SchemaDraftActions } from "./components/DraftActions/SchemaDraftActions";
+import { FillButton } from "./components/Buttons/FillButton";
+import { PageContainer } from "./HomePage.styles";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { createSchema, isPending } = useCreateSchema();
+
+  const { schemas } = useGetSchemas();
+  const draftSchemas = schemas?.filter(
+    (schema) => schema.status === SchemaStatus.Draft,
+  );
+  const publishedSchemas = schemas?.filter(
+    (schema) => schema.status === SchemaStatus.Published,
+  );
 
   const handleCreate = () => {
     createSchema(undefined, {
       onSuccess: (newSchema) => navigate(`/schemas/${newSchema._id}`),
     });
   };
+
+  const handleDelete = (schemaId: string) => {
+    console.log("delete", schemaId);
+  };
+
   return (
-    <>
+    <PageContainer>
       <AppButton
         variant="contained"
         onClick={handleCreate}
@@ -23,7 +45,30 @@ const HomePage = () => {
           ? `${he.homePage.creatingSchema}`
           : `${he.homePage.createNewForm}`}
       </AppButton>
-    </>
+      <Carousel heading={he.homePage.draftSchemas}>
+        {draftSchemas?.map((schema) => (
+          <FormCard
+            key={schema._id}
+            formTitle={schema.title}
+            actions={
+              <SchemaDraftActions formId={schema._id} onDelete={handleDelete} />
+            }
+          />
+        ))}
+      </Carousel>
+
+      <Carousel heading={he.homePage.publishedSchemas}>
+        {publishedSchemas?.map((schema) => (
+          <FormCard
+            key={schema._id}
+            formTitle={schema.title}
+            actions={
+              <FillButton onClick={() => navigate(`/schemas/${schema._id}`)} />
+            }
+          />
+        ))}
+      </Carousel>
+    </PageContainer>
   );
 };
 
