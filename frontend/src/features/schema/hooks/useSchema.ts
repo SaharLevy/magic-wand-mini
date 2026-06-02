@@ -11,7 +11,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IQuestion, ISchema, ISection } from "../schemaTypes";
 
-const TEMP_USER_ID = "507f1f77bcf86cd799439011";
+export const TEMP_USER_ID = "507f1f77bcf86cd799439011";
 const MISSING_SCHEMA_ID = "Missing schemaId";
 
 export const useCreateSchema = () => {

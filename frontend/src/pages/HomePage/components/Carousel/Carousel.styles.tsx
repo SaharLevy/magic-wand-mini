@@ -13,13 +13,15 @@ export const CarouselHeading = styled(Typography)({
 export const CarouselRow = styled("div")({
   display: "flex",
   alignItems: "center",
-  gap: "0.5rem",
+  gap: "1rem",
+  margin: "1rem 0",
+  minWidth: 0,
 });
 
 export const View = styled("div")({
   overflow: "hidden",
-  flex: 1,
-  maxWidth: "60vw",
+  flex: "1 1 0",
+  minWidth: 0,
 });
 
 export const Track = styled("div")({
@@ -28,5 +30,7 @@ export const Track = styled("div")({
 });
 
 export const Slide = styled("div")({
+  width: "10rem",
   flex: "0 0 auto",
+  alignItems: "center",
 });

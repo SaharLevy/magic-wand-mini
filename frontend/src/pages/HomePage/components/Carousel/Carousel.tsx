@@ -1,4 +1,4 @@
-import { Children, type ReactNode } from "react";
+import { Children, useEffect, type ReactNode } from "react";
 import { IconButton } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -24,20 +24,23 @@ export const Carousel = ({ heading, children }: CarouselProps) => {
     containScroll: "trimSnaps",
   });
 
+  useEffect(() => {
+    emblaApi?.reInit();
+  }, [emblaApi, children]);
+
   return (
     <CarouselWrapper>
       <CarouselHeading variant="subtitle1">{heading}</CarouselHeading>
       <CarouselRow>
         <IconButton
           onClick={() => {
-            console.log("api:", emblaApi);
-            emblaApi?.scrollPrev();
+            emblaApi?.scrollNext();
           }}
         >
           <ChevronLeftIcon />
         </IconButton>
 
-        <View ref={emblaRef}>
+        <View ref={emblaRef} dir="rtl">
           <Track>
             {Children.map(children, (child) => (
               <Slide>{child}</Slide>
@@ -45,7 +48,7 @@ export const Carousel = ({ heading, children }: CarouselProps) => {
           </Track>
         </View>
 
-        <IconButton onClick={() => emblaApi?.scrollNext()}>
+        <IconButton onClick={() => emblaApi?.scrollPrev()}>
           <ChevronRightIcon />
         </IconButton>
       </CarouselRow>

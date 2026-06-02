@@ -14,7 +14,6 @@ instanceRouter.get(
       .json(
         await Manager.getInstancesByUserId(
           req.params.userId,
-          req.query.statuses,
         ),
       );
   }),
