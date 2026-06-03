@@ -10,15 +10,15 @@ import { SchemaStatus } from "../../features/schema/schemaTypes";
 import { Carousel } from "./components/Carousel/Carousel";
 import { FormCard } from "./components/FormCard/FormCard";
 import { SchemaDraftActions } from "./components/DraftActions/SchemaDraftActions";
-import { FillButton } from "./components/Buttons/FillButton";
 import { PageContainer } from "./HomePage.styles";
 import { TopRightSlot } from "../SchemaEditPage/SchemaEditPage.styles";
+import { ActionButton } from "./components/Buttons/ActionButton";
 
 export enum ButtonStatus {
-  Delete = "Delete",
-  Edit = "Edit",
-  Fill = "Fill",
-  View = "View",
+  Delete = "מחיקה",
+  Edit = "עריכה",
+  Fill = "מילוי",
+  View = "צפייה",
 }
 
 const HomePage = () => {
@@ -80,7 +80,10 @@ const HomePage = () => {
             key={schema._id}
             formTitle={schema.title}
             actions={
-              <FillButton onClick={() => navigate(`/schemas/${schema._id}`)} />
+              <ActionButton
+                onClick={() => navigate(`/schemas/${schema._id}`)}
+                buttonType={ButtonStatus.Fill}
+              />
             }
           />
         ))}

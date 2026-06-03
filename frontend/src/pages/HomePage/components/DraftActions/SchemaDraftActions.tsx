@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ActionButton } from "../Buttons/DeleteButton";
+import { ActionButton } from "../Buttons/ActionButton";
 import { ButtonStatus } from "../../HomePage";
 
 interface SchemaDraftActionsProps {
