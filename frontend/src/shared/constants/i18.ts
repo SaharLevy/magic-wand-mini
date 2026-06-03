@@ -37,5 +37,13 @@ export const he = {
     creatingSchema: "יוצר..",
     createNewForm: "יצירת טופס",
     homeButton: "בית",
+    editButton: "עריכה",
+    deleteButton: "מחיקה",
+    fillButton: "מילוי",
+    viewButton: "צפייה",
+    draftSchemas: "טפסים בעריכה",
+    publishedSchemas: "טפסים למילוי",
+    draftInstances: "מופעים בעריכה",
+    publishedInstances: "מופעים שהגשתי",
   },
 };

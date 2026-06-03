@@ -15,7 +15,7 @@ const instanceValidation = {
       })
       .strict(),
     body: z.object({}),
-    query: statusesSchema,
+    query: z.object({}),
   },
   createInstance: {
     params: z.object({

@@ -16,8 +16,8 @@ import {
   TypeMenuItem,
   MenuItemContent,
 } from "./QuestionHeader.styles";
-import { QuestionTypes } from "../../../features/schema/schemaTypes";
 import { he } from "../../constants/i18";
+import { QuestionTypes } from "../../sharedTypes";
 
 interface QuestionHeaderProps {
   questionText: string;

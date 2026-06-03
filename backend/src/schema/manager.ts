@@ -12,8 +12,7 @@ import { MongoObjectId } from "../shared/types.js";
 class Manager {
   static getSchemasByUserId = async (
     userId: MongoObjectId,
-    statuses: SchemaStatus[],
-  ): Promise<ISchema[]> => Repo.getSchemasByUserId(userId, statuses);
+  ): Promise<ISchema[]> => Repo.getSchemasByUserId(userId);
 
   static getSchemaById = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.getSchemaById(schemaId);
@@ -78,6 +77,9 @@ class Manager {
 
   static publishSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.publishSchema(schemaId);
+
+  static deleteSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    Repo.deleteSchema(schemaId);
 
   static deleteSection = async (
     schemaId: MongoObjectId,

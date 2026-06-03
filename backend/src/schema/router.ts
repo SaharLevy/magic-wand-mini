@@ -11,9 +11,7 @@ schemasRouter.get(
   validate(schemasValidation.getSchemasByUserId, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(
-        await Manager.getSchemasByUserId(req.params.userId, req.query.statuses),
-      );
+      .json(await Manager.getSchemasByUserId(req.params.userId));
   }),
 );
 
@@ -99,6 +97,15 @@ schemasRouter.delete(
       .json(
         await Manager.deleteSection(req.params.schemaId, req.body.sectionId),
       );
+  }),
+);
+
+schemasRouter.delete(
+  "/:schemaId/schema",
+  validate(schemasValidation.deleteSchema, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.deleteSchema(req.params.schemaId));
   }),
 );
 

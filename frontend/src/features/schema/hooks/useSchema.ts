@@ -3,14 +3,16 @@ import {
   createSchema,
   createSection,
   deleteQuestion,
+  deleteSchema,
   getSchema,
+  getSchemas,
   publishSchema,
   updateSchema,
 } from "../schema.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IQuestion, ISchema, ISection } from "../schemaTypes";
 
-const TEMP_USER_ID = "507f1f77bcf86cd799439011";
+export const TEMP_USER_ID = "507f1f77bcf86cd799439011";
 const MISSING_SCHEMA_ID = "Missing schemaId";
 
 export const useCreateSchema = () => {
@@ -21,7 +23,7 @@ export const useCreateSchema = () => {
   return {
     createSchema: mutate,
     schema: data,
-    isPending,
+    createIsPending: isPending,
     isError,
   };
 };
@@ -97,6 +99,40 @@ export const useGetSchema = (schemaId: string | undefined) => {
     isPending,
     isError,
   };
+};
+
+export const useGetSchemas = () => {
+  const { data, isPending, isError } = useQuery<ISchema[]>({
+    queryKey: ["schemas", TEMP_USER_ID],
+    queryFn: () => getSchemas(TEMP_USER_ID),
+    initialData: [],
+  });
+
+  return {
+    schemas: data,
+    isPending,
+    isError,
+  };
+};
+
+export const useDeleteSchema = () => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending, isError } = useMutation<
+    ISchema,
+    Error,
+    string
+  >({
+    mutationFn: (schemaId: string | undefined) => {
+      if (!schemaId) throw new Error(MISSING_SCHEMA_ID);
+      return deleteSchema(schemaId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["schemas"] });
+    },
+  });
+
+  return { deleteSchema: mutateAsync, deleteIsPending: isPending, isError };
 };
 
 export const useDeleteQuestion = (schemaId: string | undefined) => {

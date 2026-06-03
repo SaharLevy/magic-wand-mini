@@ -13,10 +13,7 @@ const INSTANCE_NOT_FOUND = "Instance not found";
 class Repo {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-    statuses: InstanceStatus[],
-  ): Promise<IInstance[]> => {
-    return Instance.find({ filledBy: userId, status: { $in: statuses } });
-  };
+  ): Promise<IInstance[]> => Instance.find({ filledBy: userId });
 
   static getInstanceById = async (
     instanceId: MongoObjectId,

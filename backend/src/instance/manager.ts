@@ -14,8 +14,7 @@ import { generateEmptyAnswer } from "../utils/helperFunctions.js";
 class Manager {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-    statuses: InstanceStatus[],
-  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId, statuses);
+  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId);
 
   static createInstance = async (
     schemaId: MongoObjectId,
