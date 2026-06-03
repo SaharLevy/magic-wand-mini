@@ -1,11 +1,11 @@
 import { z } from "zod";
 import {
-  schemaInput,
-  updateSchema,
   updateQuestionSchema,
   updateSectionSchema,
   sectionIdSchema,
   statusesSchema,
+  createSchemaBody,
+  schemaWithIdSchema,
 } from "./types.js";
 import { objectIdString } from "../shared/types.js";
 
@@ -32,7 +32,7 @@ const schemasValidation = {
     params: z.object({
       userId: objectIdString,
     }),
-    body: schemaInput,
+    body: createSchemaBody,
     query: z.object({}),
   },
   createSection: {
@@ -54,17 +54,15 @@ const schemasValidation = {
     query: z.object({}),
   },
   deleteSection: {
-    params: z.object({}),
+    params: z.object({ schemaId: objectIdString }),
     body: z.object({
-      schemaId: objectIdString,
       sectionId: objectIdString,
     }),
     query: z.object({}),
   },
   deleteQuestion: {
-    params: z.object({}),
+    params: z.object({ schemaId: objectIdString }),
     body: z.object({
-      schemaId: objectIdString,
       sectionId: objectIdString,
       questionId: objectIdString,
     }),
@@ -74,7 +72,12 @@ const schemasValidation = {
     params: z.object({
       schemaId: objectIdString,
     }),
-    body: updateSchema,
+    body: schemaWithIdSchema,
+    query: z.object({}),
+  },
+  publishSchema: {
+    params: z.object({ schemaId: objectIdString }).strict(),
+    body: z.object({}),
     query: z.object({}),
   },
   updateSection: {

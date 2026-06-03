@@ -26,6 +26,21 @@ services:
     networks:
       - magic-wand-network
 
+  frontend-dev:
+    build:
+      context: ./frontend
+      target: development
+    container_name: magic-wand-frontend-dev
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend-dev
+    networks:
+      - magic-wand-network
+
 volumes:
   mongo_data:
 

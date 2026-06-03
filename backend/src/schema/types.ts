@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  QuestionTypes,
-  objectIdString,
-} from "../shared/types.js";
+import { QuestionTypes, objectIdString } from "../shared/types.js";
 
 export enum SchemaStatus {
   Draft = "Draft",
@@ -119,6 +116,12 @@ export const schemaInput = z.object({
   createdBy: objectIdString,
   assignedUsers: z.array(objectIdString).default([]),
   sections: z.array(sectionSchema).default([]),
+});
+
+// Temporary: createSchemaBody omits createdBy until user/auth handling is implemented.
+export const createSchemaBody = z.object({
+  title: z.string().default(""),
+  description: z.string().optional(),
 });
 
 // Output with ids
