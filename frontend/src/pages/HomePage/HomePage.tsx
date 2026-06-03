@@ -15,10 +15,10 @@ import { TopRightSlot } from "../SchemaEditPage/SchemaEditPage.styles";
 import { ActionButton } from "./components/Buttons/ActionButton";
 
 export enum ButtonStatus {
-  Delete = "מחיקה",
-  Edit = "עריכה",
-  Fill = "מילוי",
-  View = "צפייה",
+  DELETE = "מחיקה",
+  EDIT = "עריכה",
+  FILL = "מילוי",
+  VIEW = "צפייה",
 }
 
 const HomePage = () => {
@@ -82,7 +82,7 @@ const HomePage = () => {
             actions={
               <ActionButton
                 onClick={() => navigate(`/schemas/${schema._id}`)}
-                buttonType={ButtonStatus.Fill}
+                buttonType={ButtonStatus.FILL}
               />
             }
           />

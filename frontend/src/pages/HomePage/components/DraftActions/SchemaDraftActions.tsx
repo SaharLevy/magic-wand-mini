@@ -19,12 +19,12 @@ export const SchemaDraftActions = ({
     <>
       <ActionButton
         onClick={() => navigate(`/schemas/${formId}`)}
-        buttonType={ButtonStatus.Edit}
+        buttonType={ButtonStatus.EDIT}
       />
       <ActionButton
         onClick={() => onDelete(formId)}
         isPending={isPending}
-        buttonType={ButtonStatus.Delete}
+        buttonType={ButtonStatus.DELETE}
       />
     </>
   );

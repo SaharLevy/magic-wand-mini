@@ -22,12 +22,12 @@ export const InstanceDraftActions = ({
       }
       <ActionButton
         onClick={() => navigate("/")}
-        buttonType={ButtonStatus.Edit}
+        buttonType={ButtonStatus.EDIT}
       />
       <ActionButton
         onClick={() => onDelete(formId)}
         isPending={isPending}
-        buttonType={ButtonStatus.Delete}
+        buttonType={ButtonStatus.DELETE}
       />
     </>
   );
