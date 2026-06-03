@@ -43,5 +43,7 @@ export const he = {
     viewButton: "צפייה",
     draftSchemas: "טפסים בעריכה",
     publishedSchemas: "טפסים למילוי",
+    draftInstances: "מופעים בעריכה",
+    publishedInstances: "מופעים שהגשתי",
   },
 };

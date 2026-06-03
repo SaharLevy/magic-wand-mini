@@ -101,6 +101,15 @@ schemasRouter.delete(
 );
 
 schemasRouter.delete(
+  "/:schemaId/schema",
+  validate(schemasValidation.deleteSchema, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.deleteSchema(req.params.schemaId));
+  }),
+);
+
+schemasRouter.delete(
   "/:schemaId/question",
   validate(schemasValidation.deleteQuestion, async (req, res) => {
     res

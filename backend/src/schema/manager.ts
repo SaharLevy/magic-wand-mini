@@ -78,6 +78,9 @@ class Manager {
   static publishSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
     Repo.publishSchema(schemaId);
 
+  static deleteSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    Repo.deleteSchema(schemaId);
+
   static deleteSection = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,

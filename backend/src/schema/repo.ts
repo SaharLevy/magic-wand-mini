@@ -149,6 +149,12 @@ class Repo {
       { new: true },
     ).orFail(new NotFoundError(SCHEMA_NOT_FOUND));
 
+  static deleteSchema = async (schemaId: MongoObjectId): Promise<ISchema> =>
+    FormSchema.findOneAndDelete(
+      { _id: schemaId, status: SchemaStatus.Draft },
+      { new: true },
+    ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
+
   static deleteSection = async (
     schemaId: MongoObjectId,
     sectionId: MongoObjectId,
@@ -156,7 +162,6 @@ class Repo {
     FormSchema.findOneAndUpdate(
       { _id: schemaId, status: SchemaStatus.Draft },
       { $pull: { sections: { _id: sectionId } } },
-      { new: true },
     ).orFail(new NotFoundError(SCHEMA_NOT_EDITABLE));
 
   static deleteQuestion = async (

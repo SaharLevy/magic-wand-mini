@@ -11,7 +11,7 @@ export const CardBody = styled(CardContent)({
 });
 
 export const CardTitle = styled(Typography)({
-  textAlign: "right",
+  textAlign: "center",
 });
 
 export const CardButtons = styled(CardActions)({

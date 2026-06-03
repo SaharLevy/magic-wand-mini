@@ -4,11 +4,13 @@ import { DeleteButton } from "../Buttons/DeleteButton";
 
 interface InstanceDraftActionsProps {
   formId: string;
+  isPending: boolean;
   onDelete: (formId: string) => void;
 }
 
 export const InstanceDraftActions = ({
   formId,
+  isPending,
   onDelete,
 }: InstanceDraftActionsProps) => {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ export const InstanceDraftActions = ({
         // need to change path in the future.
       }
       <EditButton onClick={() => navigate("/")} />
-      <DeleteButton onClick={() => onDelete(formId)} />
+      <DeleteButton onClick={() => onDelete(formId)} isPending={isPending} />
     </>
   );
 };

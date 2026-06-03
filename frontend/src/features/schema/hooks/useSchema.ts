@@ -3,6 +3,7 @@ import {
   createSchema,
   createSection,
   deleteQuestion,
+  deleteSchema,
   getSchema,
   getSchemas,
   publishSchema,
@@ -22,7 +23,7 @@ export const useCreateSchema = () => {
   return {
     createSchema: mutate,
     schema: data,
-    isPending,
+    createIsPending: isPending,
     isError,
   };
 };
@@ -111,6 +112,26 @@ export const useGetSchemas = () => {
     isPending,
     isError,
   };
+};
+
+export const useDeleteSchema = () => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending, isError } = useMutation<
+    ISchema,
+    Error,
+    string
+  >({
+    mutationFn: (schemaId: string | undefined) => {
+      if (!schemaId) throw new Error(MISSING_SCHEMA_ID);
+      return deleteSchema(schemaId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["schemas"] });
+    },
+  });
+
+  return { deleteSchema: mutateAsync, deleteIsPending: isPending, isError };
 };
 
 export const useDeleteQuestion = (schemaId: string | undefined) => {

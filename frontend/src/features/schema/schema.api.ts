@@ -49,6 +49,12 @@ export const createQuestion = (
     data: { sectionId },
   });
 
+export const deleteSchema = (schemaId: string): Promise<ISchema> =>
+  request<ISchema>({
+    method: "DELETE",
+    url: `/schemas/${schemaId}/schema`,
+  });
+
 export const deleteQuestion = (
   schemaId: string,
   sectionId: string,

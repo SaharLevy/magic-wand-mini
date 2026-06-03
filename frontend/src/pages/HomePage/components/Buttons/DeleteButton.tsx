@@ -3,9 +3,10 @@ import { he } from "../../../../shared/constants/i18";
 
 interface DeleteButtonProps {
   onClick: () => void;
+  isPending: boolean;
 }
-export const DeleteButton = ({ onClick }: DeleteButtonProps) => (
-  <AppButton variant="outlined" onClick={onClick}>
+export const DeleteButton = ({ onClick, isPending }: DeleteButtonProps) => (
+  <AppButton variant="outlined" onClick={onClick} disabled={isPending}>
     {he.homePage.deleteButton}
   </AppButton>
 );
