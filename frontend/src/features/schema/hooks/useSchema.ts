@@ -105,6 +105,7 @@ export const useGetSchemas = () => {
   const { data, isPending, isError } = useQuery<ISchema[]>({
     queryKey: ["schemas", TEMP_USER_ID],
     queryFn: () => getSchemas(TEMP_USER_ID),
+    initialData: [],
   });
 
   return {

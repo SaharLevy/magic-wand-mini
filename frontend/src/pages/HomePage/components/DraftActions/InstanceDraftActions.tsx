@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { EditButton } from "../Buttons/EditButton";
-import { DeleteButton } from "../Buttons/DeleteButton";
+import { ActionButton } from "../Buttons/DeleteButton";
+import { ButtonStatus } from "../../HomePage";
 
 interface InstanceDraftActionsProps {
   formId: string;
@@ -18,10 +18,17 @@ export const InstanceDraftActions = ({
   return (
     <>
       {
-        // need to change path in the future.
+        //TO DO: need to change path in the future.
       }
-      <EditButton onClick={() => navigate("/")} />
-      <DeleteButton onClick={() => onDelete(formId)} isPending={isPending} />
+      <ActionButton
+        onClick={() => navigate("/")}
+        buttonType={ButtonStatus.Edit}
+      />
+      <ActionButton
+        onClick={() => onDelete(formId)}
+        isPending={isPending}
+        buttonType={ButtonStatus.Delete}
+      />
     </>
   );
 };

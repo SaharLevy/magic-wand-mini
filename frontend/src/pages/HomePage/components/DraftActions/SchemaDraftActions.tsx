@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { EditButton } from "../Buttons/EditButton";
-import { DeleteButton } from "../Buttons/DeleteButton";
+import { ActionButton } from "../Buttons/DeleteButton";
+import { ButtonStatus } from "../../HomePage";
 
 interface SchemaDraftActionsProps {
   formId: string;
@@ -17,8 +17,15 @@ export const SchemaDraftActions = ({
 
   return (
     <>
-      <EditButton onClick={() => navigate(`/schemas/${formId}`)} />
-      <DeleteButton onClick={() => onDelete(formId)} isPending={isPending} />
+      <ActionButton
+        onClick={() => navigate(`/schemas/${formId}`)}
+        buttonType={ButtonStatus.Edit}
+      />
+      <ActionButton
+        onClick={() => onDelete(formId)}
+        isPending={isPending}
+        buttonType={ButtonStatus.Delete}
+      />
     </>
   );
 };

@@ -14,12 +14,19 @@ import { FillButton } from "./components/Buttons/FillButton";
 import { PageContainer } from "./HomePage.styles";
 import { TopRightSlot } from "../SchemaEditPage/SchemaEditPage.styles";
 
+export enum ButtonStatus {
+  Delete = "Delete",
+  Edit = "Edit",
+  Fill = "Fill",
+  View = "View",
+}
+
 const HomePage = () => {
   const navigate = useNavigate();
   const { createSchema, createIsPending } = useCreateSchema();
   const { deleteSchema, deleteIsPending } = useDeleteSchema();
-
   const { schemas } = useGetSchemas();
+
   const draftSchemas = schemas?.filter(
     (schema) => schema.status === SchemaStatus.Draft,
   );
@@ -52,7 +59,7 @@ const HomePage = () => {
       </TopRightSlot>
 
       <Carousel heading={he.homePage.draftSchemas}>
-        {draftSchemas?.map((schema) => (
+        {draftSchemas.map((schema) => (
           <FormCard
             key={schema._id}
             formTitle={schema.title}
@@ -68,7 +75,7 @@ const HomePage = () => {
       </Carousel>
 
       <Carousel heading={he.homePage.publishedSchemas}>
-        {publishedSchemas?.map((schema) => (
+        {publishedSchemas.map((schema) => (
           <FormCard
             key={schema._id}
             formTitle={schema.title}
