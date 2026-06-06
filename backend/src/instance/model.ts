@@ -95,7 +95,7 @@ const sectionSchema = new Schema<ISectionAnswer>(
 const instanceSchema = new Schema<IInstance>({
   schemaId: {
     type: Types.ObjectId,
-    ref: "Schema",
+    ref: "FormSchema",
     required: true,
   },
   filledBy: {

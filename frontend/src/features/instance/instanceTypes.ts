@@ -1,4 +1,5 @@
 import type { QuestionTypes } from "../../shared/sharedTypes";
+import type { ISchema } from "../schema/schemaTypes";
 
 export enum InstanceStatus {
   Draft = "Draft",
@@ -108,6 +109,14 @@ export type IAnswerUpdateWithIds = AnswerIdSchema & Partial<IAnswer>;
 export interface StatusesSchema {
   statuses: InstanceStatus[];
 }
+
+export type IInstancePopulated = Omit<IInstance, "schemaId"> & {
+  schemaId: ISchema;
+};
+
+export type IInstanceWithSchemaTitle = Omit<IInstance, "schemaId"> & {
+  schemaId: Pick<ISchema, "_id" | "title">;
+};
 
 // Answer types (without the discriminator)
 

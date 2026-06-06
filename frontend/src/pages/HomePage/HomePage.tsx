@@ -13,6 +13,13 @@ import { SchemaDraftActions } from "./components/DraftActions/SchemaDraftActions
 import { PageContainer } from "./HomePage.styles";
 import { TopRightSlot } from "../SchemaEditPage/SchemaEditPage.styles";
 import { ActionButton } from "./components/Buttons/ActionButton";
+import {
+  useCreateInstance,
+  useDeleteInstance,
+  useGetInstances,
+} from "../../features/instance/hooks/useInstance";
+import { InstanceStatus } from "../../features/instance/instanceTypes";
+import { InstanceDraftActions } from "./components/DraftActions/InstanceDraftActions";
 
 export enum ButtonStatus {
   DELETE = "מחיקה",
@@ -25,13 +32,25 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { createSchema, createIsPending } = useCreateSchema();
   const { deleteSchema, deleteIsPending } = useDeleteSchema();
+  const { deleteInstance, deleteIsPending: deleteInstanceIsPending } =
+    useDeleteInstance();
+
+  const { createInstance, createIsPending: createInstanceIsPending } =
+    useCreateInstance();
   const { schemas } = useGetSchemas();
+  const { instances } = useGetInstances();
 
   const draftSchemas = schemas?.filter(
     (schema) => schema.status === SchemaStatus.Draft,
   );
   const publishedSchemas = schemas?.filter(
     (schema) => schema.status === SchemaStatus.Published,
+  );
+  const draftInstances = instances?.filter(
+    (instance) => instance.status === InstanceStatus.Draft,
+  );
+  const publishedInstances = instances?.filter(
+    (instance) => instance.status === InstanceStatus.Published,
   );
 
   const handleCreate = () => {
@@ -40,8 +59,18 @@ const HomePage = () => {
     });
   };
 
+  const handleFill = (schemaId: string) => {
+    createInstance(schemaId, {
+      onSuccess: (newInstance) => navigate(`/instances/${newInstance._id}`),
+    });
+  };
+
   const handleDelete = (schemaId: string) => {
     deleteSchema(schemaId);
+  };
+
+  const handleDeleteInstance = (instanceId: string) => {
+    deleteInstance(instanceId);
   };
 
   return (
@@ -81,8 +110,39 @@ const HomePage = () => {
             formTitle={schema.title}
             actions={
               <ActionButton
-                onClick={() => navigate(`/schemas/${schema._id}`)}
+                onClick={() => handleFill(schema._id)}
                 buttonType={ButtonStatus.FILL}
+              />
+            }
+          />
+        ))}
+      </Carousel>
+
+      <Carousel heading={he.homePage.draftInstances}>
+        {draftInstances.map((instance) => (
+          <FormCard
+            key={instance._id}
+            formTitle={instance.schemaId.title}
+            actions={
+              <InstanceDraftActions
+                formId={instance._id}
+                onDelete={handleDeleteInstance}
+                isPending={deleteInstanceIsPending}
+              />
+            }
+          />
+        ))}
+      </Carousel>
+
+      <Carousel heading={he.homePage.publishedInstances}>
+        {publishedInstances.map((instance) => (
+          <FormCard
+            key={instance._id}
+            formTitle={instance.schemaId.title}
+            actions={
+              <ActionButton
+                onClick={() => navigate(`/instances/${instance._id}`)}
+                buttonType={ButtonStatus.VIEW}
               />
             }
           />

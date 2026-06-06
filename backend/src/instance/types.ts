@@ -1,3 +1,4 @@
+import { schemaWithIdSchema } from "../schema/types.js";
 import {
   MongoObjectId,
   objectIdString,
@@ -131,6 +132,21 @@ export const createInstanceSchema = z.object({
   filledBy: objectIdString,
 });
 
+export const instanceWithSchema = instanceSchema.extend({
+  _id: objectIdString,
+  schemaId: schemaWithIdSchema,
+});
+
+export const schemaTitleSchema = schemaWithIdSchema.pick({
+  _id: true,
+  title: true,
+});
+
+export const instanceWithSchemaTitle = instanceSchema.extend({
+  _id: objectIdString,
+  schemaId: schemaTitleSchema,
+});
+
 export const updateAnswerSchemaWithIds = z.intersection(
   answerIdSchema,
   updateAnswerSchema,
@@ -148,6 +164,8 @@ export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
+export type IInstancePopulated = z.infer<typeof instanceWithSchema>;
+export type IInstanceWithSchemaTitle = z.infer<typeof instanceWithSchemaTitle>;
 
 // Answers types
 

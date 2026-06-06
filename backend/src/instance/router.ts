@@ -11,11 +11,7 @@ instanceRouter.get(
   validate(instanceValidation.getInstancesByUserId, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(
-        await Manager.getInstancesByUserId(
-          req.params.userId,
-        ),
-      );
+      .json(await Manager.getInstancesByUserId(req.params.userId));
   }),
 );
 
@@ -69,6 +65,15 @@ instanceRouter.delete(
           req.body.answerId,
         ),
       );
+  }),
+);
+
+instanceRouter.delete(
+  "/:id/instance",
+  validate(instanceValidation.deleteInstance, async (req, res) => {
+    res
+      .status(StatusCodes.OK)
+      .json(await Manager.deleteInstance(req.params.id));
   }),
 );
 

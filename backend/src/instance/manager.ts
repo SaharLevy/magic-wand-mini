@@ -5,6 +5,8 @@ import {
   IAnswerUpdateWithIds,
   IInstance,
   IInstanceInput,
+  IInstancePopulated,
+  IInstanceWithSchemaTitle,
   InstanceStatus,
   ISectionAnswer,
 } from "./types.js";
@@ -14,12 +16,12 @@ import { generateEmptyAnswer } from "../utils/helperFunctions.js";
 class Manager {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId);
+  ): Promise<IInstanceWithSchemaTitle[]> => Repo.getInstancesByUserId(userId);
 
   static createInstance = async (
     schemaId: MongoObjectId,
     filledBy: MongoObjectId,
-  ): Promise<IInstance> => {
+  ): Promise<IInstancePopulated> => {
     const schema = await SchemaRepo.getSchemaById(schemaId);
 
     if (!schema) throw new NotFoundError(SCHEMA_NOT_FOUND);
@@ -39,13 +41,14 @@ class Manager {
       status: InstanceStatus.Draft,
       sections,
     };
+    const createdInstance = await Repo.createInstance(newInstance);
 
-    return Repo.createInstance(newInstance);
+    return { ...createdInstance, schemaId: schema };
   };
 
   static getInstanceById = async (
     instanceId: MongoObjectId,
-  ): Promise<IInstance> => Repo.getInstanceById(instanceId);
+  ): Promise<IInstancePopulated> => Repo.getInstanceById(instanceId);
 
   static publishInstance = async (
     instanceId: MongoObjectId,
@@ -67,6 +70,10 @@ class Manager {
     sectionId: MongoObjectId,
     answerId: MongoObjectId,
   ): Promise<IInstance> => Repo.deleteAnswer(instanceId, sectionId, answerId);
+
+  static deleteInstance = async (
+    instanceId: MongoObjectId,
+  ): Promise<IInstance> => Repo.deleteInstance(instanceId);
 }
 
 export default Manager;
