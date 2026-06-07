@@ -46,4 +46,7 @@ export const he = {
     draftInstances: "מופעים בעריכה",
     publishedInstances: "מופעים שהגשתי",
   },
+  instance: {
+    creation: { defaultTextAnswer: "התשובה שלך" },
+  },
 };

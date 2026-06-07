@@ -10,48 +10,33 @@ import RadioTableQuestion from "../RadioTableQuestion/RadioTableQuestion";
 import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestion";
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
-import {
-  type IQuestion,
-  type IQuestionUpdate,
-} from "../../schemaTypes";
+import { type IQuestion, type IQuestionUpdate } from "../../schemaTypes";
 import { he } from "../../../../shared/constants/i18";
 import QuestionFooter from "../../../../shared/components/QuestionFooter/QuestionFooter";
 import { QuestionTypes } from "../../../../shared/sharedTypes";
+import type { IAnswer } from "../../instanceTypes";
 
 interface QuestionCardProps {
-  question: IQuestion;
-  isActive: boolean;
+  answer: IAnswer;
   onActivate: (element: HTMLElement) => void;
   onChange: (patch: IQuestionUpdate) => void;
   onDelete: () => void;
 }
 
 const BaseQuestion = ({
-  question,
+  answer,
   isActive,
-  onActivate,
   onChange,
   onDelete,
 }: QuestionCardProps) => {
   return (
-    <CardContainer
-      isActive={isActive}
-      onClick={(e) => onActivate(e.currentTarget)}
-    >
-      {isActive ? (
-        <QuestionHeader
-          questionText={question.title}
-          onQuestionChange={(value) => onChange({ title: value })}
-          questionType={question.type}
-          onTypeChange={(type) => onChange({ type })}
-        />
-      ) : (
-        <ViewTitle>
-          {question.title || he.schema.creation.baseQuestionDefaultText}
-        </ViewTitle>
-      )}
+    <CardContainer>
+      <ViewTitle>
+        {answer.title || he.schema.creation.baseQuestionDefaultText}
+      </ViewTitle>
+
       {(() => {
-        switch (question.type) {
+        switch (answer.type) {
           case QuestionTypes.SHORT_TEXT:
             return (
               <TextQuestion
@@ -131,7 +116,6 @@ const BaseQuestion = ({
             return null;
         }
       })()}
-
       {isActive && (
         <QuestionFooter
           isRequired={question.required}
