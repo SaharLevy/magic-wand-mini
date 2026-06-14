@@ -2,7 +2,7 @@ import { InputBase } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { baseInputStyles } from "../../../../shared/styles";
 
-export const TextInput = styled(InputBase)<{ isParagraph?: boolean }>(
+export const TextInput = styled(InputBase)<{ isParagraph: boolean }>(
   ({ isParagraph }) => ({
     ...baseInputStyles,
     borderBottom: "1px solid #e0e0e0",

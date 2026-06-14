@@ -1,20 +1,22 @@
 import { he } from "../../../../shared/constants/i18";
 import { TextInput } from "./TextAnswer.styles";
 
-interface TextQuestionProps {
-  textInput: string;
+interface TextAnswerProps {
+  value: string;
   isParagraph: boolean;
+  onChange: (value: string) => void;
 }
 
-const TextQuestion = ({ isParagraph, textInput }: TextQuestionProps) => {
+const TextAnswer = ({ isParagraph, value, onChange }: TextAnswerProps) => {
   return (
-    <>
-      <TextInput
-        isParagraph={isParagraph}
-        placeholder={he.instance.creation.defaultTextAnswer}
-      ></TextInput>
-    </>
+    <TextInput
+      isParagraph={isParagraph}
+      placeholder={he.instance.creation.defaultTextAnswer}
+      multiline={isParagraph}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    />
   );
 };
 
-export default TextQuestion;
+export default TextAnswer;
