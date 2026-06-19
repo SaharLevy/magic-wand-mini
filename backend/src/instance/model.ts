@@ -28,8 +28,14 @@ const optionSchema = new Schema<IOption>({
   option: { type: String },
 });
 
+const radioOptionSchema = new Schema<IOption>({
+  option: { type: String },
+  otherText: { type: String, default: undefined },
+});
+
 const optionsSchema = new Schema<IOptions>({
   options: { type: [String], default: [] },
+  otherText: { type: String, default: undefined },
 });
 
 const radioTableSchema = new Schema<IRadioTable>({
@@ -73,7 +79,7 @@ const baseAnswerSchema = new Schema<IAnswer>(
 baseAnswerSchema.discriminator(QuestionTypes.SHORT_TEXT, textSchema);
 baseAnswerSchema.discriminator(QuestionTypes.PARAGRAPH, textSchema);
 baseAnswerSchema.discriminator(QuestionTypes.LINEAR_SCALE, scaleSchema);
-baseAnswerSchema.discriminator(QuestionTypes.RADIO, optionSchema);
+baseAnswerSchema.discriminator(QuestionTypes.RADIO, radioOptionSchema);
 baseAnswerSchema.discriminator(QuestionTypes.DROPDOWN, optionSchema);
 baseAnswerSchema.discriminator(QuestionTypes.CHECKBOX, optionsSchema);
 baseAnswerSchema.discriminator(

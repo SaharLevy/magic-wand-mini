@@ -33,22 +33,28 @@ export interface IBaseQuestion {
 
 type IShortTextQuestion = { type: QuestionTypes.SHORT_TEXT };
 type IParagraphQuestion = { type: QuestionTypes.PARAGRAPH };
-type IRadioQuestion = { type: QuestionTypes.RADIO; options: IOption[] };
-type ICheckboxQuestion = { type: QuestionTypes.CHECKBOX; options: IOption[] };
-type IDropdownQuestion = { type: QuestionTypes.DROPDOWN; options: IOption[] };
-type ILinearScaleQuestion = {
+export type IRadioQuestion = { type: QuestionTypes.RADIO; options: IOption[] };
+export type ICheckboxQuestion = {
+  type: QuestionTypes.CHECKBOX;
+  options: IOption[];
+};
+export type IDropdownQuestion = {
+  type: QuestionTypes.DROPDOWN;
+  options: IOption[];
+};
+export type ILinearScaleQuestion = {
   type: QuestionTypes.LINEAR_SCALE;
   scaleMin: number;
   scaleMax: number;
   scaleMinLabel?: string;
   scaleMaxLabel?: string;
 };
-type IRadioTableQuestion = {
+export type IRadioTableQuestion = {
   type: QuestionTypes.RADIO_TABLE;
   rows: string[];
   columns: string[];
 };
-type ICheckboxTableQuestion = {
+export type ICheckboxTableQuestion = {
   type: QuestionTypes.CHECKBOX_TABLE;
   rows: string[];
   columns: string[];

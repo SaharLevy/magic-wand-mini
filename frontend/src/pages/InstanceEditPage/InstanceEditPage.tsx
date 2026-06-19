@@ -3,6 +3,9 @@ import InstanceHeader from "../../features/instance/components/InstanceHeader/In
 import { useGetInstance } from "../../features/instance/hooks/useInstance";
 import { useInstanceDraft } from "../../features/instance/hooks/useInstanceDraft";
 import BaseAnswer from "../../features/instance/components/BaseAnswer/BaseAnswer";
+import { useState } from "react";
+import SectionPagination from "../../features/instance/components/SectionPagination/SectionPagination";
+import { PageContainer } from "../../shared/components/SectionWrapper/SectionWrapper.styles";
 
 const InstanceEditPage = () => {
   const { instanceId } = useParams<{ instanceId: string }>();
@@ -10,28 +13,29 @@ const InstanceEditPage = () => {
   const { instance, isPending, isError } = useGetInstance(instanceId);
   const { instanceDraft, updateAnswer } = useInstanceDraft(instance);
 
-  console.log("instance:", instance);
+  const [pageIndex, setPageIndex] = useState(0);
 
   if (isPending || !instanceDraft) return <div>טוען...</div>;
   if (isError || !instance) return <div>שגיאה בטעינת המופע</div>;
 
   const schema = instance.schemaId;
+  const schemaSection = schema.sections[pageIndex];
+  const answerSection = instanceDraft.sections.find(
+    (candidate) => candidate.sectionId === schemaSection._id,
+  );
+  const isFirstPage = pageIndex === 0;
+  const isLastPage = pageIndex === schema.sections.length - 1;
 
   return (
-    <>
+    <PageContainer>
       <InstanceHeader
         title={instance.schemaId.title}
         description={instance.schemaId.description ?? ""}
       />
-      {schema.sections.map((schemaSection) => {
-        const answerSection = instanceDraft.sections.find(
-          (answerSection) => answerSection.sectionId === schemaSection._id,
-        );
-        if (!answerSection) return null;
-
-        return schemaSection.questions.map((question) => {
+      {answerSection &&
+        schemaSection.questions.map((question) => {
           const answer = answerSection.answers.find(
-            (answer) => answer.questionId === question._id,
+            (candidate) => candidate.questionId === question._id,
           );
           if (!answer) return null;
 
@@ -45,9 +49,15 @@ const InstanceEditPage = () => {
               }
             />
           );
-        });
-      })}
-    </>
+        })}
+
+      <SectionPagination
+        isFirstPage={isFirstPage}
+        isLastPage={isLastPage}
+        onPrev={() => setPageIndex((index) => index - 1)}
+        onNext={() => setPageIndex((index) => index + 1)}
+      />
+    </PageContainer>
   );
 };
 

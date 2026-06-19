@@ -42,11 +42,13 @@ export const paragraphAnswer = z.object({
 export const radioAnswer = z.object({
   type: z.literal(QuestionTypes.RADIO),
   ...optionShape.shape,
+  otherText: z.string().optional(),
 });
 
 export const checkboxAnswer = z.object({
   type: z.literal(QuestionTypes.CHECKBOX),
   ...optionsShape.shape,
+  otherText: z.string().optional(),
 });
 
 export const dropdownAnswer = z.object({

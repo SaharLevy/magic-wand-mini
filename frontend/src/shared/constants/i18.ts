@@ -47,6 +47,13 @@ export const he = {
     publishedInstances: "מופעים שהגשתי",
   },
   instance: {
-    creation: { defaultTextAnswer: "התשובה שלך" },
+    creation: {
+      defaultTextAnswer: "התשובה שלך",
+      nextPage: "הבא",
+      prevPage: "הקודם",
+      submit: "הגשה",
+      other: "אחר",
+      dropdownPlaceholder: "בחירה",
+    },
   },
 };

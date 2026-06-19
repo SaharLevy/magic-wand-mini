@@ -1,12 +1,26 @@
 import { CardContainer } from "../../../../shared/components/CardContainer/CardContainer.styles";
-import QuestionHeader from "../../../../shared/components/QuestionHeader/QuestionHeader";
 import { ViewTitle } from "../../../../shared/components/QuestionHeader/QuestionHeader.styles";
 import { he } from "../../../../shared/constants/i18";
-import QuestionFooter from "../../../../shared/components/QuestionFooter/QuestionFooter";
 import { QuestionTypes } from "../../../../shared/sharedTypes";
 import type { IAnswer } from "../../instanceTypes";
 import TextAnswer from "../TextAnswer/TextAnswer";
-import type { IQuestion } from "../../../schema/schemaTypes";
+import type {
+  ICheckboxQuestion,
+  ICheckboxTableQuestion,
+  IDropdownQuestion,
+  ILinearScaleQuestion,
+  IQuestion,
+  IRadioQuestion,
+  IRadioTableQuestion,
+} from "../../../schema/schemaTypes";
+import RadioAnswer from "../RadioAnswer/RadioAnswer";
+import CheckboxAnswer from "../CheckboxAnswer/CheckboxAnswer";
+import DropdownAnswer from "../DropdownAnswer/DropdownAnswer";
+import LinearScaleAnswer from "../LinearScaleAnswer/LinearScaleAnswer";
+import RadioTableAnswer from "../RadioTableAnswer/RadioTableAnswer";
+import CheckboxTableAnswer from "../CheckboxTableAnswer/CheckboxTableAnswer";
+import DateAnswer from "../DateAnswer/DateAnswer";
+import TimeAnswer from "../TimeAnswer/TimeAnswer";
 
 interface BaseAnswerProps {
   question: IQuestion;
@@ -39,65 +53,67 @@ const BaseAnswer = ({ question, answer, onChange }: BaseAnswerProps) => {
                 onChange={(text) => onChange({ text })}
               />
             );
-          // case QuestionTypes.RADIO:
-          //   return (
-          //     <RadioQuestion
-          //       isActive={isActive}
-          //       options={question.options}
-          //       onChange={(options) => onChange({ options })}
-          //     />
-          //   );
-          // case QuestionTypes.CHECKBOX:
-          //   return (
-          //     <CheckboxQuestion
-          //       isActive={isActive}
-          //       options={question.options}
-          //       onChange={(options) => onChange({ options })}
-          //     />
-          //   );
-          // case QuestionTypes.DROPDOWN:
-          //   return (
-          //     <DropdownQuestion
-          //       isActive={isActive}
-          //       options={question.options}
-          //       onChange={(options) => onChange({ options })}
-          //     />
-          //   );
-          // case QuestionTypes.LINEAR_SCALE:
-          //   return (
-          //     <LinearScaleQuestion
-          //       isActive={isActive}
-          //       scaleMin={question.scaleMin}
-          //       scaleMax={question.scaleMax}
-          //       scaleMinLabel={question.scaleMinLabel}
-          //       scaleMaxLabel={question.scaleMaxLabel}
-          //       onChange={onChange}
-          //     />
-          //   );
-          // case QuestionTypes.RADIO_TABLE:
-          //   return (
-          //     <RadioTableQuestion
-          //       isActive={isActive}
-          //       rows={question.rows}
-          //       columns={question.columns}
-          //       onRowsChange={(rows) => onChange({ rows })}
-          //       onColumnsChange={(columns) => onChange({ columns })}
-          //     />
-          //   );
-          // case QuestionTypes.CHECKBOX_TABLE:
-          //   return (
-          //     <CheckboxTableQuestion
-          //       isActive={isActive}
-          //       rows={question.rows}
-          //       columns={question.columns}
-          //       onRowsChange={(rows) => onChange({ rows })}
-          //       onColumnsChange={(columns) => onChange({ columns })}
-          //     />
-          //   );
-          // case QuestionTypes.DATE:
-          //   return <DateQuestion isActive={isActive} />;
-          // case QuestionTypes.TIME:
-          //   return <TimeQuestion isActive={isActive} />;
+          case QuestionTypes.RADIO:
+            return (
+              <RadioAnswer
+                options={(question as IRadioQuestion).options}
+                option={answer.option}
+                otherText={answer.otherText}
+                onChange={onChange}
+              />
+            );
+          case QuestionTypes.CHECKBOX:
+            return (
+              <CheckboxAnswer
+                options={(question as ICheckboxQuestion).options}
+                selectedOptions={answer.options}
+                otherText={answer.otherText}
+                onChange={onChange}
+              />
+            );
+          case QuestionTypes.DROPDOWN:
+            return (
+              <DropdownAnswer
+                options={(question as IDropdownQuestion).options}
+                option={answer.option}
+                onChange={onChange}
+              />
+            );
+          case QuestionTypes.LINEAR_SCALE:
+            return (
+              <LinearScaleAnswer
+                scaleMin={(question as ILinearScaleQuestion).scaleMin}
+                scaleMax={(question as ILinearScaleQuestion).scaleMax}
+                scaleMinLabel={(question as ILinearScaleQuestion).scaleMinLabel}
+                scaleMaxLabel={(question as ILinearScaleQuestion).scaleMaxLabel}
+                scaleNumber={answer.scaleNumber}
+                onChange={onChange}
+              />
+            );
+          case QuestionTypes.RADIO_TABLE: {
+            return (
+              <RadioTableAnswer
+                rows={(question as IRadioTableQuestion).rows}
+                columns={(question as IRadioTableQuestion).columns}
+                tableAnswers={answer.tableAnswers}
+                onChange={onChange}
+              />
+            );
+          }
+          case QuestionTypes.CHECKBOX_TABLE: {
+            return (
+              <CheckboxTableAnswer
+                rows={(question as ICheckboxTableQuestion).rows}
+                columns={(question as ICheckboxTableQuestion).columns}
+                tableAnswers={answer.tableAnswers}
+                onChange={onChange}
+              />
+            );
+          }
+          case QuestionTypes.DATE:
+            return <DateAnswer date={answer.date} onChange={onChange} />;
+          case QuestionTypes.TIME:
+            return <TimeAnswer time={answer.time} onChange={onChange} />;
           default:
             return null;
         }

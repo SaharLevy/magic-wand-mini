@@ -9,7 +9,10 @@ import { he } from "../../shared/constants/i18";
 import { SchemaStatus } from "../../features/schema/schemaTypes";
 import { Carousel } from "./components/Carousel/Carousel";
 import { FormCard } from "./components/FormCard/FormCard";
-import { SchemaDraftActions } from "./components/DraftActions/SchemaDraftActions";
+import {
+  DRAFT_KIND,
+  DraftActions,
+} from "./components/DraftActions/DraftActions";
 import { PageContainer } from "./HomePage.styles";
 import { TopRightSlot } from "../SchemaEditPage/SchemaEditPage.styles";
 import { ActionButton } from "./components/Buttons/ActionButton";
@@ -19,7 +22,6 @@ import {
   useGetInstances,
 } from "../../features/instance/hooks/useInstance";
 import { InstanceStatus } from "../../features/instance/instanceTypes";
-import { InstanceDraftActions } from "./components/DraftActions/InstanceDraftActions";
 
 export enum ButtonStatus {
   DELETE = "מחיקה",
@@ -93,7 +95,8 @@ const HomePage = () => {
             key={schema._id}
             formTitle={schema.title}
             actions={
-              <SchemaDraftActions
+              <DraftActions
+                kind={DRAFT_KIND.Schema}
                 formId={schema._id}
                 onDelete={handleDelete}
                 isPending={deleteIsPending}
@@ -124,7 +127,8 @@ const HomePage = () => {
             key={instance._id}
             formTitle={instance.schemaId.title}
             actions={
-              <InstanceDraftActions
+              <DraftActions
+                kind={DRAFT_KIND.Instance}
                 formId={instance._id}
                 onDelete={handleDeleteInstance}
                 isPending={deleteInstanceIsPending}

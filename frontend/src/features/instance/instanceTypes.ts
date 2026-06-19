@@ -21,11 +21,13 @@ export interface ParagraphAnswer {
 export interface RadioAnswer {
   type: QuestionTypes.RADIO;
   option: string;
+  otherText?: string;
 }
 
 export interface CheckboxAnswer {
   type: QuestionTypes.CHECKBOX;
   options: string[];
+  otherText?: string;
 }
 
 export interface DropdownAnswer {

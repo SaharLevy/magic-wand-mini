@@ -10,8 +10,9 @@ export const generateEmptyAnswer = (
     case QuestionTypes.SHORT_TEXT:
     case QuestionTypes.PARAGRAPH:
       return { ...base, type, text: "" };
-    case QuestionTypes.RADIO:
     case QuestionTypes.DROPDOWN:
+      return { ...base, type, option: "" };
+    case QuestionTypes.RADIO:
       return { ...base, type, option: "" };
     case QuestionTypes.CHECKBOX:
       return { ...base, type, options: [] };
