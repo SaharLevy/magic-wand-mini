@@ -20,7 +20,7 @@ export const optionsShape = z.object({
 });
 
 export const scaleShape = z.object({
-  scaleNumber: z.number().int(),
+  scaleNumber: z.number().int().optional(),
 });
 
 export const textShape = z.object({

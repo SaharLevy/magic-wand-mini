@@ -37,7 +37,7 @@ export interface DropdownAnswer {
 
 export interface LinearScaleAnswer {
   type: QuestionTypes.LINEAR_SCALE;
-  scaleNumber: number;
+  scaleNumber?: number;
 }
 
 export interface RadioTableAnswer {
@@ -119,6 +119,10 @@ export type IInstancePopulated = Omit<IInstance, "schemaId"> & {
 export type IInstanceWithSchemaTitle = Omit<IInstance, "schemaId"> & {
   schemaId: Pick<ISchema, "_id" | "title">;
 };
+
+export interface ValidationErrorData {
+  details?: string[];
+}
 
 // Answer types (without the discriminator)
 

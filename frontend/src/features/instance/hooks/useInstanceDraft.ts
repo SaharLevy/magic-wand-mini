@@ -30,7 +30,10 @@ export const useInstanceDraft = (instance: IInstancePopulated | undefined) => {
       return;
     }
     const { schemaId, ...instanceFields } = instance;
-    setInstanceDraft(instanceFields as IInstance);
+    setInstanceDraft({
+      ...instanceFields,
+      schemaId: schemaId._id,
+    } as IInstance);
   }, [instance]);
 
   const updateAnswer = (

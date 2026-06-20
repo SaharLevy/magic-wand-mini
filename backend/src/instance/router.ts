@@ -40,7 +40,7 @@ instanceRouter.patch(
   validate(instanceValidation.publishInstance, async (req, res) => {
     res
       .status(StatusCodes.OK)
-      .json(await Manager.publishInstance(req.params.id));
+      .json(await Manager.publishInstance(req.params.id, req.body));
   }),
 );
 

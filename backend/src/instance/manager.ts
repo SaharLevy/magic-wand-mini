@@ -1,5 +1,5 @@
 import { MongoObjectId } from "../shared/types.js";
-import Repo from "./repo.js";
+import Repo, { MISSING_REQUIRED_ANSWERS } from "./repo.js";
 import SchemaRepo, { SCHEMA_NOT_FOUND } from "../schema/repo.js";
 import {
   IAnswerUpdateWithIds,
@@ -10,8 +10,11 @@ import {
   InstanceStatus,
   ISectionAnswer,
 } from "./types.js";
-import { NotFoundError } from "../utils/customErrors.js";
-import { generateEmptyAnswer } from "../utils/helperFunctions.js";
+import { NotFoundError, ValidationError } from "../utils/customErrors.js";
+import {
+  generateEmptyAnswer,
+  getMissingRequiredQuestions,
+} from "../utils/helperFunctions.js";
 
 class Manager {
   static getInstancesByUserId = async (
@@ -52,8 +55,17 @@ class Manager {
 
   static publishInstance = async (
     instanceId: MongoObjectId,
+    submitted: IInstanceInput,
   ): Promise<IInstance> => {
-    return Repo.publishInstance(instanceId);
+    const schema = await SchemaRepo.getSchemaById(submitted.schemaId);
+    if (!schema) throw new NotFoundError(SCHEMA_NOT_FOUND);
+
+    const missing = getMissingRequiredQuestions(submitted.sections, schema);
+    if (missing.length > 0) {
+      throw new ValidationError(MISSING_REQUIRED_ANSWERS, missing);
+    }
+
+    return Repo.publishInstance(instanceId, submitted.sections);
   };
 
   static updateAnswer = async (

@@ -10,6 +10,8 @@ interface SectionPaginationProps {
   isLastPage: boolean;
   onPrev: () => void;
   onNext: () => void;
+  onSubmit: () => void;
+  submitIsPending: boolean;
 }
 
 const SectionPagination = ({
@@ -17,6 +19,8 @@ const SectionPagination = ({
   isLastPage,
   onPrev,
   onNext,
+  onSubmit,
+  submitIsPending,
 }: SectionPaginationProps) => {
   return (
     <SectionsButtonsContainer>
@@ -29,7 +33,13 @@ const SectionPagination = ({
         </AppButton>
       </LeftSideButtonsContainer>
 
-      <AppButton variant="contained">{he.instance.creation.submit}</AppButton>
+      <AppButton
+        variant="contained"
+        onClick={onSubmit}
+        disabled={!isLastPage || submitIsPending}
+      >
+        {he.instance.creation.submit}
+      </AppButton>
     </SectionsButtonsContainer>
   );
 };

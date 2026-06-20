@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
-import { CustomError } from "./customErrors.js";
+import { CustomError, ValidationError } from "./customErrors.js";
 
 const errorHandler = (
   err: CustomError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): void => {
   console.log(err.message);
 
@@ -14,6 +14,7 @@ const errorHandler = (
     success: false,
     message: err.message || "Something went wrong",
     statusCode,
+    ...(err instanceof ValidationError && { details: err.details }),
   });
 };
 

@@ -12,7 +12,7 @@ interface LinearScaleAnswerProps {
   scaleMax: number;
   scaleMinLabel?: string;
   scaleMaxLabel?: string;
-  scaleNumber: number;
+  scaleNumber?: number;
   onChange: (patch: { scaleNumber?: number }) => void;
 }
 
@@ -33,7 +33,7 @@ const LinearScaleAnswer = ({
 
       <ScaleGroup
         row
-        value={String(scaleNumber)}
+        value={scaleNumber !== undefined ? String(scaleNumber) : ""}
         onChange={(e) => onChange({ scaleNumber: Number(e.target.value) })}
       >
         {range(scaleMin, scaleMax).map((num) => (

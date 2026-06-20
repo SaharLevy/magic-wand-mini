@@ -29,6 +29,16 @@ export const createInstance = (
     data: { filledBy },
   });
 
+export const submitInstance = (
+  instanceId: string,
+  instance: IInstance,
+): Promise<IInstance> =>
+  request<IInstance>({
+    method: "PATCH",
+    url: `/instances/${instanceId}/status`,
+    data: instance,
+  });
+
 export const deleteInstance = (instanceId: string): Promise<IInstance> =>
   request<IInstance>({
     method: "DELETE",

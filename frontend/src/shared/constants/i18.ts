@@ -48,6 +48,8 @@ export const he = {
   },
   instance: {
     creation: {
+      loadingInstance: "טוען...",
+      loadingError: "שגיאה בטעינת הטופס",
       defaultTextAnswer: "התשובה שלך",
       nextPage: "הבא",
       prevPage: "הקודם",

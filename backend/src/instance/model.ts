@@ -21,7 +21,7 @@ const textSchema = new Schema<IText>({
 });
 
 const scaleSchema = new Schema<IScale>({
-  scaleNumber: { type: Number },
+  scaleNumber: { type: Number, default: undefined },
 });
 
 const optionSchema = new Schema<IOption>({

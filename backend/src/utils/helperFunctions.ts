@@ -1,4 +1,10 @@
-import { IAnswer } from "../instance/types.js";
+import { IAnswer, IInstanceInput, ISectionAnswer } from "../instance/types.js";
+import {
+  ICheckboxTable,
+  IQuestion,
+  IRadioTable,
+  ISchema,
+} from "../schema/types.js";
 import { MongoObjectId, QuestionTypes } from "../shared/types.js";
 
 export const generateEmptyAnswer = (
@@ -17,7 +23,7 @@ export const generateEmptyAnswer = (
     case QuestionTypes.CHECKBOX:
       return { ...base, type, options: [] };
     case QuestionTypes.LINEAR_SCALE:
-      return { ...base, type, scaleNumber: 0 };
+      return { ...base, type };
     case QuestionTypes.RADIO_TABLE:
     case QuestionTypes.CHECKBOX_TABLE:
       return { ...base, type, tableAnswers: [] };
@@ -28,4 +34,63 @@ export const generateEmptyAnswer = (
     default:
       throw new Error(`Question type not supported: ${type satisfies never}`);
   }
+};
+
+export const isAnswerEmpty = (
+  answer: IAnswer,
+  question: IQuestion,
+): boolean => {
+  switch (answer.type) {
+    case QuestionTypes.SHORT_TEXT:
+    case QuestionTypes.PARAGRAPH:
+      return !answer.text;
+    case QuestionTypes.RADIO:
+      return !answer.option && answer.otherText === undefined;
+    case QuestionTypes.DROPDOWN:
+      return !answer.option;
+    case QuestionTypes.CHECKBOX:
+      return answer.options.length === 0 && answer.otherText === undefined;
+    case QuestionTypes.LINEAR_SCALE:
+      return answer.scaleNumber === undefined;
+    case QuestionTypes.RADIO_TABLE:
+      return answer.tableAnswers.length < (question as IRadioTable).rows.length;
+    case QuestionTypes.CHECKBOX_TABLE:
+      return (
+        answer.tableAnswers.length < (question as ICheckboxTable).rows.length ||
+        answer.tableAnswers.some((row) => row.columns.length === 0)
+      );
+    case QuestionTypes.DATE:
+      return answer.date === undefined;
+    case QuestionTypes.TIME:
+      return answer.time === undefined;
+    default:
+      return true;
+  }
+};
+
+export const getMissingRequiredQuestions = (
+  sections: ISectionAnswer[],
+  schema: ISchema,
+): string[] => {
+  const missing: string[] = [];
+
+  schema.sections.forEach((schemaSection) => {
+    const answerSection = sections.find(
+      (section) => String(section.sectionId) === String(schemaSection._id),
+    );
+
+    schemaSection.questions.forEach((question) => {
+      if (!question.required) return;
+
+      const answer = answerSection?.answers.find(
+        (answer) => String(answer.questionId) === String(question._id),
+      );
+
+      if (!answer || isAnswerEmpty(answer, question)) {
+        missing.push(String(question._id));
+      }
+    });
+  });
+
+  return missing;
 };

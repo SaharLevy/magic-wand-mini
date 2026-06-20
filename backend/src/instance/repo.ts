@@ -9,9 +9,11 @@ import {
   IInstancePopulated,
   IInstanceWithSchemaTitle,
   InstanceStatus,
+  ISectionAnswer,
 } from "./types.js";
 
 const INSTANCE_NOT_FOUND = "Instance not found";
+export const MISSING_REQUIRED_ANSWERS = "Missing required answers";
 
 class Repo {
   static getInstancesByUserId = async (
@@ -37,13 +39,16 @@ class Repo {
 
   static publishInstance = async (
     instanceId: MongoObjectId,
+    sections: ISectionAnswer[],
   ): Promise<IInstance> =>
     Instance.findByIdAndUpdate(
       instanceId,
-      { status: InstanceStatus.Published, submittedAt: new Date() },
       {
-        new: true,
+        sections,
+        status: InstanceStatus.Published,
+        submittedAt: new Date(),
       },
+      { new: true },
     ).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
 
   static updateAnswer = async (

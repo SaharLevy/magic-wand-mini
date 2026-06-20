@@ -25,12 +25,13 @@ import TimeAnswer from "../TimeAnswer/TimeAnswer";
 interface BaseAnswerProps {
   question: IQuestion;
   answer: IAnswer;
+  error: boolean;
   onChange: (patch: Partial<IAnswer>) => void;
 }
 
-const BaseAnswer = ({ question, answer, onChange }: BaseAnswerProps) => {
+const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
   return (
-    <CardContainer>
+    <CardContainer error={error}>
       <ViewTitle>
         {question.title || he.schema.creation.baseQuestionDefaultText}
       </ViewTitle>

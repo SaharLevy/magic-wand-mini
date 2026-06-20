@@ -9,6 +9,7 @@ import {
   deleteInstance,
   getInstance,
   getInstances,
+  submitInstance,
 } from "../instance.api";
 import { TEMP_USER_ID } from "../../schema/hooks/useSchema";
 
@@ -55,6 +56,23 @@ export const useCreateInstance = () => {
     createIsPending: isPending,
     isError,
   };
+};
+
+export const useSubmitInstance = () => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending, isError } = useMutation<
+    IInstance,
+    Error,
+    IInstance
+  >({
+    mutationFn: (instance: IInstance) => submitInstance(instance._id, instance),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["instances"] });
+    },
+  });
+
+  return { submitInstance: mutateAsync, submitIsPending: isPending, isError };
 };
 
 export const useDeleteInstance = () => {

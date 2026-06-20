@@ -22,4 +22,13 @@ class BadRequestError extends CustomError {
   }
 }
 
-export { CustomError, BadRequestError, NotFoundError };
+class ValidationError extends CustomError {
+  details: string[];
+  constructor(message: string, details: string[]) {
+    super(message, StatusCodes.BAD_REQUEST);
+    this.name = "ValidationError";
+    this.details = details;
+  }
+}
+export { CustomError, BadRequestError, NotFoundError, ValidationError };
+
