@@ -29,6 +29,8 @@ const SchemaEditPage = () => {
   const { publishSchema } = usePublishSchema(schemaId);
   const navigate = useNavigate();
 
+  const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
+
   const {
     schemaDraft,
     updateSchema,
@@ -39,9 +41,6 @@ const SchemaEditPage = () => {
     removeQuestion,
     publishDraft,
   } = useSchemaDraft(schema);
-
-  const activeSectionId =
-    activeCardId && activeCardId !== "header" ? activeCardId : null;
 
   const handleAddQuestion = activeSectionId
     ? async () => {
@@ -70,8 +69,13 @@ const SchemaEditPage = () => {
     navigate("/", { replace: true });
   };
 
-  const handleActivate = (cardId: string, element: HTMLElement) => {
+  const handleActivate = (
+    cardId: string,
+    sectionId: string | null,
+    element: HTMLElement,
+  ) => {
     setActiveCardId(cardId);
+    setActiveSectionId(sectionId);
     setAnchorEl(element);
   };
 
@@ -80,8 +84,8 @@ const SchemaEditPage = () => {
     saveSchema(schemaDraft);
   };
 
-  if (isPending || !schemaDraft) return <div>Loading...</div>;
-  if (isError || !schema) return <div>Error...</div>;
+  if (isPending || !schemaDraft) return <div>{he.schema.creation.loading}</div>;
+  if (isError || !schema) return <div>{he.schema.creation.error}</div>;
 
   const isPublished = schemaDraft.status === SchemaStatus.Published;
 
@@ -89,7 +93,7 @@ const SchemaEditPage = () => {
     <>
       <FormHeaderCard
         isActive={activeCardId === "header"}
-        onActivate={(element) => handleActivate("header", element)}
+        onActivate={(element) => handleActivate("header", null, element)}
         title={schemaDraft.title}
         description={schemaDraft.description ?? ""}
         onTitleChange={(value) => updateSchema({ title: value })}
@@ -103,7 +107,9 @@ const SchemaEditPage = () => {
             sectionIndex={index + 2}
             sectionsCount={schemaDraft.sections.length + 1}
             isActive={activeCardId === section._id}
-            onActivate={(element) => handleActivate(section._id, element)}
+            onActivate={(element) =>
+              handleActivate(section._id, section._id, element)
+            }
             title={section.title}
             description={section.description ?? ""}
             section={section}

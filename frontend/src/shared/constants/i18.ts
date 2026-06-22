@@ -31,6 +31,8 @@ export const he = {
       headerQuestionTime: "זמן",
       footerRequired: "נדרש",
       defaultValueOptionsState: "אפשרות 1",
+      loading: "טוען",
+      error: "שגיאה",
     },
   },
   homePage: {

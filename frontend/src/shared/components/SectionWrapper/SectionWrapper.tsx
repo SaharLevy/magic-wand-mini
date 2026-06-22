@@ -30,7 +30,11 @@ interface SectionWrapperProps {
   description: string;
   section: ISection;
   activeCardId: string | null;
-  onCardActivate: (cardId: string, element: HTMLElement) => void;
+  onCardActivate: (
+    cardId: string,
+    sectionId: string,
+    element: HTMLElement,
+  ) => void;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onQuestionChange: (questionId: string, patch: IQuestionUpdate) => void;
@@ -88,7 +92,9 @@ const SectionWrapper = ({
             key={question._id}
             question={question}
             isActive={activeCardId === question._id}
-            onActivate={(element) => onCardActivate(question._id, element)}
+            onActivate={(element) =>
+              onCardActivate(question._id, section._id, element)
+            }
             onChange={(patch) => onQuestionChange(question._id, patch)}
             onDelete={() => onDeleteQuestion(section._id, question._id)}
           />
