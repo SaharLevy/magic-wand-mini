@@ -6,10 +6,16 @@ import { DropdownSelect } from "./DropdownAnswer.styles";
 interface DropdownAnswerProps {
   options: IOption[];
   option: string;
+  readOnly?: boolean;
   onChange: (patch: { option?: string }) => void;
 }
 
-const DropdownAnswer = ({ options, option, onChange }: DropdownAnswerProps) => {
+const DropdownAnswer = ({
+  options,
+  option,
+  readOnly,
+  onChange,
+}: DropdownAnswerProps) => {
   return (
     <DropdownSelect
       value={option}
@@ -20,6 +26,7 @@ const DropdownAnswer = ({ options, option, onChange }: DropdownAnswerProps) => {
           ? (selected as string)
           : he.instance.creation.dropdownPlaceholder
       }
+      disabled={readOnly}
     >
       {options.map((option) => (
         <MenuItem key={option.order} value={option.text}>

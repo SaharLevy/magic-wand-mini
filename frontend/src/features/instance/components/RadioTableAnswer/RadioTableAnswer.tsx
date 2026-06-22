@@ -14,6 +14,7 @@ interface RadioTableAnswerProps {
   rows: string[];
   columns: string[];
   tableAnswers: { row: number; column: number }[];
+  readOnly?: boolean;
   onChange: (patch: {
     tableAnswers?: { row: number; column: number }[];
   }) => void;
@@ -23,6 +24,7 @@ const RadioTableAnswer = ({
   rows,
   columns,
   tableAnswers,
+  readOnly,
   onChange,
 }: RadioTableAnswerProps) => {
   const isSelected = (rowIndex: number, colIndex: number) =>
@@ -54,6 +56,7 @@ const RadioTableAnswer = ({
               <Cell key={colIndex}>
                 <Radio
                   checked={isSelected(rowIndex, colIndex)}
+                  disabled={readOnly}
                   onChange={() => selectCell(rowIndex, colIndex)}
                 />
               </Cell>

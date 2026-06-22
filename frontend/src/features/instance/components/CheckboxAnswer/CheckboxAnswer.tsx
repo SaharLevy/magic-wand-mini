@@ -7,6 +7,7 @@ interface CheckboxAnswerProps {
   options: IOption[];
   selectedOptions: string[];
   otherText?: string;
+  readOnly?: boolean;
   onChange: (patch: { options?: string[]; otherText?: string }) => void;
 }
 
@@ -14,6 +15,7 @@ const CheckboxAnswer = ({
   options,
   selectedOptions,
   otherText,
+  readOnly,
   onChange,
 }: CheckboxAnswerProps) => {
   const isOtherChecked = otherText !== undefined;
@@ -37,6 +39,7 @@ const CheckboxAnswer = ({
           control={
             <Checkbox
               checked={selectedOptions.includes(option.text)}
+              disabled={readOnly}
               onChange={(e) => toggleOption(option.text, e.target.checked)}
             />
           }
@@ -49,6 +52,7 @@ const CheckboxAnswer = ({
           control={
             <Checkbox
               checked={isOtherChecked}
+              disabled={readOnly}
               onChange={(e) => toggleOther(e.target.checked)}
             />
           }
@@ -57,6 +61,7 @@ const CheckboxAnswer = ({
         {isOtherChecked && (
           <OtherInput
             value={otherText ?? ""}
+            disabled={readOnly}
             onChange={(e) => onChange({ otherText: e.target.value })}
           />
         )}

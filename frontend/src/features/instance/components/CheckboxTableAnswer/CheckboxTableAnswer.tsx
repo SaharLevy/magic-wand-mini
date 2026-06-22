@@ -14,6 +14,7 @@ interface CheckboxTableAnswerProps {
   rows: string[];
   columns: string[];
   tableAnswers: { row: number; columns: number[] }[];
+  readOnly?: boolean;
   onChange: (patch: {
     tableAnswers?: { row: number; columns: number[] }[];
   }) => void;
@@ -23,6 +24,7 @@ const CheckboxTableAnswer = ({
   rows,
   columns,
   tableAnswers,
+  readOnly,
   onChange,
 }: CheckboxTableAnswerProps) => {
   const isSelected = (rowIndex: number, colIndex: number) => {
@@ -64,6 +66,7 @@ const CheckboxTableAnswer = ({
               <Cell key={colIndex}>
                 <Checkbox
                   checked={isSelected(rowIndex, colIndex)}
+                  disabled={readOnly}
                   onChange={(e) =>
                     toggleCell(rowIndex, colIndex, e.target.checked)
                   }

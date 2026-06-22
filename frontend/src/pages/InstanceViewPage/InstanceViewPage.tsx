@@ -1,52 +1,25 @@
-import { useParams, useNavigate } from "react-router-dom";
-import InstanceHeader from "../../features/instance/components/InstanceHeader/InstanceHeader";
-import {
-  useGetInstance,
-  useSubmitInstance,
-} from "../../features/instance/hooks/useInstance";
-import { useInstanceDraft } from "../../features/instance/hooks/useInstanceDraft";
-import BaseAnswer from "../../features/instance/components/BaseAnswer/BaseAnswer";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { useGetInstance } from "../../features/instance/hooks/useInstance";
+import InstanceHeader from "../../features/instance/components/InstanceHeader/InstanceHeader";
+import BaseAnswer from "../../features/instance/components/BaseAnswer/BaseAnswer";
 import SectionPagination from "../../features/instance/components/SectionPagination/SectionPagination";
 import { PageContainer } from "../../shared/components/SectionWrapper/SectionWrapper.styles";
-import { AxiosError } from "axios";
-import type { ValidationErrorData } from "../../features/instance/instanceTypes";
 import { he } from "../../shared/constants/i18";
 
-const InstanceEditPage = () => {
+const InstanceViewPage = () => {
   const { instanceId } = useParams<{ instanceId: string }>();
-
   const { instance, isPending, isError } = useGetInstance(instanceId);
-  const { instanceDraft, updateAnswer } = useInstanceDraft(instance);
-  const { submitInstance, submitIsPending } = useSubmitInstance();
-  const navigate = useNavigate();
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [errorQuestionIds, setErrorQuestionIds] = useState<string[]>([]);
 
-  const handleSubmit = async () => {
-    if (!instanceDraft) return;
-
-    try {
-      await submitInstance(instanceDraft);
-      navigate("/", { replace: true });
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const data = error.response?.data as ValidationErrorData;
-        setErrorQuestionIds(data?.details ?? []);
-      }
-    }
-  };
-
-  if (isPending || !instanceDraft)
-    return <div>{he.instance.creation.loadingInstance}</div>;
-  
+  if (isPending) return <div>{he.instance.creation.loadingInstance}</div>;
   if (isError || !instance)
     return <div>{he.instance.creation.loadingError}</div>;
 
   const schema = instance.schemaId;
   const schemaSection = schema.sections[pageIndex];
-  const answerSection = instanceDraft.sections.find(
+  const answerSection = instance.sections.find(
     (candidate) => candidate.sectionId === schemaSection._id,
   );
   const isFirstPage = pageIndex === 0;
@@ -55,8 +28,8 @@ const InstanceEditPage = () => {
   return (
     <PageContainer>
       <InstanceHeader
-        title={instance.schemaId.title}
-        description={instance.schemaId.description ?? ""}
+        title={schema.title}
+        description={schema.description ?? ""}
       />
       {answerSection &&
         schemaSection.questions.map((question) => {
@@ -70,10 +43,7 @@ const InstanceEditPage = () => {
               key={question._id}
               question={question}
               answer={answer}
-              error={errorQuestionIds.includes(question._id)}
-              onChange={(patch) =>
-                updateAnswer(schemaSection._id, question._id, patch)
-              }
+              readOnly
             />
           );
         })}
@@ -83,11 +53,9 @@ const InstanceEditPage = () => {
         isLastPage={isLastPage}
         onPrev={() => setPageIndex((index) => index - 1)}
         onNext={() => setPageIndex((index) => index + 1)}
-        onSubmit={handleSubmit}
-        submitIsPending={submitIsPending}
       />
     </PageContainer>
   );
 };
 
-export default InstanceEditPage;
+export default InstanceViewPage;

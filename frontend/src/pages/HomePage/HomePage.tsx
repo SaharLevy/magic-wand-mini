@@ -145,7 +145,7 @@ const HomePage = () => {
             formTitle={instance.schemaId.title}
             actions={
               <ActionButton
-                onClick={() => navigate(`/instances/${instance._id}`)}
+                onClick={() => navigate(`/instances/${instance._id}/view`)}
                 buttonType={ButtonStatus.VIEW}
               />
             }

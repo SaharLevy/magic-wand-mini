@@ -13,6 +13,7 @@ interface LinearScaleAnswerProps {
   scaleMinLabel?: string;
   scaleMaxLabel?: string;
   scaleNumber?: number;
+  readOnly?: boolean;
   onChange: (patch: { scaleNumber?: number }) => void;
 }
 
@@ -25,6 +26,7 @@ const LinearScaleAnswer = ({
   scaleMinLabel,
   scaleMaxLabel,
   scaleNumber,
+  readOnly,
   onChange,
 }: LinearScaleAnswerProps) => {
   return (
@@ -39,7 +41,7 @@ const LinearScaleAnswer = ({
         {range(scaleMin, scaleMax).map((num) => (
           <ScaleColumn key={num}>
             <ScaleNumber>{num}</ScaleNumber>
-            <Radio value={String(num)} />
+            <Radio value={String(num)} disabled={readOnly} />
           </ScaleColumn>
         ))}
       </ScaleGroup>

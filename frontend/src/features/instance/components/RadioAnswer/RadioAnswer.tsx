@@ -7,6 +7,7 @@ interface RadioAnswerProps {
   options: IOption[];
   option: string;
   otherText?: string;
+  readOnly?: boolean;
   onChange: (patch: { option?: string; otherText?: string }) => void;
 }
 
@@ -16,6 +17,7 @@ const RadioAnswer = ({
   options,
   option,
   otherText,
+  readOnly,
   onChange,
 }: RadioAnswerProps) => {
   const isOtherSelected = otherText !== undefined;
@@ -37,7 +39,7 @@ const RadioAnswer = ({
         <FormControlLabel
           key={option.order}
           value={option.text}
-          control={<Radio />}
+          control={<Radio disabled={readOnly} />}
           label={option.text}
         />
       ))}
@@ -45,12 +47,13 @@ const RadioAnswer = ({
       <OptionRow>
         <FormControlLabel
           value={OTHER}
-          control={<Radio />}
+          control={<Radio disabled={readOnly} />}
           label={he.instance.creation.other}
         />
         {isOtherSelected && (
           <OtherInput
             value={otherText ?? ""}
+            disabled={readOnly}
             onChange={(e) => onChange({ otherText: e.target.value })}
           />
         )}

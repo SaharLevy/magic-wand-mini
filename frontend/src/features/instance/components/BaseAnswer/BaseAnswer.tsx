@@ -25,11 +25,18 @@ import TimeAnswer from "../TimeAnswer/TimeAnswer";
 interface BaseAnswerProps {
   question: IQuestion;
   answer: IAnswer;
-  error: boolean;
-  onChange: (patch: Partial<IAnswer>) => void;
+  error?: boolean;
+  readOnly?: boolean;
+  onChange?: (patch: Partial<IAnswer>) => void;
 }
 
-const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
+const BaseAnswer = ({
+  question,
+  answer,
+  error,
+  readOnly = false,
+  onChange = () => {},
+}: BaseAnswerProps) => {
   return (
     <CardContainer error={error}>
       <ViewTitle>
@@ -43,6 +50,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
               <TextAnswer
                 isParagraph={false}
                 value={answer.text}
+                readOnly={readOnly}
                 onChange={(text) => onChange({ text })}
               />
             );
@@ -51,6 +59,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
               <TextAnswer
                 isParagraph={true}
                 value={answer.text}
+                readOnly={readOnly}
                 onChange={(text) => onChange({ text })}
               />
             );
@@ -60,6 +69,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
                 options={(question as IRadioQuestion).options}
                 option={answer.option}
                 otherText={answer.otherText}
+                readOnly={readOnly}
                 onChange={onChange}
               />
             );
@@ -69,6 +79,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
                 options={(question as ICheckboxQuestion).options}
                 selectedOptions={answer.options}
                 otherText={answer.otherText}
+                readOnly={readOnly}
                 onChange={onChange}
               />
             );
@@ -77,6 +88,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
               <DropdownAnswer
                 options={(question as IDropdownQuestion).options}
                 option={answer.option}
+                readOnly={readOnly}
                 onChange={onChange}
               />
             );
@@ -88,6 +100,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
                 scaleMinLabel={(question as ILinearScaleQuestion).scaleMinLabel}
                 scaleMaxLabel={(question as ILinearScaleQuestion).scaleMaxLabel}
                 scaleNumber={answer.scaleNumber}
+                readOnly={readOnly}
                 onChange={onChange}
               />
             );
@@ -97,6 +110,7 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
                 rows={(question as IRadioTableQuestion).rows}
                 columns={(question as IRadioTableQuestion).columns}
                 tableAnswers={answer.tableAnswers}
+                readOnly={readOnly}
                 onChange={onChange}
               />
             );
@@ -107,25 +121,31 @@ const BaseAnswer = ({ question, answer, error, onChange }: BaseAnswerProps) => {
                 rows={(question as ICheckboxTableQuestion).rows}
                 columns={(question as ICheckboxTableQuestion).columns}
                 tableAnswers={answer.tableAnswers}
+                readOnly={readOnly}
                 onChange={onChange}
               />
             );
           }
           case QuestionTypes.DATE:
-            return <DateAnswer date={answer.date} onChange={onChange} />;
+            return (
+              <DateAnswer
+                date={answer.date}
+                readOnly={readOnly}
+                onChange={onChange}
+              />
+            );
           case QuestionTypes.TIME:
-            return <TimeAnswer time={answer.time} onChange={onChange} />;
+            return (
+              <TimeAnswer
+                time={answer.time}
+                readOnly={readOnly}
+                onChange={onChange}
+              />
+            );
           default:
             return null;
         }
       })()}
-      {/* {isActive && (
-        <QuestionFooter
-          isRequired={question.required}
-          onQuestionChange={(value) => onChange({ required: value })}
-          questionDeleteHandler={onDelete}
-        />
-      )} */}
     </CardContainer>
   );
 };

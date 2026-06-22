@@ -54,7 +54,7 @@ export const he = {
       nextPage: "הבא",
       prevPage: "הקודם",
       submit: "הגשה",
-      other: "אחר",
+      other: "אחר:",
       dropdownPlaceholder: "בחירה",
     },
   },
