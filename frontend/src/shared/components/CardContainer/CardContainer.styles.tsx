@@ -19,7 +19,7 @@ export const CardContainer = styled("div")<CardContainerProps>(
     padding: "2rem",
     direction: "rtl",
     marginBottom: "1rem",
-    borderTop: isHeader ? "0.8rem solid #fbff00ff" : "0",
+    borderTop: isHeader ? "0.8rem solid #fcdb32" : "0",
     borderRight: isActive ? "0.5rem solid #4285f4" : "0.5rem solid #ceced3",
     borderTopRightRadius: isSection || isHeader ? 0 : "0.5rem",
     boxShadow: error

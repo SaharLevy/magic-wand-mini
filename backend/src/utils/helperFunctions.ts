@@ -86,9 +86,8 @@ export const getMissingRequiredQuestions = (
         (answer) => String(answer.questionId) === String(question._id),
       );
 
-      if (!answer || isAnswerEmpty(answer, question)) {
+      if (!answer || isAnswerEmpty(answer, question))
         missing.push(String(question._id));
-      }
     });
   });
 

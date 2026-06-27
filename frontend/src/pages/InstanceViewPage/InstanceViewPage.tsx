@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useGetInstance } from "../../features/instance/hooks/useInstance";
-import InstanceHeader from "../../features/instance/components/InstanceHeader/InstanceHeader";
 import BaseAnswer from "../../features/instance/components/BaseAnswer/BaseAnswer";
 import SectionPagination from "../../features/instance/components/SectionPagination/SectionPagination";
 import { PageContainer } from "../../shared/components/SectionWrapper/SectionWrapper.styles";
 import { he } from "../../shared/constants/i18";
+import TitleCard from "../../features/instance/components/InstanceHeader/TitleCard";
 
 const InstanceViewPage = () => {
   const { instanceId } = useParams<{ instanceId: string }>();
@@ -27,9 +27,15 @@ const InstanceViewPage = () => {
 
   return (
     <PageContainer>
-      <InstanceHeader
+      <TitleCard
         title={schema.title}
         description={schema.description ?? ""}
+        isHeader={true}
+      />
+      <TitleCard
+        title={schemaSection.title}
+        description={schemaSection.description ?? ""}
+        isHeader={false}
       />
       {answerSection &&
         schemaSection.questions.map((question) => {

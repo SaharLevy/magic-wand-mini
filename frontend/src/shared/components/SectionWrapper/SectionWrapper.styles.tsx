@@ -19,7 +19,7 @@ export const SectionContainer = styled("div")({
 export const SectionHeader = styled("div")({
   width: "20%",
   height: "2rem",
-  backgroundColor: "#fbff00ff",
+  backgroundColor: "#fcdb32",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",

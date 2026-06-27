@@ -5,15 +5,16 @@ import {
 } from "../../../../shared/components/FormHeaderCard/FormHeaderCard.styles";
 import { SectionContainer } from "../../../../shared/components/SectionWrapper/SectionWrapper.styles";
 
-interface InstanceHeaderProps {
+interface TitleCardProps {
   title: string;
   description: string;
+  isHeader: boolean;
 }
 
-const InstanceHeader = ({ title, description }: InstanceHeaderProps) => {
+const TitleCard = ({ title, description, isHeader }: TitleCardProps) => {
   return (
     <SectionContainer>
-      <CardContainer isHeader={true}>
+      <CardContainer isHeader={isHeader}>
         <div>
           <ViewTitle>{title}</ViewTitle>
           <ViewDescription>{description}</ViewDescription>
@@ -23,4 +24,4 @@ const InstanceHeader = ({ title, description }: InstanceHeaderProps) => {
   );
 };
 
-export default InstanceHeader;
+export default TitleCard;

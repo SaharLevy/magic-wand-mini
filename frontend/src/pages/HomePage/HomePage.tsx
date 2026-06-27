@@ -37,8 +37,7 @@ const HomePage = () => {
   const { deleteInstance, deleteIsPending: deleteInstanceIsPending } =
     useDeleteInstance();
 
-  const { createInstance, createIsPending: createInstanceIsPending } =
-    useCreateInstance();
+  const { createInstance } = useCreateInstance();
   const { schemas } = useGetSchemas();
   const { instances } = useGetInstances();
 

@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import InstanceHeader from "../../features/instance/components/InstanceHeader/InstanceHeader";
 import {
   useGetInstance,
   useSubmitInstance,
@@ -12,6 +11,7 @@ import { PageContainer } from "../../shared/components/SectionWrapper/SectionWra
 import { AxiosError } from "axios";
 import type { ValidationErrorData } from "../../features/instance/instanceTypes";
 import { he } from "../../shared/constants/i18";
+import TitleCard from "../../features/instance/components/InstanceHeader/TitleCard";
 
 const InstanceEditPage = () => {
   const { instanceId } = useParams<{ instanceId: string }>();
@@ -40,7 +40,7 @@ const InstanceEditPage = () => {
 
   if (isPending || !instanceDraft)
     return <div>{he.instance.creation.loadingInstance}</div>;
-  
+
   if (isError || !instance)
     return <div>{he.instance.creation.loadingError}</div>;
 
@@ -54,9 +54,15 @@ const InstanceEditPage = () => {
 
   return (
     <PageContainer>
-      <InstanceHeader
+      <TitleCard
         title={instance.schemaId.title}
         description={instance.schemaId.description ?? ""}
+        isHeader={true}
+      />
+      <TitleCard
+        title={schemaSection.title}
+        description={schemaSection.description ?? ""}
+        isHeader={false}
       />
       {answerSection &&
         schemaSection.questions.map((question) => {
