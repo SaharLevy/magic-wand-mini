@@ -1,20 +1,25 @@
 import { MongoObjectId } from "../shared/types.js";
-import Repo from "./repo.js";
+import Repo, { MISSING_REQUIRED_ANSWERS } from "./repo.js";
 import SchemaRepo, { SCHEMA_NOT_FOUND } from "../schema/repo.js";
 import {
   IAnswerUpdateWithIds,
   IInstance,
   IInstanceInput,
+  IInstancePopulated,
+  IInstanceWithSchemaRef,
   InstanceStatus,
   ISectionAnswer,
 } from "./types.js";
-import { NotFoundError } from "../utils/customErrors.js";
-import { generateEmptyAnswer } from "../utils/helperFunctions.js";
+import { NotFoundError, ValidationError } from "../utils/customErrors.js";
+import {
+  generateEmptyAnswer,
+  getMissingRequiredQuestions,
+} from "../utils/helperFunctions.js";
 
 class Manager {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstance[]> => Repo.getInstancesByUserId(userId);
+  ): Promise<IInstanceWithSchemaRef[]> => Repo.getInstancesByUserId(userId);
 
   static createInstance = async (
     schemaId: MongoObjectId,
@@ -45,12 +50,21 @@ class Manager {
 
   static getInstanceById = async (
     instanceId: MongoObjectId,
-  ): Promise<IInstance> => Repo.getInstanceById(instanceId);
+  ): Promise<IInstancePopulated> => Repo.getInstanceById(instanceId);
 
   static publishInstance = async (
     instanceId: MongoObjectId,
+    submitted: IInstanceInput,
   ): Promise<IInstance> => {
-    return Repo.publishInstance(instanceId);
+    const schema = await SchemaRepo.getSchemaById(submitted.schemaId);
+    if (!schema) throw new NotFoundError(SCHEMA_NOT_FOUND);
+
+    const missing = getMissingRequiredQuestions(submitted.sections, schema);
+    if (missing.length > 0) {
+      throw new ValidationError(MISSING_REQUIRED_ANSWERS, missing);
+    }
+
+    return Repo.publishInstance(instanceId, submitted.sections);
   };
 
   static updateAnswer = async (
@@ -67,6 +81,10 @@ class Manager {
     sectionId: MongoObjectId,
     answerId: MongoObjectId,
   ): Promise<IInstance> => Repo.deleteAnswer(instanceId, sectionId, answerId);
+
+  static deleteInstance = async (
+    instanceId: MongoObjectId,
+  ): Promise<IInstance> => Repo.deleteInstance(instanceId);
 }
 
 export default Manager;

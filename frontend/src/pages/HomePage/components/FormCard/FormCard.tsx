@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Tooltip } from "@mui/material";
 import {
   StyledCard,
   CardBody,
@@ -14,7 +15,9 @@ interface FormCardProps {
 export const FormCard = ({ formTitle, actions }: FormCardProps) => (
   <StyledCard variant="outlined">
     <CardBody>
-      <CardTitle variant="subtitle1">{formTitle}</CardTitle>
+      <Tooltip title={formTitle}>
+        <CardTitle variant="subtitle1">{formTitle}</CardTitle>
+      </Tooltip>
     </CardBody>
     <CardButtons>{actions}</CardButtons>
   </StyledCard>

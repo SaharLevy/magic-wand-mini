@@ -10,7 +10,10 @@ import RadioTableQuestion from "../RadioTableQuestion/RadioTableQuestion";
 import CheckboxTableQuestion from "../CheckboxTableQuestion/CheckboxTableQuestion";
 import DateQuestion from "../DateQuestion/DateQuestion";
 import TimeQuestion from "../TimeQuestion/TimeQuestion";
-import { type IQuestion, type IQuestionUpdate } from "../../schemaTypes";
+import {
+  type IQuestion,
+  type IQuestionUpdate,
+} from "../../schemaTypes";
 import { he } from "../../../../shared/constants/i18";
 import QuestionFooter from "../../../../shared/components/QuestionFooter/QuestionFooter";
 import { QuestionTypes } from "../../../../shared/sharedTypes";

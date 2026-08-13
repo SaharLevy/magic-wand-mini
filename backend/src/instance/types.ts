@@ -1,3 +1,4 @@
+import { schemaWithIdSchema } from "../schema/types.js";
 import {
   MongoObjectId,
   objectIdString,
@@ -19,7 +20,7 @@ export const optionsShape = z.object({
 });
 
 export const scaleShape = z.object({
-  scaleNumber: z.number().int(),
+  scaleNumber: z.number().int().optional(),
 });
 
 export const textShape = z.object({
@@ -41,11 +42,13 @@ export const paragraphAnswer = z.object({
 export const radioAnswer = z.object({
   type: z.literal(QuestionTypes.RADIO),
   ...optionShape.shape,
+  otherText: z.string().optional(),
 });
 
 export const checkboxAnswer = z.object({
   type: z.literal(QuestionTypes.CHECKBOX),
   ...optionsShape.shape,
+  otherText: z.string().optional(),
 });
 
 export const dropdownAnswer = z.object({
@@ -131,6 +134,21 @@ export const createInstanceSchema = z.object({
   filledBy: objectIdString,
 });
 
+export const instanceWithSchema = instanceSchema.extend({
+  _id: objectIdString,
+  schemaId: schemaWithIdSchema,
+});
+
+export const schemaRefSchema = schemaWithIdSchema.pick({
+  _id: true,
+  title: true,
+});
+
+export const instanceWithSchemaRef = instanceSchema.extend({
+  _id: objectIdString,
+  schemaId: schemaRefSchema,
+});
+
 export const updateAnswerSchemaWithIds = z.intersection(
   answerIdSchema,
   updateAnswerSchema,
@@ -148,6 +166,8 @@ export type IInstance = IInstanceInput & { _id: MongoObjectId };
 export type IAnswer = z.infer<typeof answerSchema>;
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
+export type IInstancePopulated = z.infer<typeof instanceWithSchema>;
+export type IInstanceWithSchemaRef = z.infer<typeof instanceWithSchemaRef>;
 
 // Answers types
 

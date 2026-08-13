@@ -1,4 +1,5 @@
 import type { QuestionTypes } from "../../shared/sharedTypes";
+import type { ISchema } from "../schema/schemaTypes";
 
 export enum InstanceStatus {
   Draft = "Draft",
@@ -20,11 +21,13 @@ export interface ParagraphAnswer {
 export interface RadioAnswer {
   type: QuestionTypes.RADIO;
   option: string;
+  otherText?: string;
 }
 
 export interface CheckboxAnswer {
   type: QuestionTypes.CHECKBOX;
   options: string[];
+  otherText?: string;
 }
 
 export interface DropdownAnswer {
@@ -34,7 +37,7 @@ export interface DropdownAnswer {
 
 export interface LinearScaleAnswer {
   type: QuestionTypes.LINEAR_SCALE;
-  scaleNumber: number;
+  scaleNumber?: number;
 }
 
 export interface RadioTableAnswer {
@@ -107,6 +110,18 @@ export type IAnswerUpdateWithIds = AnswerIdSchema & Partial<IAnswer>;
 
 export interface StatusesSchema {
   statuses: InstanceStatus[];
+}
+
+export type IInstancePopulated = Omit<IInstance, "schemaId"> & {
+  schemaId: ISchema;
+};
+
+export type IInstanceWithSchemaRef = Omit<IInstance, "schemaId"> & {
+  schemaId: Pick<ISchema, "_id" | "title">;
+};
+
+export interface ValidationErrorData {
+  details?: string[];
 }
 
 // Answer types (without the discriminator)

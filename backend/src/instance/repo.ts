@@ -1,3 +1,4 @@
+import { ISchema } from "../schema/types.js";
 import { MongoObjectId } from "../shared/types.js";
 import { NotFoundError } from "../utils/customErrors.js";
 import { Instance } from "./model.js";
@@ -5,34 +6,49 @@ import {
   IAnswerUpdate,
   IInstance,
   IInstanceInput,
+  IInstancePopulated,
+  IInstanceWithSchemaRef,
   InstanceStatus,
+  ISectionAnswer,
 } from "./types.js";
 
 const INSTANCE_NOT_FOUND = "Instance not found";
+export const MISSING_REQUIRED_ANSWERS = "Missing required answers";
 
 class Repo {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstance[]> => Instance.find({ filledBy: userId });
+  ): Promise<IInstanceWithSchemaRef[]> =>
+    Instance.find({ filledBy: userId })
+      .populate<{
+        schemaId: Pick<ISchema, "_id" | "title">;
+      }>("schemaId", "title")
+      .lean();
 
   static getInstanceById = async (
     instanceId: MongoObjectId,
-  ): Promise<IInstance> =>
-    Instance.findById(instanceId).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
+  ): Promise<IInstancePopulated> =>
+    Instance.findById(instanceId)
+      .populate<{ schemaId: ISchema }>("schemaId")
+      .orFail(new NotFoundError(INSTANCE_NOT_FOUND))
+      .lean();
 
   static createInstance = async (
     newInstance: IInstanceInput,
-  ): Promise<IInstance> => Instance.create(newInstance);
+  ): Promise<IInstance> => (await Instance.create(newInstance)).toObject();
 
   static publishInstance = async (
     instanceId: MongoObjectId,
+    sections: ISectionAnswer[],
   ): Promise<IInstance> =>
     Instance.findByIdAndUpdate(
       instanceId,
-      { status: InstanceStatus.Published },
       {
-        new: true,
+        sections,
+        status: InstanceStatus.Published,
+        submittedAt: new Date(),
       },
+      { new: true },
     ).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
 
   static updateAnswer = async (
@@ -72,6 +88,14 @@ class Repo {
       { $pull: { "sections.$[section].answers": { _id: answerId } } },
       { arrayFilters: [{ "section.sectionId": sectionId }], new: true },
     ).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
+
+  static deleteInstance = async (
+    instanceId: MongoObjectId,
+  ): Promise<IInstance> =>
+    Instance.findOneAndDelete({
+      _id: instanceId,
+      status: InstanceStatus.Draft,
+    }).orFail(new NotFoundError(INSTANCE_NOT_FOUND));
 }
 
 export default Repo;

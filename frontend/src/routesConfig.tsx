@@ -1,6 +1,8 @@
 import HomePage from "./pages/HomePage/HomePage";
 import { Navigate } from "react-router-dom";
 import SchemaEditPage from "./pages/SchemaEditPage/SchemaEditPage";
+import InstanceEditPage from "./pages/InstanceEditPage/InstanceEditPage";
+import InstanceViewPage from "./pages/InstanceViewPage/InstanceViewPage";
 
 interface RouteConfig {
   path: string;
@@ -15,6 +17,14 @@ export const routesObj = {
   schemaEdit: {
     path: "/schemas/:schemaId",
     element: () => <SchemaEditPage />,
+  },
+  instanceEdit: {
+    path: "/instances/:instanceId",
+    element: () => <InstanceEditPage />,
+  },
+  instanceView: {
+    path: "/instances/:instanceId/view",
+    element: () => <InstanceViewPage />,
   },
   default: {
     path: "*",

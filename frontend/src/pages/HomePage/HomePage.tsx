@@ -9,10 +9,19 @@ import { he } from "../../shared/constants/i18";
 import { SchemaStatus } from "../../features/schema/schemaTypes";
 import { Carousel } from "./components/Carousel/Carousel";
 import { FormCard } from "./components/FormCard/FormCard";
-import { SchemaDraftActions } from "./components/DraftActions/SchemaDraftActions";
+import {
+  DRAFT_KIND,
+  DraftActions,
+} from "./components/DraftActions/DraftActions";
 import { PageContainer } from "./HomePage.styles";
 import { TopRightSlot } from "../SchemaEditPage/SchemaEditPage.styles";
 import { ActionButton } from "./components/Buttons/ActionButton";
+import {
+  useCreateInstance,
+  useDeleteInstance,
+  useGetInstances,
+} from "../../features/instance/hooks/useInstance";
+import { InstanceStatus } from "../../features/instance/instanceTypes";
 
 export enum ButtonStatus {
   DELETE = "מחיקה",
@@ -23,15 +32,28 @@ export enum ButtonStatus {
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { createSchema, createIsPending } = useCreateSchema();
-  const { deleteSchema, deleteIsPending } = useDeleteSchema();
-  const { schemas } = useGetSchemas();
+  const { mutate: createSchema, isPending: createIsPending } =
+    useCreateSchema();
+  const { mutate: deleteSchema, isPending: deleteIsPending } =
+    useDeleteSchema();
+  const { mutate: deleteInstance, isPending: deleteInstanceIsPending } =
+    useDeleteInstance();
 
-  const draftSchemas = schemas?.filter(
+  const { mutate: createInstance } = useCreateInstance();
+  const { data: instances } = useGetInstances();
+  const { data: schemas } = useGetSchemas();
+
+  const draftSchemas = schemas.filter(
     (schema) => schema.status === SchemaStatus.Draft,
   );
-  const publishedSchemas = schemas?.filter(
+  const publishedSchemas = schemas.filter(
     (schema) => schema.status === SchemaStatus.Published,
+  );
+  const draftInstances = instances.filter(
+    (instance) => instance.status === InstanceStatus.Draft,
+  );
+  const publishedInstances = instances.filter(
+    (instance) => instance.status === InstanceStatus.Published,
   );
 
   const handleCreate = () => {
@@ -40,8 +62,18 @@ const HomePage = () => {
     });
   };
 
+  const handleFill = (schemaId: string) => {
+    createInstance(schemaId, {
+      onSuccess: (newInstance) => navigate(`/instances/${newInstance._id}`),
+    });
+  };
+
   const handleDelete = (schemaId: string) => {
     deleteSchema(schemaId);
+  };
+
+  const handleDeleteInstance = (instanceId: string) => {
+    deleteInstance(instanceId);
   };
 
   return (
@@ -64,7 +96,8 @@ const HomePage = () => {
             key={schema._id}
             formTitle={schema.title}
             actions={
-              <SchemaDraftActions
+              <DraftActions
+                kind={DRAFT_KIND.Schema}
                 formId={schema._id}
                 onDelete={handleDelete}
                 isPending={deleteIsPending}
@@ -81,8 +114,40 @@ const HomePage = () => {
             formTitle={schema.title}
             actions={
               <ActionButton
-                onClick={() => navigate(`/schemas/${schema._id}`)}
+                onClick={() => handleFill(schema._id)}
                 buttonType={ButtonStatus.FILL}
+              />
+            }
+          />
+        ))}
+      </Carousel>
+
+      <Carousel heading={he.homePage.draftInstances}>
+        {draftInstances.map((instance) => (
+          <FormCard
+            key={instance._id}
+            formTitle={instance.schemaId.title}
+            actions={
+              <DraftActions
+                kind={DRAFT_KIND.Instance}
+                formId={instance._id}
+                onDelete={handleDeleteInstance}
+                isPending={deleteInstanceIsPending}
+              />
+            }
+          />
+        ))}
+      </Carousel>
+
+      <Carousel heading={he.homePage.publishedInstances}>
+        {publishedInstances.map((instance) => (
+          <FormCard
+            key={instance._id}
+            formTitle={instance.schemaId.title}
+            actions={
+              <ActionButton
+                onClick={() => navigate(`/instances/${instance._id}/view`)}
+                buttonType={ButtonStatus.VIEW}
               />
             }
           />

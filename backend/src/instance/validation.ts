@@ -3,7 +3,7 @@ import { objectIdString } from "../shared/types.js";
 import {
   answerIdSchema,
   createInstanceSchema,
-  statusesSchema,
+  instanceSchema,
   updateAnswerSchemaWithIds,
 } from "./types.js";
 
@@ -39,7 +39,7 @@ const instanceValidation = {
         id: objectIdString,
       })
       .strict(),
-    body: z.object({}),
+    body: instanceSchema,
     query: z.object({}),
   },
   updateAnswer: {
@@ -58,6 +58,11 @@ const instanceValidation = {
       })
       .strict(),
     body: answerIdSchema,
+    query: z.object({}),
+  },
+  deleteInstance: {
+    params: z.object({ id: objectIdString }).strict(),
+    body: z.object({}),
     query: z.object({}),
   },
 };

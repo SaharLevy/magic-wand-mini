@@ -31,6 +31,8 @@ export const he = {
       headerQuestionTime: "זמן",
       footerRequired: "נדרש",
       defaultValueOptionsState: "אפשרות 1",
+      loading: "טוען",
+      error: "שגיאה",
     },
   },
   homePage: {
@@ -45,5 +47,17 @@ export const he = {
     publishedSchemas: "טפסים למילוי",
     draftInstances: "מופעים בעריכה",
     publishedInstances: "מופעים שהגשתי",
+  },
+  instance: {
+    creation: {
+      loadingInstance: "טוען...",
+      loadingError: "שגיאה בטעינת הטופס",
+      defaultTextAnswer: "התשובה שלך",
+      nextPage: "הבא",
+      prevPage: "הקודם",
+      submit: "הגשה",
+      other: "אחר:",
+      dropdownPlaceholder: "בחירה",
+    },
   },
 };
