@@ -21,12 +21,12 @@ const SchemaEditPage = () => {
   const { schemaId } = useParams<{ schemaId: string }>();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const { schema, isPending, isError } = useGetSchema(schemaId);
-  const { createSection } = useCreateSection(schemaId);
-  const { createQuestion } = useCreateQuestion(schemaId);
-  const { updateSchema: saveSchema } = useUpdateSchema();
-  const { deleteQuestion } = useDeleteQuestion(schemaId);
-  const { publishSchema } = usePublishSchema(schemaId);
+  const { data: schema, isPending, isError } = useGetSchema(schemaId);
+  const { mutateAsync: createSection } = useCreateSection(schemaId);
+  const { mutateAsync: createQuestion } = useCreateQuestion(schemaId);
+  const { mutate: saveSchema } = useUpdateSchema();
+  const { mutateAsync: deleteQuestion } = useDeleteQuestion(schemaId);
+  const { mutateAsync: publishSchema } = usePublishSchema(schemaId);
   const navigate = useNavigate();
 
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);

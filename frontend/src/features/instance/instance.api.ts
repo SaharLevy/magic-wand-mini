@@ -2,13 +2,13 @@ import { request } from "../../shared/network/request";
 import type {
   IInstance,
   IInstancePopulated,
-  IInstanceWithSchemaTitle,
+  IInstanceWithSchemaRef,
 } from "./instanceTypes";
 
 export const getInstances = (
   userId: string,
-): Promise<IInstanceWithSchemaTitle[]> =>
-  request<IInstanceWithSchemaTitle[]>({
+): Promise<IInstanceWithSchemaRef[]> =>
+  request<IInstanceWithSchemaRef[]>({
     method: "GET",
     url: `/instances/${userId}/instances`,
   });
@@ -22,8 +22,8 @@ export const getInstance = (instanceId: string): Promise<IInstancePopulated> =>
 export const createInstance = (
   schemaId: string,
   filledBy: string,
-): Promise<IInstancePopulated> =>
-  request<IInstancePopulated>({
+): Promise<IInstance> =>
+  request<IInstance>({
     method: "POST",
     url: `/instances/${schemaId}`,
     data: { filledBy },

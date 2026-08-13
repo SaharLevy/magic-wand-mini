@@ -12,6 +12,9 @@ export const CardBody = styled(CardContent)({
 
 export const CardTitle = styled(Typography)({
   textAlign: "center",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 });
 
 export const CardButtons = styled(CardActions)({

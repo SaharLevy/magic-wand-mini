@@ -1,8 +1,6 @@
-import { IAnswer, IInstanceInput, ISectionAnswer } from "../instance/types.js";
+import { IAnswer, ISectionAnswer } from "../instance/types.js";
 import {
-  ICheckboxTable,
   IQuestion,
-  IRadioTable,
   ISchema,
 } from "../schema/types.js";
 import { MongoObjectId, QuestionTypes } from "../shared/types.js";
@@ -36,7 +34,7 @@ export const generateEmptyAnswer = (
   }
 };
 
-export const isAnswerEmpty = (
+export const isAnswerIncomplete = (
   answer: IAnswer,
   question: IQuestion,
 ): boolean => {
@@ -53,10 +51,12 @@ export const isAnswerEmpty = (
     case QuestionTypes.LINEAR_SCALE:
       return answer.scaleNumber === undefined;
     case QuestionTypes.RADIO_TABLE:
-      return answer.tableAnswers.length < (question as IRadioTable).rows.length;
+      if (question.type !== QuestionTypes.RADIO_TABLE) return true;
+      return answer.tableAnswers.length < question.rows.length;
     case QuestionTypes.CHECKBOX_TABLE:
+      if (question.type !== QuestionTypes.CHECKBOX_TABLE) return true;
       return (
-        answer.tableAnswers.length < (question as ICheckboxTable).rows.length ||
+        answer.tableAnswers.length < question.rows.length ||
         answer.tableAnswers.some((row) => row.columns.length === 0)
       );
     case QuestionTypes.DATE:
@@ -86,7 +86,7 @@ export const getMissingRequiredQuestions = (
         (answer) => String(answer.questionId) === String(question._id),
       );
 
-      if (!answer || isAnswerEmpty(answer, question))
+      if (!answer || isAnswerIncomplete(answer, question))
         missing.push(String(question._id));
     });
   });

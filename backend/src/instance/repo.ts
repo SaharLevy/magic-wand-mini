@@ -7,7 +7,7 @@ import {
   IInstance,
   IInstanceInput,
   IInstancePopulated,
-  IInstanceWithSchemaTitle,
+  IInstanceWithSchemaRef,
   InstanceStatus,
   ISectionAnswer,
 } from "./types.js";
@@ -18,7 +18,7 @@ export const MISSING_REQUIRED_ANSWERS = "Missing required answers";
 class Repo {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstanceWithSchemaTitle[]> =>
+  ): Promise<IInstanceWithSchemaRef[]> =>
     Instance.find({ filledBy: userId })
       .populate<{
         schemaId: Pick<ISchema, "_id" | "title">;

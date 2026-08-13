@@ -6,7 +6,7 @@ import {
   IInstance,
   IInstanceInput,
   IInstancePopulated,
-  IInstanceWithSchemaTitle,
+  IInstanceWithSchemaRef,
   InstanceStatus,
   ISectionAnswer,
 } from "./types.js";
@@ -19,12 +19,12 @@ import {
 class Manager {
   static getInstancesByUserId = async (
     userId: MongoObjectId,
-  ): Promise<IInstanceWithSchemaTitle[]> => Repo.getInstancesByUserId(userId);
+  ): Promise<IInstanceWithSchemaRef[]> => Repo.getInstancesByUserId(userId);
 
   static createInstance = async (
     schemaId: MongoObjectId,
     filledBy: MongoObjectId,
-  ): Promise<IInstancePopulated> => {
+  ): Promise<IInstance> => {
     const schema = await SchemaRepo.getSchemaById(schemaId);
 
     if (!schema) throw new NotFoundError(SCHEMA_NOT_FOUND);
@@ -44,9 +44,8 @@ class Manager {
       status: InstanceStatus.Draft,
       sections,
     };
-    const createdInstance = await Repo.createInstance(newInstance);
 
-    return { ...createdInstance, schemaId: schema };
+    return Repo.createInstance(newInstance);
   };
 
   static getInstanceById = async (

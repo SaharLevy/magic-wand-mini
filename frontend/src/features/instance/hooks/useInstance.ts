@@ -1,9 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type {
-  IInstance,
-  IInstancePopulated,
-  IInstanceWithSchemaTitle,
-} from "../instanceTypes";
+import type { IInstance } from "../instanceTypes";
 import {
   createInstance,
   deleteInstance,
@@ -12,82 +8,51 @@ import {
   submitInstance,
 } from "../instance.api";
 import { TEMP_USER_ID } from "../../schema/hooks/useSchema";
+import { instanceKeys } from "../instanceKeys";
 
-export const useGetInstances = () => {
-  const { data, isPending, isError } = useQuery<IInstanceWithSchemaTitle[]>({
-    queryKey: ["instances", TEMP_USER_ID],
+export const useGetInstances = () =>
+  useQuery({
+    queryKey: instanceKeys.list(TEMP_USER_ID),
     queryFn: () => getInstances(TEMP_USER_ID),
     initialData: [],
   });
 
-  return {
-    instances: data,
-    isPending,
-    isError,
-  };
-};
-
-export const useGetInstance = (instanceId: string | undefined) => {
-  const { data, isPending, isError } = useQuery<IInstancePopulated>({
-    queryKey: ["instance", instanceId],
+export const useGetInstance = (instanceId: string | undefined) =>
+  useQuery({
+    queryKey: instanceKeys.detail(instanceId!),
     queryFn: () => getInstance(instanceId!),
     enabled: !!instanceId,
   });
 
-  return {
-    instance: data,
-    isPending,
-    isError,
-  };
-};
-
 export const useCreateInstance = () => {
-  const { mutate, data, isPending, isError } = useMutation<
-    IInstancePopulated,
-    Error,
-    string
-  >({
-    mutationFn: (schemaId: string) => createInstance(schemaId, TEMP_USER_ID),
-  });
+  const queryClient = useQueryClient();
 
-  return {
-    createInstance: mutate,
-    instance: data,
-    createIsPending: isPending,
-    isError,
-  };
+  return useMutation({
+    mutationFn: (schemaId: string) => createInstance(schemaId, TEMP_USER_ID),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: instanceKeys.all });
+    },
+  });
 };
 
 export const useSubmitInstance = () => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isPending, isError } = useMutation<
-    IInstance,
-    Error,
-    IInstance
-  >({
+  return useMutation({
     mutationFn: (instance: IInstance) => submitInstance(instance._id, instance),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["instances"] });
+      queryClient.invalidateQueries({ queryKey: instanceKeys.all });
     },
   });
-
-  return { submitInstance: mutateAsync, submitIsPending: isPending, isError };
 };
 
 export const useDeleteInstance = () => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isPending, isError } = useMutation<
-    IInstance,
-    Error,
-    string
-  >({
+  return useMutation({
     mutationFn: (instanceId: string) => deleteInstance(instanceId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["instances"] });
+      queryClient.invalidateQueries({ queryKey: instanceKeys.all });
     },
   });
-
-  return { deleteInstance: mutateAsync, deleteIsPending: isPending, isError };
 };

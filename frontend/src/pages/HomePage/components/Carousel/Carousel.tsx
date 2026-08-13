@@ -10,6 +10,7 @@ import {
   View,
   Track,
   Slide,
+  ArrowButton,
 } from "./Carousel.styles";
 
 interface CarouselProps {
@@ -32,13 +33,13 @@ export const Carousel = ({ heading, children }: CarouselProps) => {
     <CarouselWrapper>
       <CarouselHeading variant="subtitle1">{heading}</CarouselHeading>
       <CarouselRow>
-        <IconButton
+        <ArrowButton
           onClick={() => {
             emblaApi?.scrollNext();
           }}
         >
           <ChevronLeftIcon />
-        </IconButton>
+        </ArrowButton>
 
         <View ref={emblaRef} dir="rtl">
           <Track>
@@ -48,9 +49,9 @@ export const Carousel = ({ heading, children }: CarouselProps) => {
           </Track>
         </View>
 
-        <IconButton onClick={() => emblaApi?.scrollPrev()}>
+        <ArrowButton onClick={() => emblaApi?.scrollPrev()}>
           <ChevronRightIcon />
-        </IconButton>
+        </ArrowButton>
       </CarouselRow>
     </CarouselWrapper>
   );

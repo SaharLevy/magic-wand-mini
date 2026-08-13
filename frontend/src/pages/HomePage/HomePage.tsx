@@ -32,25 +32,27 @@ export enum ButtonStatus {
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { createSchema, createIsPending } = useCreateSchema();
-  const { deleteSchema, deleteIsPending } = useDeleteSchema();
-  const { deleteInstance, deleteIsPending: deleteInstanceIsPending } =
+  const { mutate: createSchema, isPending: createIsPending } =
+    useCreateSchema();
+  const { mutate: deleteSchema, isPending: deleteIsPending } =
+    useDeleteSchema();
+  const { mutate: deleteInstance, isPending: deleteInstanceIsPending } =
     useDeleteInstance();
 
-  const { createInstance } = useCreateInstance();
-  const { schemas } = useGetSchemas();
-  const { instances } = useGetInstances();
+  const { mutate: createInstance } = useCreateInstance();
+  const { data: instances } = useGetInstances();
+  const { data: schemas } = useGetSchemas();
 
-  const draftSchemas = schemas?.filter(
+  const draftSchemas = schemas.filter(
     (schema) => schema.status === SchemaStatus.Draft,
   );
-  const publishedSchemas = schemas?.filter(
+  const publishedSchemas = schemas.filter(
     (schema) => schema.status === SchemaStatus.Published,
   );
-  const draftInstances = instances?.filter(
+  const draftInstances = instances.filter(
     (instance) => instance.status === InstanceStatus.Draft,
   );
-  const publishedInstances = instances?.filter(
+  const publishedInstances = instances.filter(
     (instance) => instance.status === InstanceStatus.Published,
   );
 

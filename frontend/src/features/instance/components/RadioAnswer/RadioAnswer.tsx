@@ -12,6 +12,8 @@ interface RadioAnswerProps {
 }
 
 const OTHER = "__other__";
+// My source of truth for "isOtherSelected" is otherText, not the radio value
+// OTHER is only used to decide which radio renders as checked.
 
 const RadioAnswer = ({
   options,

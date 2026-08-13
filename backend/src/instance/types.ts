@@ -139,14 +139,14 @@ export const instanceWithSchema = instanceSchema.extend({
   schemaId: schemaWithIdSchema,
 });
 
-export const schemaTitleSchema = schemaWithIdSchema.pick({
+export const schemaRefSchema = schemaWithIdSchema.pick({
   _id: true,
   title: true,
 });
 
-export const instanceWithSchemaTitle = instanceSchema.extend({
+export const instanceWithSchemaRef = instanceSchema.extend({
   _id: objectIdString,
-  schemaId: schemaTitleSchema,
+  schemaId: schemaRefSchema,
 });
 
 export const updateAnswerSchemaWithIds = z.intersection(
@@ -167,7 +167,7 @@ export type IAnswer = z.infer<typeof answerSchema>;
 export type IAnswerUpdate = Partial<IAnswer>;
 export type IAnswerUpdateWithIds = z.infer<typeof updateAnswerSchemaWithIds>;
 export type IInstancePopulated = z.infer<typeof instanceWithSchema>;
-export type IInstanceWithSchemaTitle = z.infer<typeof instanceWithSchemaTitle>;
+export type IInstanceWithSchemaRef = z.infer<typeof instanceWithSchemaRef>;
 
 // Answers types
 

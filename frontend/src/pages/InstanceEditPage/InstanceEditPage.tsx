@@ -16,9 +16,10 @@ import TitleCard from "../../features/instance/components/InstanceHeader/TitleCa
 const InstanceEditPage = () => {
   const { instanceId } = useParams<{ instanceId: string }>();
 
-  const { instance, isPending, isError } = useGetInstance(instanceId);
+  const { data: instance, isPending, isError } = useGetInstance(instanceId);
   const { instanceDraft, updateAnswer } = useInstanceDraft(instance);
-  const { submitInstance, submitIsPending } = useSubmitInstance();
+  const { mutateAsync: submitInstance, isPending: submitIsPending } =
+    useSubmitInstance();
   const navigate = useNavigate();
 
   const [pageIndex, setPageIndex] = useState(0);

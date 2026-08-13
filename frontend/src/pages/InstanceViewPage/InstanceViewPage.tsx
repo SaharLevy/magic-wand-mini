@@ -9,8 +9,7 @@ import TitleCard from "../../features/instance/components/InstanceHeader/TitleCa
 
 const InstanceViewPage = () => {
   const { instanceId } = useParams<{ instanceId: string }>();
-  const { instance, isPending, isError } = useGetInstance(instanceId);
-
+  const { data: instance, isPending, isError } = useGetInstance(instanceId);
   const [pageIndex, setPageIndex] = useState(0);
 
   if (isPending) return <div>{he.instance.creation.loadingInstance}</div>;

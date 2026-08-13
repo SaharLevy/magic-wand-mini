@@ -116,7 +116,7 @@ export type IInstancePopulated = Omit<IInstance, "schemaId"> & {
   schemaId: ISchema;
 };
 
-export type IInstanceWithSchemaTitle = Omit<IInstance, "schemaId"> & {
+export type IInstanceWithSchemaRef = Omit<IInstance, "schemaId"> & {
   schemaId: Pick<ISchema, "_id" | "title">;
 };
 

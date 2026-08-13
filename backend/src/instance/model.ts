@@ -21,7 +21,7 @@ const textSchema = new Schema<IText>({
 });
 
 const scaleSchema = new Schema<IScale>({
-  scaleNumber: { type: Number, default: undefined },
+  scaleNumber: { type: Number },
 });
 
 const optionSchema = new Schema<IOption>({
@@ -30,12 +30,12 @@ const optionSchema = new Schema<IOption>({
 
 const radioOptionSchema = new Schema<IOption>({
   option: { type: String },
-  otherText: { type: String, default: undefined },
+  otherText: { type: String },
 });
 
 const optionsSchema = new Schema<IOptions>({
   options: { type: [String], default: [] },
-  otherText: { type: String, default: undefined },
+  otherText: { type: String },
 });
 
 const radioTableSchema = new Schema<IRadioTable>({
