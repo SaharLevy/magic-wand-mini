@@ -1,0 +1,23 @@
+import { Types } from "mongoose";
+import z from "zod";
+
+export const objectIdString = z
+  .string()
+  .refine((val) => Types.ObjectId.isValid(val), { message: "Invalid ObjectId" })
+  .transform((val) => new Types.ObjectId(val));
+
+export type MongoObjectId = z.infer<typeof objectIdString>;
+
+export enum QuestionTypes {
+  SHORT_TEXT = "SHORT_TEXT",
+  PARAGRAPH = "PARAGRAPH",
+  RADIO = "RADIO",
+  CHECKBOX = "CHECKBOX",
+  DROPDOWN = "DROPDOWN",
+  LINEAR_SCALE = "LINEAR_SCALE",
+  RADIO_TABLE = "RADIO_TABLE",
+  CHECKBOX_TABLE = "CHECKBOX_TABLE",
+  DATE = "DATE",
+  TIME = "TIME",
+}
+

@@ -1,0 +1,90 @@
+import { MongoObjectId } from "../shared/types.js";
+import Repo, { MISSING_REQUIRED_ANSWERS } from "./repo.js";
+import SchemaRepo, { SCHEMA_NOT_FOUND } from "../schema/repo.js";
+import {
+  IAnswerUpdateWithIds,
+  IInstance,
+  IInstanceInput,
+  IInstancePopulated,
+  IInstanceWithSchemaRef,
+  InstanceStatus,
+  ISectionAnswer,
+} from "./types.js";
+import { NotFoundError, ValidationError } from "../utils/customErrors.js";
+import {
+  generateEmptyAnswer,
+  getMissingRequiredQuestions,
+} from "../utils/helperFunctions.js";
+
+class Manager {
+  static getInstancesByUserId = async (
+    userId: MongoObjectId,
+  ): Promise<IInstanceWithSchemaRef[]> => Repo.getInstancesByUserId(userId);
+
+  static createInstance = async (
+    schemaId: MongoObjectId,
+    filledBy: MongoObjectId,
+  ): Promise<IInstance> => {
+    const schema = await SchemaRepo.getSchemaById(schemaId);
+
+    if (!schema) throw new NotFoundError(SCHEMA_NOT_FOUND);
+
+    const sections: ISectionAnswer[] = schema.sections.map((section) => {
+      return {
+        sectionId: section._id,
+        answers: section.questions.map((question) => {
+          return generateEmptyAnswer(question.type, question._id);
+        }),
+      };
+    });
+
+    const newInstance: IInstanceInput = {
+      schemaId,
+      filledBy,
+      status: InstanceStatus.Draft,
+      sections,
+    };
+
+    return Repo.createInstance(newInstance);
+  };
+
+  static getInstanceById = async (
+    instanceId: MongoObjectId,
+  ): Promise<IInstancePopulated> => Repo.getInstanceById(instanceId);
+
+  static publishInstance = async (
+    instanceId: MongoObjectId,
+    submitted: IInstanceInput,
+  ): Promise<IInstance> => {
+    const schema = await SchemaRepo.getSchemaById(submitted.schemaId);
+    if (!schema) throw new NotFoundError(SCHEMA_NOT_FOUND);
+
+    const missing = getMissingRequiredQuestions(submitted.sections, schema);
+    if (missing.length > 0) {
+      throw new ValidationError(MISSING_REQUIRED_ANSWERS, missing);
+    }
+
+    return Repo.publishInstance(instanceId, submitted.sections);
+  };
+
+  static updateAnswer = async (
+    instanceId: MongoObjectId,
+    answerData: IAnswerUpdateWithIds,
+  ) => {
+    const { sectionId, answerId, ...updatedFields } = answerData;
+
+    return Repo.updateAnswer(instanceId, sectionId, answerId, updatedFields);
+  };
+
+  static deleteAnswer = async (
+    instanceId: MongoObjectId,
+    sectionId: MongoObjectId,
+    answerId: MongoObjectId,
+  ): Promise<IInstance> => Repo.deleteAnswer(instanceId, sectionId, answerId);
+
+  static deleteInstance = async (
+    instanceId: MongoObjectId,
+  ): Promise<IInstance> => Repo.deleteInstance(instanceId);
+}
+
+export default Manager;
